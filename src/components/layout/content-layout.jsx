@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/dashboard/navbar';
+import { Navbar } from '@/components/layout/navbar';
 
 export function ContentLayout({ title, children }) {
   return (

@@ -1,7 +1,7 @@
 import { MenuIcon, PanelsTopLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Menu } from '@/components/dashboard/menu';
+import { Menu } from '@/components/layout/menu';
 import {
   Sheet,
   SheetHeader,

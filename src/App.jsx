@@ -1,13 +1,9 @@
-import DashboardLayout from './components/dashboard/layout';
+import Dashboard from '@/pages/dashboard';
 
 function App() {
   return (
     <>
-      <DashboardLayout>
-        <h1 className="flex items-center justify-center h-screen text-white">
-          Content here.
-        </h1>
-      </DashboardLayout>
+      <Dashboard />
     </>
   );
 }

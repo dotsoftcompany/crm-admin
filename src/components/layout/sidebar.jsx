@@ -2,9 +2,10 @@ import { PanelsTopLeft } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu } from '@/components/dashboard/menu';
-import { SidebarToggle } from '@/components/dashboard/sidebar-toggle';
+import { Menu } from '@/components/layout/menu';
+import { SidebarToggle } from '@/components/layout/sidebar-toggle';
 import { useMainContext } from '@/context/main-context';
+import { Link } from 'react-router-dom';
 
 export function Sidebar() {
   const { isOpen, setIsOpen } = useMainContext();
@@ -26,7 +27,7 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <a href="/dashboard" className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
             <PanelsTopLeft className="w-6 h-6 mr-1" />
             <h1
               className={cn(
@@ -38,7 +39,7 @@ export function Sidebar() {
             >
               Brand
             </h1>
-          </a>
+          </Link>
         </Button>
         <Menu isOpen={isOpen} />
       </div>
