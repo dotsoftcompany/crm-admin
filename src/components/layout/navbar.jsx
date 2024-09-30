@@ -1,5 +1,6 @@
 import { UserNav } from '@/components/layout/user-nav';
 import { SheetMenu } from '@/components/layout/sheet-menu';
+import { ThemeToggle } from '../theme-toggle';
 
 export function Navbar({ title }) {
   return (
@@ -11,8 +12,8 @@ export function Navbar({ title }) {
             {title.substring(1) === '' ? 'Dashboard' : title.substring(1)}
           </h1>
         </div>
-        <div className="flex flex-1 items-center justify-end">
-          {/* <ModeToggle /> */}
+        <div className="flex flex-1 items-center justify-end gap-4">
+          <ThemeToggle />
           <UserNav />
         </div>
       </div>
