@@ -56,7 +56,7 @@ export function Menu({ isOpen }) {
                               className="w-full justify-start h-10 mb-1"
                               asChild
                             >
-                              <a href={href}>
+                              <Link to={href}>
                                 <span
                                   className={cn(isOpen === false ? '' : 'mr-4')}
                                 >
@@ -72,7 +72,7 @@ export function Menu({ isOpen }) {
                                 >
                                   {label}
                                 </p>
-                              </a>
+                              </Link>
                             </Button>
                           </TooltipTrigger>
                           {isOpen === false && (

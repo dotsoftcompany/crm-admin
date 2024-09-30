@@ -9,6 +9,7 @@ import {
   SheetTrigger,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { Link } from 'react-router-dom';
 
 export function SheetMenu() {
   return (
@@ -25,10 +26,10 @@ export function SheetMenu() {
             variant="link"
             asChild
           >
-            <a href="/dashboard" className="flex items-center gap-2">
+            <Link to="/dashboard" className="flex items-center gap-2">
               <PanelsTopLeft className="w-6 h-6 mr-1" />
               <SheetTitle className="font-bold text-lg">Brand</SheetTitle>
-            </a>
+            </Link>
           </Button>
         </SheetHeader>
         <Menu isOpen />

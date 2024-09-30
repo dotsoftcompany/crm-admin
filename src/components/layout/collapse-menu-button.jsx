@@ -25,6 +25,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { Link } from 'react-router-dom';
 
 export function CollapseMenuButton({
   icon: Icon,
@@ -90,7 +91,7 @@ export function CollapseMenuButton({
             className="w-full justify-start h-10 mb-1"
             asChild
           >
-            <a href={href}>
+            <Link to={href}>
               <span className="mr-4 ml-2">
                 <Dot size={18} />
               </span>
@@ -104,7 +105,7 @@ export function CollapseMenuButton({
               >
                 {label}
               </p>
-            </a>
+            </Link>
           </Button>
         ))}
       </CollapsibleContent>
@@ -149,9 +150,9 @@ export function CollapseMenuButton({
         <DropdownMenuSeparator />
         {submenus.map(({ href, label }, index) => (
           <DropdownMenuItem key={index} asChild>
-            <a className="cursor-pointer" href={href}>
+            <Link className="cursor-pointer" to={href}>
               <p className="max-w-[180px] truncate">{label}</p>
-            </a>
+            </Link>
           </DropdownMenuItem>
         ))}
         <DropdownMenuArrow className="fill-border" />

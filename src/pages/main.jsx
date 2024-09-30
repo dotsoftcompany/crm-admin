@@ -15,6 +15,7 @@ import { BarGraph } from '@/components/charts/bar-graph';
 import { RecentlyAdded } from '@/components/recently-added';
 import { AreaGraph } from '@/components/charts/area-graph';
 import { PieGraph } from '@/components/charts/pie-graph';
+import { Link } from 'react-router-dom';
 
 function MainPage() {
   // https://github.com/Kiranism/next-shadcn-dashboard-starter
