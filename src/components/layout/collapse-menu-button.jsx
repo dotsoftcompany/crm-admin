@@ -88,11 +88,11 @@ export function CollapseMenuButton({
           <Button
             key={index}
             variant={active ? 'secondary' : 'ghost'}
-            className="w-full justify-start h-10 mb-1"
+            className="w-full justify-start h-8 mb-1"
             asChild
           >
             <Link to={href}>
-              <span className="mr-4 ml-2">
+              <span className="mr-2 ml-2">
                 <Dot size={18} />
               </span>
               <p

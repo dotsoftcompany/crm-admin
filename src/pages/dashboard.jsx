@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import DashboardLayout from '@/components/layout/layout';
 import MainPage from '@/pages/main';
-import Categories from '@/pages/categories';
+import Courses from '@/pages/courses/courses';
 
 function Dashboard() {
   return (
@@ -11,7 +11,7 @@ function Dashboard() {
       <DashboardLayout>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/categories" element={<Categories />} />
+          <Route path="/courses" element={<Courses />} />
         </Routes>
       </DashboardLayout>
     </Router>

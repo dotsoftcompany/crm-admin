@@ -1,6 +1,7 @@
 'use client';
 
 import { Ellipsis, LogOut } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
 import { getMenuList } from '@/lib/menu-list';
@@ -16,7 +17,8 @@ import {
 import { Link } from 'react-router-dom';
 
 export function Menu({ isOpen }) {
-  const menuList = getMenuList(window.location.pathname);
+  let location = useLocation();
+  const menuList = getMenuList(location.pathname);
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
