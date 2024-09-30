@@ -1,7 +1,9 @@
+import { auth } from '@/api/firebase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Link } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
 
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
@@ -9,6 +11,28 @@ export const description =
 export const containerClassName = 'w-full h-full p-4 lg:p-0';
 
 function Login() {
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setData({
+      ...data,
+      [e.target.name]: value,
+    });
+  };
+
+  const signIn = () => {
+    try {
+      signInWithEmailAndPassword(auth, data.email, data.password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-screen">
       <div className="flex items-center justify-center py-12">
@@ -27,6 +51,9 @@ function Login() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                value={data.email}
+                onChange={handleChange}
+                name="email"
               />
             </div>
             <div className="grid gap-2">
@@ -39,9 +66,16 @@ function Login() {
                   Forgot your password?
                 </Link> */}
               </div>
-              <Input id="password" type="password" required />
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={data.password}
+                onChange={handleChange}
+                name="password"
+              />
             </div>
-            <Button type="submit" className="w-full">
+            <Button className="w-full" onClick={() => signIn()}>
               Login
             </Button>
             {/* <Button variant="outline" className="w-full">

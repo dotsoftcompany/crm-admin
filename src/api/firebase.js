@@ -1,16 +1,16 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 //main firebase database api
 const firebaseConfig = {
-  apiKey: "AIzaSyBlrFsXG9KRADx4_c8HCLJah7RWZ2NxzAE",
-  authDomain: "inreport-v3.firebaseapp.com",
-  projectId: "inreport-v3",
-  storageBucket: "inreport-v3.appspot.com",
-  messagingSenderId: "602594606969",
-  appId: "1:602594606969:web:6fd5272da030777f9739a8",
+  apiKey: 'AIzaSyAPEZ6iRuFA9fDtLO2xE3iQOpbpW8NljJ4',
+  authDomain: 'crm-system-4fefe.firebaseapp.com',
+  projectId: 'crm-system-4fefe',
+  storageBucket: 'crm-system-4fefe.appspot.com',
+  messagingSenderId: '209900564275',
+  appId: '1:209900564275:web:43f0514d09305d7dd15846',
 };
 
 // const firebaseConfig = {
@@ -29,7 +29,7 @@ const firebaseConfig = {
 // messagingSenderId: "602594606969",
 // appId: "1:602594606969:web:6fd5272da030777f9739a8"
 
-const firebaseApp1 = initializeApp(firebaseConfig, "app1");
+const firebaseApp1 = initializeApp(firebaseConfig, 'app1');
 // const firebaseApp2 = initializeApp(firebaseConfig2, "app2");
 
 export const app = initializeApp(firebaseConfig);

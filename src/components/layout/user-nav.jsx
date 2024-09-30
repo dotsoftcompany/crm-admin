@@ -1,7 +1,5 @@
 'use client';
-
 import { LayoutGrid, LogOut, User } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -20,8 +18,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Link } from 'react-router-dom';
+import { useMainContext } from '@/context/main-context';
 
 export function UserNav() {
+  const { logoutUser } = useMainContext();
+
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -68,7 +69,10 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}}>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => logoutUser()}
+        >
           <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
           Sign out
         </DropdownMenuItem>
