@@ -52,25 +52,6 @@ function AddCourses() {
         {errors.code && <p>{errors.code.message}</p>}
       </div>
 
-      {/* Category */}
-      <div>
-        <Label htmlFor="category">Category</Label>
-        <Select
-          id="category"
-          {...register('category', { required: 'Category is required' })}
-        >
-          <SelectTrigger className="">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="language">Language</SelectItem>
-            <SelectItem value="math">Math</SelectItem>
-            <SelectItem value="science">Science</SelectItem>
-          </SelectContent>
-        </Select>
-        {errors.category && <p>{errors.category.message}</p>}
-      </div>
-
       {/* Description */}
       <div>
         <Label htmlFor="description">Description</Label>
@@ -97,29 +78,7 @@ function AddCourses() {
         {errors.duration && <p>{errors.duration.message}</p>}
       </div>
 
-      {/* Start Date */}
-      <div>
-        <Label htmlFor="startDate">Start Date</Label>
-        <Input
-          type="date"
-          id="startDate"
-          {...register('startDate', { required: 'Start Date is required' })}
-        />
-        {errors.startDate && <p>{errors.startDate.message}</p>}
-      </div>
-
-      {/* End Date */}
-      <div>
-        <Label htmlFor="endDate">End Date</Label>
-        <Input
-          type="date"
-          id="endDate"
-          {...register('endDate', { required: 'End Date is required' })}
-        />
-        {errors.endDate && <p>{errors.endDate.message}</p>}
-      </div>
-
-      {/* Instructor */}
+      {/* Teacher */}
       <div>
         <Label htmlFor="teacher">Teacher</Label>
         <Select
@@ -147,77 +106,6 @@ function AddCourses() {
           placeholder="Price"
         />
         {errors.price && <p>{errors.price.message}</p>}
-      </div>
-
-      {/* Seats Available */}
-      <div>
-        <Label htmlFor="seats">Seats Available</Label>
-        <Input
-          type="number"
-          id="seats"
-          {...register('seats', {
-            required: 'Seats Available is required',
-            min: 1,
-          })}
-          placeholder="Seats Available"
-        />
-        {errors.seats && <p>{errors.seats.message}</p>}
-      </div>
-
-      {/* Location */}
-      <div>
-        <Label htmlFor="location">Location</Label>
-        <Input
-          id="location"
-          {...register('location', { required: 'Location is required' })}
-          placeholder="Course Location"
-        />
-        {errors.location && <p>{errors.location.message}</p>}
-      </div>
-
-      {/* Level */}
-      <div>
-        <Label htmlFor="level">Level</Label>
-        <Select
-          id="level"
-          {...register('level', { required: 'Level is required' })}
-        >
-          <SelectTrigger className="">
-            <SelectValue placeholder="Level" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="beginner">Beginner</SelectItem>
-            <SelectItem value="intermediate">Intermediate</SelectItem>
-            <SelectItem value="advanced">Advanced</SelectItem>
-          </SelectContent>
-        </Select>
-        {errors.level && <p>{errors.level.message}</p>}
-      </div>
-
-      {/* Prerequisites */}
-      <div>
-        <Label htmlFor="prerequisites">Prerequisites</Label>
-        <Textarea
-          id="prerequisites"
-          {...register('prerequisites')}
-          placeholder="Course Prerequisites"
-        />
-      </div>
-
-      {/* Materials Provided */}
-      <div>
-        <Label htmlFor="materials">Materials Provided</Label>
-        <Textarea
-          id="materials"
-          {...register('materials')}
-          placeholder="Materials Provided"
-        />
-      </div>
-
-      {/* Active Status */}
-      <div>
-        <Label htmlFor="activeStatus">Active Status</Label>
-        <Checkbox id="activeStatus" {...register('activeStatus')} />
       </div>
 
       {/*  Certification  */}
