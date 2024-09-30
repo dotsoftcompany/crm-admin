@@ -8,6 +8,7 @@ function App() {
   if (!user) {
     return <Login />;
   }
+
   return (
     <>
       <Dashboard />
