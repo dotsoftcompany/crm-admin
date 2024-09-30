@@ -1,14 +1,37 @@
 import React from 'react';
 
 // ui
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { BookOpen, GraduationCapIcon, Users } from 'lucide-react';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Button } from '@/components/ui/button';
+import { BarGraph } from '@/components/charts/bar-graph';
+import { RecentlyAdded } from '@/components/recently-added';
+import { AreaGraph } from '@/components/charts/area-graph';
+import { PieGraph } from '@/components/charts/pie-graph';
 
 function MainPage() {
   // https://github.com/Kiranism/next-shadcn-dashboard-starter
   return (
-    <div className="container mx-auto">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 my-5">
+    <div className="container mx-auto my-4 space-y-4">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between space-y-2">
+          <h2 className="text-2xl font-bold tracking-tight">
+            Hi, Welcome back 👋
+          </h2>
+          <div className="hidden items-center space-x-2 md:flex">
+            <DatePicker />
+            {/* <Button>Download</Button> */}
+          </div>
+        </div>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card className="bg-accent">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Kurslar</CardTitle>
@@ -45,6 +68,26 @@ function MainPage() {
             </p>
           </CardContent>
         </Card>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="col-span-4">
+          <BarGraph />
+        </div>
+        <Card className="col-span-4 md:col-span-3">
+          <CardHeader>
+            <CardTitle>Recently Added</CardTitle>
+            <CardDescription>You made 265 sales this month.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RecentlyAdded />
+          </CardContent>
+        </Card>
+        <div className="col-span-4">
+          <AreaGraph />
+        </div>
+        <div className="col-span-4 md:col-span-3">
+          <PieGraph />
+        </div>
       </div>
     </div>
   );
