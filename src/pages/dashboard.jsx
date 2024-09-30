@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DashboardLayout from '@/components/layout/layout';
 import MainPage from '@/pages/main';
 import Courses from '@/pages/courses/courses';
+import Login from '@/pages/login';
 
 function Dashboard() {
   return (
