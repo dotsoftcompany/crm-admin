@@ -1,10 +1,11 @@
 import {
-  Tag,
-  Users,
+  User,
   Settings,
-  Bookmark,
-  SquarePen,
+  Users,
+  BookOpen,
   LayoutGrid,
+  GraduationCapIcon,
+  LayoutList,
 } from 'lucide-react';
 
 export function getMenuList(pathname) {
@@ -14,60 +15,100 @@ export function getMenuList(pathname) {
       menus: [
         {
           href: '/',
-          label: 'Dashboard',
-          active: pathname.includes('/'),
+          label: 'Asosiy',
+          active: pathname.includes(''),
           icon: LayoutGrid,
           submenus: [],
         },
       ],
     },
     {
-      groupLabel: 'Contents',
+      groupLabel: "Ro'yxatlar",
       menus: [
         {
-          href: '',
-          label: 'Posts',
-          active: pathname.includes('/posts'),
-          icon: SquarePen,
+          href: '/',
+          label: 'Kurslar',
+          active: pathname.includes('/courses'),
+          icon: BookOpen,
           submenus: [
             {
-              href: '/posts',
-              label: 'All Posts',
-              active: pathname === '/posts',
+              href: '/courses',
+              label: "Kurslar ro'yxati",
+              active: pathname === '/courses',
             },
             {
-              href: '/posts/new',
-              label: 'New Post',
-              active: pathname === '/posts/new',
+              href: '/add-courses',
+              label: "Kurs qo'shish",
+              active: pathname === '/add-courses',
             },
           ],
         },
         {
-          href: '/categories',
-          label: 'Categories',
-          active: pathname.includes('/categories'),
-          icon: Bookmark,
-          submenus: [],
+          href: '',
+          label: "O'qituvchilar",
+          active: pathname.includes('/teachers'),
+          icon: User,
+          submenus: [
+            {
+              href: '/teachers',
+              label: "O'qituvchilar ro'yxati",
+              active: pathname === '/teachers',
+            },
+            {
+              href: '/add-teacher',
+              label: "O'qituvchi qo'shish",
+              active: pathname === '/add-teacher',
+            },
+          ],
         },
         {
-          href: '/tags',
-          label: 'Tags',
-          active: pathname.includes('/tags'),
-          icon: Tag,
+          href: '',
+          label: 'Guruhlar',
+          active: pathname.includes('/groups'),
+          icon: Users,
+          submenus: [
+            {
+              href: '/groups',
+              label: "Guruhlar ro'yxati",
+              active: pathname === '/groups',
+            },
+            {
+              href: '/add-group',
+              label: "Guruhlar qo'shish",
+              active: pathname === '/add-group',
+            },
+          ],
+        },
+        {
+          href: '',
+          label: "O'quvchilar",
+          active: pathname.includes('/students'),
+          icon: GraduationCapIcon,
+          submenus: [
+            {
+              href: '/students',
+              label: "O'quvchilar ro'yxati",
+              active: pathname === '/students',
+            },
+            {
+              href: '/add-student',
+              label: "O'quvchilar qo'shish",
+              active: pathname === '/add-student',
+            },
+          ],
+        },
+        {
+          href: '/payment-history',
+          label: "To'lovlar ro'yxati",
+          active: pathname.includes('/payment-history'),
+          icon: LayoutList,
           submenus: [],
         },
       ],
     },
     {
-      groupLabel: 'Settings',
+      groupLabel: 'Sozlamalar',
       menus: [
-        {
-          href: '/users',
-          label: 'Users',
-          active: pathname.includes('/users'),
-          icon: Users,
-          submenus: [],
-        },
         {
           href: '/account',
           label: 'Account',

@@ -6,8 +6,9 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // base: '/dashboard',
   server: {
-    host: "localhost",
+    host: 'localhost',
     port: 3000,
   },
   resolve: {
