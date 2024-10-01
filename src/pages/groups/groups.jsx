@@ -154,28 +154,28 @@ function Groups() {
 
               <div className="flex gap-2 mt-2">
                 <div className="flex items-center -space-x-3">
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-06.jpg"
                       alt="@shadcn"
                     />
                     <AvatarFallback>ZY</AvatarFallback>
                   </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-03.jpg"
                       alt="@shadcn"
                     />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-04.jpg"
                       alt="@shadcn"
                     />
                     <AvatarFallback>MD</AvatarFallback>
                   </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-10.jpg"
                       alt="@shadcn"
@@ -224,8 +224,8 @@ function Groups() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <Badge className="bg-green-100 text-green-500 hover:bg-green-200/80">
-                  Aktiv
+                <Badge className="bg-red-100 text-red-500 hover:bg-red-200/80">
+                  Tugatildi
                 </Badge>
               </div>
 
@@ -274,28 +274,28 @@ function Groups() {
 
               <div className="flex gap-2 mt-2">
                 <div className="flex items-center -space-x-3">
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-06.jpg"
                       alt="@shadcn"
                     />
                     <AvatarFallback>ZY</AvatarFallback>
                   </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-03.jpg"
                       alt="@shadcn"
                     />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-04.jpg"
                       alt="@shadcn"
                     />
                     <AvatarFallback>MD</AvatarFallback>
                   </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
+                  <Avatar className="h-6 w-6 shadow border">
                     <AvatarImage
                       src="https://mynaui.com/avatars/avatar-10.jpg"
                       alt="@shadcn"
