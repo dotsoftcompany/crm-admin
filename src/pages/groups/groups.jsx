@@ -2,22 +2,32 @@ import React from 'react';
 import BreadcrumbComponent from '@/components/breadcrumb';
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { Dot, Settings2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Settings2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 function Groups() {
   return (
-    <div className="container mx-auto py-4 space-y-4">
-      <BreadcrumbComponent title="Guruhlar" />
+    <div className="container mx-auto my-4 space-y-4">
+      {/* <BreadcrumbComponent title="Kurslar" /> */}
 
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
@@ -75,65 +85,247 @@ function Groups() {
         </DropdownMenu>
       </div>
 
-      <div className="space-y-2">
-        <div className="relative flex items-center bg-accent dark:bg-background p-4 rounded-md border border-border">
-          <div className="bg-white p-3 rounded-md w-44 h-24 space-y-1 flex flex-col items-center justify-center">
-            <h4 className="text-sm font-bold uppercase text-center">
-              Toq kunlar
-            </h4>
-            <p className="text-center text-sm font-medium">13:00 - 15:00</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card className="cursor-pointer hover:shadow">
+          <div className="p-4 pb-0 space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge className="bg-orange-100 text-orange-500 hover:bg-orange-200/80">
+                        18:00 - 20:00
+                      </Badge>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <p className="text-xs font-medium text-accent-foreground">
+                        Du - Chor - Ju
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <Badge className="bg-green-100 text-green-500 hover:bg-green-200/80">
+                  Aktiv
+                </Badge>
+              </div>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                      />
+                    </svg>
+
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[160px]">
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    Delete
+                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg lg:text-xl font-semibold">
+                  Frontend Development
+                </h2>
+                <span className="text-base text-muted-foreground">#44</span>
+              </div>
+
+              <div className="flex gap-2 mt-2">
+                <div className="flex items-center -space-x-3">
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-06.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>ZY</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-03.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-04.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>MD</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-10.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>MD</AvatarFallback>
+                  </Avatar>
+                </div>
+                <Badge className="text-sm px-2 font-medium" variant="secondary">
+                  Talabalar: 12ta
+                </Badge>
+              </div>
+            </div>
           </div>
-          <div className="md:ml-4 xl:ml-6 space-y-1 max-w-xl">
-            <h2 className="text-xl font-semibold">Frontend Development</h2>
-            <p className="text-sm font-medium">
-              Front-end development is the process of creating the visual and
-              interactive parts of a website or web application that users
-              directly interact with.
-            </p>
+
+          <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
+            <div className="flex items-center gap-2 w-52">
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className="text-sm font-medium truncate">John Doe</span>
+            </div>
+            <small className="text-sm px-2 font-medium text-muted-foreground">
+              10.05.2023
+            </small>
           </div>
-          <div className="absolute top-1/2 -translate-y-1/2 right-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Tahrirlash</DropdownMenuItem>
-                <DropdownMenuItem>O'chirish</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        </Card>
+        <Card className="cursor-pointer hover:shadow">
+          <div className="p-4 pb-0 space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Badge className="bg-purple-100 text-purple-500 hover:bg-purple-200/80">
+                        18:00 - 20:00
+                      </Badge>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <p className="text-xs font-medium text-accent-foreground">
+                        Se - Pay - Shan
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <Badge className="bg-green-100 text-green-500 hover:bg-green-200/80">
+                  Aktiv
+                </Badge>
+              </div>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                      />
+                    </svg>
+
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[160px]">
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    Delete
+                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg lg:text-xl font-semibold">
+                  Frontend Development
+                </h2>
+                <span className="text-base text-muted-foreground">#44</span>
+              </div>
+
+              <div className="flex gap-2 mt-2">
+                <div className="flex items-center -space-x-3">
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-06.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>ZY</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-03.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-04.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>MD</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="h-8 w-8 shadow border">
+                    <AvatarImage
+                      src="https://mynaui.com/avatars/avatar-10.jpg"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>MD</AvatarFallback>
+                  </Avatar>
+                </div>
+                <Badge className="text-sm px-2 font-medium" variant="secondary">
+                  Talabalar: 12ta
+                </Badge>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="relative flex items-center bg-accent dark:bg-background p-4 rounded-md border border-border">
-          <div className="bg-white p-3 rounded-md w-44 h-24 space-y-1 flex flex-col items-center justify-center">
-            <h4 className="text-sm font-bold uppercase text-center">
-              Juft kunlar
-            </h4>
-            <p className="text-center text-sm font-medium">10:00 - 12:00</p>
+
+          <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
+            <div className="flex items-center gap-2 w-52">
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className="text-sm font-medium truncate">John Doe</span>
+            </div>
+            <small className="text-sm px-2 font-medium text-muted-foreground">
+              10.05.2023
+            </small>
           </div>
-          <div className="md:ml-4 xl:ml-6 space-y-1 max-w-xl">
-            <h2 className="text-xl font-semibold">Frontend Development</h2>
-            <p className="text-sm font-medium">
-              Front-end development is the process of creating the visual and
-              interactive parts of a website or web application that users
-              directly interact with.
-            </p>
-          </div>
-          <div className="absolute top-1/2 -translate-y-1/2 right-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Tahrirlash</DropdownMenuItem>
-                <DropdownMenuItem>O'chirish</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+        </Card>
       </div>
     </div>
   );
