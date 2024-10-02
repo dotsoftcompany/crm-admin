@@ -98,13 +98,7 @@ function Groups() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <Badge
-                            className={
-                              card.days === 'odd'
-                                ? 'bg-orange-100 text-orange-500 hover:bg-orange-200/80'
-                                : 'bg-purple-100 text-purple-500 hover:bg-purple-200/80'
-                            }
-                          >
+                          <Badge variant={card.days === 'odd' ? 'odd' : 'even'}>
                             {card.time}
                           </Badge>
                         </TooltipTrigger>
@@ -117,13 +111,7 @@ function Groups() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                    <Badge
-                      className={
-                        card.status
-                          ? 'bg-green-100 text-green-500 hover:bg-green-200/80'
-                          : 'bg-red-100 text-red-500 hover:bg-red-200/80'
-                      }
-                    >
+                    <Badge variant={card.status ? 'active' : 'inactive'}>
                       {card.status ? 'Aktiv' : 'Tugatildi'}
                     </Badge>
                   </div>
