@@ -7,17 +7,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -31,7 +27,7 @@ import {
 } from '@/components/ui/table';
 import { data, columns } from '@/components/students/data';
 
-export function DataTable({ children }) {
+export default function StudentsDataTable({ children }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -62,9 +58,9 @@ export function DataTable({ children }) {
         <div className="flex items-center py-4 gap-2">
           <Input
             placeholder="Filter Name..."
-            value={table.getColumn('name')?.getFilterValue() ?? ''}
+            value={table.getColumn('fullName')?.getFilterValue() ?? ''}
             onChange={(event) =>
-              table.getColumn('name')?.setFilterValue(event.target.value)
+              table.getColumn('fullName')?.setFilterValue(event.target.value)
             }
             className="w-full md:w-64 xl:w-72"
           />
