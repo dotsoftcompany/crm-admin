@@ -1,6 +1,8 @@
 import React from 'react';
 import BreadcrumbComponent from '@/components/breadcrumb';
 
+import { cardData } from '@/lib/data';
+
 import {
   Tooltip,
   TooltipContent,
@@ -23,6 +25,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 function Groups() {
   return (
@@ -86,246 +89,116 @@ function Groups() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card className="cursor-pointer hover:shadow">
-          <div className="p-4 pb-0 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Badge className="bg-orange-100 text-orange-500 hover:bg-orange-200/80">
-                        18:00 - 20:00
-                      </Badge>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      <p className="text-xs font-medium text-accent-foreground">
-                        Du - Chor - Ju
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <Badge className="bg-green-100 text-green-500 hover:bg-green-200/80">
-                  Aktiv
-                </Badge>
-              </div>
+        {cardData.map((card) => (
+          <Link key={card.id} to={`/groups/${card.id}`}>
+            <Card key={card.id} className="cursor-pointer hover:shadow">
+              <div className="p-4 pb-0 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Badge variant={card.days === 'odd' ? 'odd' : 'even'}>
+                            {card.time}
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          <p className="text-xs font-medium text-accent-foreground">
+                            {card.days === 'odd'
+                              ? 'Du - Chor - Jum'
+                              : 'Se - Pay - Shan'}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <Badge variant={card.status ? 'active' : 'inactive'}>
+                      {card.status ? 'Aktiv' : 'Tugatildi'}
+                    </Badge>
+                  </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="h-5 w-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                      />
-                    </svg>
-
-                    <span className="sr-only">Open menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[160px]">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg lg:text-xl font-semibold">
-                  Frontend Development
-                </h2>
-                <span className="text-base text-muted-foreground">#44</span>
-              </div>
-
-              <div className="flex gap-2 mt-2">
-                <div className="flex items-center -space-x-3">
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-06.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>ZY</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-03.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-04.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>MD</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-10.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>MD</AvatarFallback>
-                  </Avatar>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="h-5 w-5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                          />
+                        </svg>
+                        <span className="sr-only">Open menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[160px]">
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        Delete
+                        <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-                <Badge className="text-sm px-2 font-medium" variant="secondary">
-                  Talabalar: 12ta
-                </Badge>
-              </div>
-            </div>
-          </div>
 
-          <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
-            <div className="flex items-center gap-2 w-52">
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <span className="text-sm font-medium truncate">John Doe</span>
-            </div>
-            <small className="text-sm px-2 font-medium text-muted-foreground">
-              10.05.2023
-            </small>
-          </div>
-        </Card>
-        <Card className="cursor-pointer hover:shadow">
-          <div className="p-4 pb-0 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Badge className="bg-purple-100 text-purple-500 hover:bg-purple-200/80">
-                        18:00 - 20:00
-                      </Badge>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      <p className="text-xs font-medium text-accent-foreground">
-                        Se - Pay - Shan
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <Badge className="bg-green-100 text-green-500 hover:bg-green-200/80">
-                  Aktiv
-                </Badge>
-              </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg lg:text-xl font-semibold">
+                      {card.title}
+                    </h2>
+                    <span className="text-base text-muted-foreground">
+                      {card.code}
+                    </span>
+                  </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="h-5 w-5"
+                  <div className="flex gap-2 mt-2">
+                    <div className="flex items-center -space-x-3">
+                      {card.avatars.map((avatar, index) => (
+                        <Avatar key={index} className="h-6 w-6 shadow border">
+                          <AvatarImage src={avatar.src} alt={avatar.alt} />
+                          <AvatarFallback>{avatar.fallback}</AvatarFallback>
+                        </Avatar>
+                      ))}
+                    </div>
+                    <Badge
+                      className="text-sm px-2 font-medium"
+                      variant="secondary"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                      />
-                    </svg>
-
-                    <span className="sr-only">Open menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[160px]">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg lg:text-xl font-semibold">
-                  Frontend Development
-                </h2>
-                <span className="text-base text-muted-foreground">#44</span>
-              </div>
-
-              <div className="flex gap-2 mt-2">
-                <div className="flex items-center -space-x-3">
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-06.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>ZY</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-03.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-04.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>MD</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="h-8 w-8 shadow border">
-                    <AvatarImage
-                      src="https://mynaui.com/avatars/avatar-10.jpg"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>MD</AvatarFallback>
-                  </Avatar>
+                      Talabalar: {card.students}ta
+                    </Badge>
+                  </div>
                 </div>
-                <Badge className="text-sm px-2 font-medium" variant="secondary">
-                  Talabalar: 12ta
-                </Badge>
               </div>
-            </div>
-          </div>
 
-          <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
-            <div className="flex items-center gap-2 w-52">
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <span className="text-sm font-medium truncate">John Doe</span>
-            </div>
-            <small className="text-sm px-2 font-medium text-muted-foreground">
-              10.05.2023
-            </small>
-          </div>
-        </Card>
+              <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
+                <div className="flex items-center gap-2 w-52">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage
+                      src={card.teacher.avatar}
+                      alt={card.teacher.name}
+                    />
+                    <AvatarFallback>{card.teacher.fallback}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium truncate">
+                    {card.teacher.name}
+                  </span>
+                </div>
+                <small className="text-sm px-2 font-medium text-muted-foreground">
+                  {card.date}
+                </small>
+              </div>
+            </Card>
+          </Link>
+        ))}
       </div>
     </div>
   );

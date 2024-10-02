@@ -1,5 +1,6 @@
-import { auth } from '@/api/firebase';
+import { auth, db } from '@/api/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const MainContext = createContext({});
@@ -12,6 +13,8 @@ export const MainContextProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState([]);
+  const [uid, setUid] = useState();
+  const [courses, setCourses] = useState([]);
 
   const colorVariants = {
     green: 'bg-green-100 hover:!bg-green-200/50 text-green-500',
@@ -40,12 +43,12 @@ export const MainContextProvider = ({ children }) => {
     rose: 'bg-rose-500 hover:!bg-rose-600 focus:!bg-rose-500 border !border-rose-500 focus:!text-white text-white hover:!text-white',
   };
 
-
   useEffect(() => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (res) => {
       if (res) {
         setUser(res);
+        setUid(auth.currentUser.uid);
       } else {
         setUser(null);
       }
@@ -53,6 +56,13 @@ export const MainContextProvider = ({ children }) => {
     });
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    const coursesCollection = collection(db, `users/${uid}/courses`);
+    onSnapshot(coursesCollection, (snapshot) => {
+      setCourses(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  }, [uid]);
 
   const logoutUser = () => {
     signOut(auth);
@@ -65,6 +75,7 @@ export const MainContextProvider = ({ children }) => {
     user,
     setUser,
     logoutUser,
+    courses,
   };
 
   return (

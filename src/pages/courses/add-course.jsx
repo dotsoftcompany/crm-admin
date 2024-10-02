@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import {
   Select,
   SelectContent,
@@ -13,6 +12,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
 
 function AddCourses() {
   const {
@@ -20,9 +21,37 @@ function AddCourses() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const defaultValue = {
+    courseTitle: '',
+    courseDescription: '',
+    courseCode: '',
+    courseDuration: '',
+    coursePrice: 0,
+    isCertification: false,
+  };
+  const [data, setData] = useState(defaultValue);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setData({ ...data, [e.target.name]: value });
+  };
+
+  const onSubmit = async () => {
+    try {
+      const userCourseRef = collection(
+        db,
+        `users/${auth.currentUser.uid}/courses`
+      );
+
+      await addDoc(userCourseRef, {
+        ...data,
+        coursePrice: Number(data.coursePrice),
+      }).then(() => {
+        setData(defaultValue);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -36,11 +65,16 @@ function AddCourses() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col md:flex-row items-center gap-2 w-full">
           <div className="w-full">
-            <Label htmlFor="title">Course Title</Label>
+            <Label htmlFor="courseTitle">Course Title</Label>
             <Input
-              id="title"
-              {...register('title', { required: 'Course title is required' })}
+              id="courseTitle"
+              {...register('courseTitle', {
+                required: 'Course title is required',
+              })}
               placeholder="Course Title"
+              name="courseTitle"
+              value={data.courseTitle}
+              onChange={handleChange}
             />
             {errors.title && (
               <small className="text-red-500">{errors.title.message}</small>
@@ -48,11 +82,16 @@ function AddCourses() {
           </div>
 
           <div className="w-full">
-            <Label htmlFor="code">Course Code</Label>
+            <Label htmlFor="courseCode">Course Code</Label>
             <Input
-              id="code"
-              {...register('code', { required: 'Course code is required' })}
+              id="courseCode"
+              {...register('courseCode', {
+                required: 'Course code is required',
+              })}
               placeholder="Course Code"
+              name="courseCode"
+              value={data.courseCode}
+              onChange={handleChange}
             />
             {errors.code && (
               <small className="text-red-500">{errors.code.message}</small>
@@ -61,13 +100,16 @@ function AddCourses() {
         </div>
 
         <div>
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="courseDescription">Description</Label>
           <Textarea
-            id="description"
-            {...register('description', {
+            id="courseDescription"
+            {...register('courseDescription', {
               required: 'Description is required',
             })}
             placeholder="Course Description"
+            name="courseDescription"
+            value={data.courseDescription}
+            onChange={handleChange}
           />
           {errors.description && (
             <small className="text-red-500">{errors.description.message}</small>
@@ -75,7 +117,7 @@ function AddCourses() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-2 w-full">
-          <div className="w-full">
+          {/* <div className="w-full">
             <Label htmlFor="teacher">Teacher</Label>
             <Select
               id="teacher"
@@ -92,18 +134,21 @@ function AddCourses() {
             {errors.teacher && (
               <small className="text-red-500">{errors.teacher.message}</small>
             )}
-          </div>
+          </div> */}
 
           <div className="w-full">
-            <Label htmlFor="duration">Duration (in hours)</Label>
+            <Label htmlFor="courseDuration">Duration (in hours)</Label>
             <Input
               type="number"
-              id="duration"
-              {...register('duration', {
+              id="courseDuration"
+              {...register('courseDuration', {
                 required: 'Duration is required',
                 min: 1,
               })}
               placeholder="Course Duration"
+              name="courseDuration"
+              value={data.courseDuration}
+              onChange={handleChange}
             />
             {errors.duration && (
               <small className="text-red-500">{errors.duration.message}</small>
@@ -113,12 +158,18 @@ function AddCourses() {
 
         <div className="flex flex-col md:flex-row items-center gap-2 w-full">
           <div className="w-full">
-            <Label htmlFor="price">Price</Label>
+            <Label htmlFor="coursePrice">Price</Label>
             <Input
               type="number"
-              id="price"
-              {...register('price', { required: 'Price is required', min: 0 })}
+              id="coursePrice"
+              {...register('coursePrice', {
+                required: 'Price is required',
+                min: 0,
+              })}
               placeholder="Price"
+              name="coursePrice"
+              value={data.coursePrice}
+              onChange={handleChange}
             />
             {errors.price && (
               <small className="text-red-500">{errors.price.message}</small>
@@ -126,13 +177,25 @@ function AddCourses() {
           </div>
 
           <div className="flex items-center justify-between w-full">
-            <Label htmlFor="certification">Certification </Label>
-            <Checkbox id="certification" {...register('certification')} />
+            <Label htmlFor="isCertification">Certification </Label>
+            <Checkbox
+              id="isCertification"
+              {...register('isCertification')}
+              checked={data.isCertification}
+              onClick={() =>
+                setData({
+                  ...data,
+                  isCertification: data.isCertification ? false : true,
+                })
+              }
+            />
           </div>
         </div>
 
         {/* Submit Button */}
-        <Button type="submit">Add Course</Button>
+        <Button type="submit" className="mt-2">
+          Add Course
+        </Button>
       </form>
     </div>
   );
