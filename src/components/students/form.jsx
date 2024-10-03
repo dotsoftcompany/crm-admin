@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { formatPhoneNumber } from '@/lib/utils';
 
 const AddStudentForm = () => {
   const defaultValues = {
@@ -14,6 +15,7 @@ const AddStudentForm = () => {
     isPaid: false,
   };
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -42,7 +44,7 @@ const AddStudentForm = () => {
         </div>
 
         <div className="w-full">
-          <Label htmlFor="position">Parent number</Label>
+          <Label htmlFor="parentPhoneNumber">Parent number</Label>
           <Input
             type="text"
             id="parentPhoneNumber"

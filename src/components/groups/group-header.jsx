@@ -48,7 +48,7 @@ function GroupHeader({ group }) {
         </Badge>
       </div>
       <Link to={`/teachers/1`}>
-        <div className="absolute top-2 right-[2rem] z-10 flex items-center p-1 pl-3 rounded-md cursor-pointer hover:bg-accent w-fit">
+        <div className="absolute top-2 right-[2rem] z-10 flex items-center p-1 pl-3 rounded-md cursor-pointer hover:bg-accent duration-200 w-fit">
           <span className="mr-2 font-medium">{group.teacher.name}</span>
           <img
             src={group.teacher.avatar}

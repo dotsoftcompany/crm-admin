@@ -24,6 +24,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useMainContext } from '@/context/main-context';
+import { formatNumber } from '@/lib/utils';
 
 function Courses() {
   const { courses } = useMainContext();
@@ -101,6 +102,7 @@ function Courses() {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
+                        onClick={(e) => e.stopPropagation()}
                         className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
                       >
                         <svg
@@ -182,7 +184,7 @@ function Courses() {
                   <span className="text-sm font-medium truncate">John Doe</span>
                 </div>
                 <span className="text-lg font-semibold">
-                  {item.coursePrice} so'm
+                  {formatNumber(item.coursePrice)} so'm
                 </span>
               </div>
             </Card>

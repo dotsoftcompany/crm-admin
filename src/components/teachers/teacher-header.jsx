@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Badge } from '@/components/ui/badge';
+import { formatPhoneNumber } from '@/lib/utils';
 
 function TeacherHeader({ teacher }) {
   return (
@@ -24,7 +25,7 @@ function TeacherHeader({ teacher }) {
           </Badge>
         </div>
         <Badge className="md:text-sm" variant="outline">
-          {teacher.phone}
+          {formatPhoneNumber(teacher.phone)}
         </Badge>
       </div>
       {/* <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent w-fit">
