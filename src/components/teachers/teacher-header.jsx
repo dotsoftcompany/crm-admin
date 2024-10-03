@@ -6,9 +6,7 @@ function TeacherHeader({ teacher }) {
   return (
     <div className="px-[2rem] bg-background space-y-2 py-4 border-b border-border">
       <div className="flex items-center gap-2">
-        <Badge className="md:text-sm" variant="">
-          {teacher.position}
-        </Badge>
+        <Badge>{teacher.position}</Badge>
       </div>
       <div className="flex items-end gap-2">
         <h1 className="text-xl md:text-2xl font-semibold">
@@ -21,11 +19,11 @@ function TeacherHeader({ teacher }) {
       <div className="flex items-end gap-2">
         <div className="flex items-end gap-2">
           <p className="text-base text-muted-foreground">Since: </p>
-          <Badge className="md:text-sm" variant="secondary">
+          <Badge className="md:text-sm" variant="outline">
             {teacher.dateOfJoin}
           </Badge>
         </div>
-        <Badge className="md:text-sm" variant="secondary">
+        <Badge className="md:text-sm" variant="outline">
           {teacher.phone}
         </Badge>
       </div>

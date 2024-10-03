@@ -6,6 +6,7 @@ import {
   LayoutGrid,
   GraduationCapIcon,
   LayoutList,
+  CircleUserRound,
 } from 'lucide-react';
 
 export function getMenuList(pathname) {
@@ -113,7 +114,7 @@ export function getMenuList(pathname) {
           href: '/account',
           label: 'Account',
           active: pathname.includes('/account'),
-          icon: Settings,
+          icon: CircleUserRound,
           submenus: [],
         },
       ],

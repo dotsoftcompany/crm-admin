@@ -10,14 +10,14 @@ export default function DashboardLayout({ children }) {
   return (
     <>
       <Sidebar />
-      <nav
+      {/* <nav
         className={cn(
           'sticky top-0 transition-[margin-left] ease-in-out duration-300',
           !isOpen ? 'lg:ml-[90px]' : 'lg:ml-72'
         )}
       >
         <Navbar />
-      </nav>
+      </nav> */}
       <main
         className={cn(
           'min-h-screen transition-[margin-left] ease-in-out duration-300',

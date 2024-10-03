@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 function GroupHeader({ group }) {
   return (
-    <div className="px-[2rem] bg-background space-y-2 py-4 border-b border-border">
+    <div className="relative px-[2rem] bg-background space-y-2 py-4 border-b border-border w-full">
       <div className="flex items-center gap-2">
         <TooltipProvider>
           <Tooltip>
@@ -37,24 +37,24 @@ function GroupHeader({ group }) {
           {group.status ? 'Aktiv' : 'Tugatildi'}
         </Badge>
       </div>
-      <div className="flex items-end gap-2">
+      <div className="flex items-center gap-2">
         <h1 className="text-xl md:text-2xl font-semibold">{group.title}</h1>
         <span className="text-base text-muted-foreground">{group.code}</span>
       </div>
       <div className="flex items-end gap-2">
-        <p className="text-base text-muted-foreground">Guruh yaratildi: </p>
-        <Badge className="md:text-sm" variant="secondary">
+        <p className="text-base text-muted-foreground">Since: </p>
+        <Badge className="md:text-sm" variant="outline">
           {group.date}
         </Badge>
       </div>
-      <Link to={`/teacher/1`}>
-        <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent w-fit">
+      <Link to={`/teachers/1`}>
+        <div className="absolute top-2 right-[2rem] z-10 flex items-center p-1 pl-3 rounded-md cursor-pointer hover:bg-accent w-fit">
+          <span className="mr-2 font-medium">{group.teacher.name}</span>
           <img
             src={group.teacher.avatar}
             alt={group.teacher.name}
             className="h-10 w-10 rounded-full border-2 border-white"
           />
-          <span className="ml-2 font-medium">{group.teacher.name}</span>
         </div>
       </Link>
     </div>

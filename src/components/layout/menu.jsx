@@ -1,8 +1,41 @@
-'use client';
-
-import { Ellipsis, LogOut } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
+import {
+  Cloud,
+  CreditCard,
+  Github,
+  Keyboard,
+  LifeBuoy,
+  LogOut,
+  Mail,
+  MessageSquare,
+  Plus,
+  PlusCircle,
+  Settings,
+  User,
+  UserPlus,
+  Users,
+  Ellipsis,
+  SunMoon,
+  Sun,
+  Moon,
+  Monitor,
+} from 'lucide-react';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { getMenuList } from '@/lib/menu-list';
 import { Button } from '@/components/ui/button';
@@ -15,8 +48,10 @@ import {
   TooltipProvider,
 } from '@/components/ui/tooltip';
 import { Link } from 'react-router-dom';
+import { useTheme } from '@/provider/ThemeProvider';
 
 export function Menu({ isOpen }) {
+  const { setTheme } = useTheme();
   let location = useLocation();
   const menuList = getMenuList(location.pathname);
 
@@ -99,32 +134,78 @@ export function Menu({ isOpen }) {
               )}
             </li>
           ))}
+
           <li className="w-full grow flex items-end">
             <TooltipProvider disableHoverableContent>
-              <Tooltip delayDuration={100}>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={() => {}}
-                    variant="outline"
-                    className="w-full justify-center h-10 mt-5"
-                  >
-                    <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                      <LogOut size={18} />
-                    </span>
-                    <p
-                      className={cn(
-                        'whitespace-nowrap',
-                        isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
-                      )}
-                    >
-                      Sign out
-                    </p>
-                  </Button>
-                </TooltipTrigger>
-                {isOpen === false && (
-                  <TooltipContent side="right">Sign out</TooltipContent>
-                )}
-              </Tooltip>
+              <DropdownMenu>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        onClick={() => {}}
+                        variant="outline"
+                        className="w-full h-10 mt-5 justify-start pl-4"
+                      >
+                        <span className={cn(isOpen === false ? '' : 'mr-3')}>
+                          <Settings size={18} />
+                        </span>
+                        <p
+                          className={cn(
+                            'whitespace-nowrap',
+                            isOpen === false
+                              ? 'opacity-0 hidden'
+                              : 'opacity-100'
+                          )}
+                        >
+                          Settings
+                        </p>
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  {isOpen === false && (
+                    <TooltipContent side="right">Settings</TooltipContent>
+                  )}
+                </Tooltip>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        <SunMoon className="mr-2 h-4 w-4" />
+                        <span>Theme</span>
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem onClick={() => setTheme('light')}>
+                            <Sun className="mr-2 h-4 w-4" />
+                            <span>Light</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setTheme('dark')}>
+                            <Moon className="mr-2 h-4 w-4" />
+                            <span>Dark</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setTheme('system')}>
+                            <Monitor className="mr-2 h-4 w-4" />
+                            <span>System</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TooltipProvider>
           </li>
         </ul>
