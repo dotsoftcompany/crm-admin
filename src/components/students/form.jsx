@@ -6,11 +6,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const AddStudentForm = () => {
+  const defaultValues = {
+    fullName: '',
+    parentPhoneNumber: '',
+    phoneNumber: '',
+    address: '',
+    isPaid: false,
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: defaultValues,
+  });
 
   const onSubmit = (data) => {
     console.log(data);
