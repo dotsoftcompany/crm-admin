@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 function GroupHeader({ group }) {
   return (
@@ -46,14 +47,16 @@ function GroupHeader({ group }) {
           {group.date}
         </Badge>
       </div>
-      <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent w-fit">
-        <img
-          src={group.teacher.avatar}
-          alt={group.teacher.name}
-          className="h-10 w-10 rounded-full border-2 border-white"
-        />
-        <span className="ml-2 font-medium">{group.teacher.name}</span>
-      </div>
+      <Link to={`/teacher/1`}>
+        <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent w-fit">
+          <img
+            src={group.teacher.avatar}
+            alt={group.teacher.name}
+            className="h-10 w-10 rounded-full border-2 border-white"
+          />
+          <span className="ml-2 font-medium">{group.teacher.name}</span>
+        </div>
+      </Link>
     </div>
   );
 }

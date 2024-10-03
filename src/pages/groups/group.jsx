@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { cardData } from '@/lib/data';
 
@@ -5,8 +6,10 @@ import { Button } from '@/components/ui/button';
 
 import StudentsDataTable from '@/components/students/data-table';
 import GroupHeader from '@/components/groups/group-header';
+import AddStudentDialog from '@/components/groups/add-student-dialog';
 
 const Group = () => {
+  const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
   const { groupId } = useParams();
 
   const group = cardData.find((g) => g.id === parseInt(groupId));
@@ -28,7 +31,10 @@ const Group = () => {
 
       <div className="container mx-auto space-y-2">
         <StudentsDataTable>
-          <Button>O'quvchi qo'shish</Button>
+          <AddStudentDialog
+            openAddStudentDialog={openAddStudentDialog}
+            setOpenAddStudentDialog={setOpenAddStudentDialog}
+          />
         </StudentsDataTable>
       </div>
     </>
