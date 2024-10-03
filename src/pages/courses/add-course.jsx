@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import {
   Select,
   SelectContent,
@@ -49,7 +48,6 @@ function AddCourses() {
         isCertification,
       }).then(() => {
         reset();
-        console.log('Added');
       });
     } catch (error) {
       console.log(error);

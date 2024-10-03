@@ -15,6 +15,7 @@ export const MainContextProvider = ({ children }) => {
   const [user, setUser] = useState([]);
   const [uid, setUid] = useState();
   const [courses, setCourses] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
   const colorVariants = {
     green: 'bg-green-100 hover:!bg-green-200/50 text-green-500',
@@ -62,6 +63,11 @@ export const MainContextProvider = ({ children }) => {
     onSnapshot(coursesCollection, (snapshot) => {
       setCourses(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
+
+    const teachersCollection = collection(db, `users/${uid}/teachers`);
+    onSnapshot(teachersCollection, (snapshot) => {
+      setTeachers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
   }, [uid]);
 
   const logoutUser = () => {
@@ -76,6 +82,7 @@ export const MainContextProvider = ({ children }) => {
     setUser,
     logoutUser,
     courses,
+    teachers,
   };
 
   return (
