@@ -15,9 +15,9 @@ export const formatPhoneNumber = (value) => {
   const match = cleaned.match(/^(\d{1,3})(\d{0,3})(\d{0,4})$/);
   if (match) {
     const [, areaCode, prefix, lineNumber] = match;
-    return `${areaCode ? `+${areaCode}` : ''} ${prefix}${
-      prefix ? ' ' : ''
+    return `${areaCode ? `+${areaCode}` : ' '} ${prefix}${
+      prefix ? ' ' : ' '
     }${lineNumber}`;
   }
-  return value;
+  return value; // Return unformatted value if no match
 };

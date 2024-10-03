@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
-import { formatPhoneNumber } from '@/lib/utils';
 
 const AddTeacherForm = () => {
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -52,30 +50,17 @@ const AddTeacherForm = () => {
       <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="phoneNumber">Phone Number</Label>
-          <Controller
-            name="phoneNumber"
-            control={control}
-            defaultValue=""
-            rules={{
+          <Input
+            type="text"
+            id="phoneNumber"
+            {...register('phoneNumber', {
               required: 'Phone number is required',
               pattern: {
                 value: /^[0-9+()-\s]+$/,
                 message: 'Invalid phone number format',
               },
-            }}
-            render={({ field: { onChange, value, ref } }) => (
-              <Input
-                type="text"
-                id="phoneNumber"
-                value={formatPhoneNumber(value)}
-                onChange={(e) => {
-                  const formattedValue = formatPhoneNumber(e.target.value);
-                  onChange(formattedValue);
-                }}
-                placeholder="+1 234 567 8901"
-                ref={ref}
-              />
-            )}
+            })}
+            placeholder="+1 234 567 8901"
           />
           {errors.phoneNumber && (
             <p className="text-red-500">{errors.phoneNumber.message}</p>
