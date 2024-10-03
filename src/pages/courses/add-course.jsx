@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import {
   Select,
   SelectContent,
@@ -12,31 +13,29 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 
 function AddCourses() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [isCertification, setIsCertification] = useState(false);
+
   const defaultValue = {
     courseTitle: '',
     courseDescription: '',
     courseCode: '',
     courseDuration: '',
-    coursePrice: 0,
+    coursePrice: '',
     isCertification: false,
   };
-  const [data, setData] = useState(defaultValue);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({ defaultValues: defaultValue });
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setData({ ...data, [e.target.name]: value });
-  };
-
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     try {
       const userCourseRef = collection(
         db,
@@ -46,8 +45,11 @@ function AddCourses() {
       await addDoc(userCourseRef, {
         ...data,
         coursePrice: Number(data.coursePrice),
+        courseDuration: Number(data.courseDuration),
+        isCertification,
       }).then(() => {
-        setData(defaultValue);
+        reset();
+        console.log('Added');
       });
     } catch (error) {
       console.log(error);
@@ -72,12 +74,11 @@ function AddCourses() {
                 required: 'Course title is required',
               })}
               placeholder="Course Title"
-              name="courseTitle"
-              value={data.courseTitle}
-              onChange={handleChange}
             />
-            {errors.title && (
-              <small className="text-red-500">{errors.title.message}</small>
+            {errors.courseTitle && (
+              <small className="text-red-500">
+                {errors.courseTitle.message}
+              </small>
             )}
           </div>
 
@@ -89,12 +90,11 @@ function AddCourses() {
                 required: 'Course code is required',
               })}
               placeholder="Course Code"
-              name="courseCode"
-              value={data.courseCode}
-              onChange={handleChange}
             />
-            {errors.code && (
-              <small className="text-red-500">{errors.code.message}</small>
+            {errors.courseCode && (
+              <small className="text-red-500">
+                {errors.courseCode.message}
+              </small>
             )}
           </div>
         </div>
@@ -107,12 +107,11 @@ function AddCourses() {
               required: 'Description is required',
             })}
             placeholder="Course Description"
-            name="courseDescription"
-            value={data.courseDescription}
-            onChange={handleChange}
           />
-          {errors.description && (
-            <small className="text-red-500">{errors.description.message}</small>
+          {errors.courseDescription && (
+            <small className="text-red-500">
+              {errors.courseDescription.message}
+            </small>
           )}
         </div>
 
@@ -137,7 +136,7 @@ function AddCourses() {
           </div> */}
 
           <div className="w-full">
-            <Label htmlFor="courseDuration">Duration (in hours)</Label>
+            <Label htmlFor="courseDuration">Duration (month)</Label>
             <Input
               type="number"
               id="courseDuration"
@@ -146,12 +145,11 @@ function AddCourses() {
                 min: 1,
               })}
               placeholder="Course Duration"
-              name="courseDuration"
-              value={data.courseDuration}
-              onChange={handleChange}
             />
-            {errors.duration && (
-              <small className="text-red-500">{errors.duration.message}</small>
+            {errors.courseDuration && (
+              <small className="text-red-500">
+                {errors.courseDuration.message}
+              </small>
             )}
           </div>
         </div>
@@ -167,27 +165,21 @@ function AddCourses() {
                 min: 0,
               })}
               placeholder="Price"
-              name="coursePrice"
-              value={data.coursePrice}
-              onChange={handleChange}
             />
-            {errors.price && (
-              <small className="text-red-500">{errors.price.message}</small>
+            {errors.coursePrice && (
+              <small className="text-red-500">
+                {errors.coursePrice.message}
+              </small>
             )}
           </div>
 
           <div className="flex items-center justify-between w-full">
-            <Label htmlFor="isCertification">Certification </Label>
+            <Label htmlFor="isCertification">Certification</Label>
             <Checkbox
               id="isCertification"
+              checked={isCertification}
+              onCheckedChange={setIsCertification}
               {...register('isCertification')}
-              checked={data.isCertification}
-              onClick={() =>
-                setData({
-                  ...data,
-                  isCertification: data.isCertification ? false : true,
-                })
-              }
             />
           </div>
         </div>
