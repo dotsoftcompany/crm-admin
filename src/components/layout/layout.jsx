@@ -1,5 +1,3 @@
-import { useLocation } from 'react-router-dom';
-
 import { cn } from '@/lib/utils';
 import { Footer } from '@/components/layout/footer';
 import { Sidebar } from '@/components/layout/sidebar';
@@ -8,7 +6,6 @@ import { Navbar } from './navbar';
 
 export default function DashboardLayout({ children }) {
   const { isOpen } = useMainContext();
-  let location = useLocation();
 
   return (
     <>

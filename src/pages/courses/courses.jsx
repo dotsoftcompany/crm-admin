@@ -91,8 +91,8 @@ function Courses() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {courses.map((item) => {
           return (
-            <Card>
-              <div className="p-4 pb-0 space-y-2 lg:space-y-4">
+            <Card className="flex flex-col">
+              <div className="p-4 grow space-y-2 lg:space-y-4">
                 <div className="flex items-center justify-between">
                   <p className="text-base text-muted-foreground">
                     #{item.courseCode}
@@ -147,30 +147,31 @@ function Courses() {
                   >
                     Davomiyligi: {item.courseDuration} oy
                   </Badge>
-                  <Badge
-                    className="text-sm font-medium flex items-center gap-1"
-                    variant="secondary"
-                  >
-                    <span>Sertifikat:</span>
-                    {}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="h-4 w-4 text-green-500"
+                  {item.isCertification ? (
+                    <Badge
+                      className="text-sm font-medium flex items-center gap-1"
+                      variant="secondary"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </Badge>
+                      <span>Sertifikat:</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="h-4 w-4 text-green-500"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </Badge>
+                  ) : null}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
-                <div className="flex items-center gap-2 w-52">
+              <div className="flex items-center justify-between py-3 px-4 border-t border-border">
+                <div className="hidden items-center gap-2 w-52">
                   <Avatar className="h-8 w-8">
                     <AvatarImage
                       src="https://github.com/shadcn.png"
