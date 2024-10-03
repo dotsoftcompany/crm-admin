@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import {
   Select,
@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
+import { formatNumber } from '@/lib/utils';
 
 function AddCourses() {
   const [isCertification, setIsCertification] = useState(false);
@@ -29,11 +30,13 @@ function AddCourses() {
     isCertification: false,
   };
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({ defaultValues: defaultValue });
+
 
   const onSubmit = async (data) => {
     try {
@@ -157,14 +160,24 @@ function AddCourses() {
         <div className="flex flex-col md:flex-row items-center gap-2 w-full">
           <div className="w-full">
             <Label htmlFor="coursePrice">Price</Label>
-            <Input
-              type="number"
-              id="coursePrice"
-              {...register('coursePrice', {
-                required: 'Price is required',
-                min: 0,
-              })}
-              placeholder="Price"
+            <Controller
+              name="coursePrice"
+              control={control}
+              defaultValue=""
+              rules={{ required: 'Price is required', min: 0 }}
+              render={({ field: { onChange, value, ref } }) => (
+                <Input
+                  type="text"
+                  id="coursePrice"
+                  value={formatNumber(value)}
+                  onChange={(e) => {
+                    const rawValue = e.target.value.replace(/\D/g, '');
+                    onChange(rawValue);
+                  }}
+                  placeholder="Price"
+                  ref={ref}
+                />
+              )}
             />
             {errors.coursePrice && (
               <small className="text-red-500">

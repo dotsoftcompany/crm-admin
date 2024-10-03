@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { formatPhoneNumber } from '@/lib/utils';
 
 const AddStudentForm = () => {
   const defaultValues = {
@@ -14,6 +15,7 @@ const AddStudentForm = () => {
     isPaid: false,
   };
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -43,17 +45,30 @@ const AddStudentForm = () => {
 
         <div className="w-full">
           <Label htmlFor="position">Parent number</Label>
-          <Input
-            type="text"
-            id="parentPhoneNumber"
-            {...register('parentPhoneNumber', {
+          <Controller
+            name="parentPhoneNumber"
+            control={control}
+            defaultValue=""
+            rules={{
               required: 'Phone number is required',
               pattern: {
                 value: /^[0-9+()-\s]+$/,
                 message: 'Invalid phone number format',
               },
-            })}
-            placeholder="+1 234 567 8901"
+            }}
+            render={({ field: { onChange, value, ref } }) => (
+              <Input
+                type="text"
+                id="parentPhoneNumber"
+                value={formatPhoneNumber(value)} // Format the phone number for display
+                onChange={(e) => {
+                  const formattedValue = formatPhoneNumber(e.target.value);
+                  onChange(formattedValue); // Update the form state with the formatted value
+                }}
+                placeholder="+1 234 567 8901"
+                ref={ref}
+              />
+            )}
           />
           {errors.parentPhoneNumber && (
             <p className="text-red-500">{errors.parentPhoneNumber.message}</p>
@@ -64,17 +79,30 @@ const AddStudentForm = () => {
       <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="phoneNumber">Phone Number</Label>
-          <Input
-            type="text"
-            id="phoneNumber"
-            {...register('phoneNumber', {
+          <Controller
+            name="phoneNumber"
+            control={control}
+            defaultValue=""
+            rules={{
               required: 'Phone number is required',
               pattern: {
                 value: /^[0-9+()-\s]+$/,
                 message: 'Invalid phone number format',
               },
-            })}
-            placeholder="+1 234 567 8901"
+            }}
+            render={({ field: { onChange, value, ref } }) => (
+              <Input
+                type="text"
+                id="phoneNumber"
+                value={formatPhoneNumber(value)}
+                onChange={(e) => {
+                  const formattedValue = formatPhoneNumber(e.target.value);
+                  onChange(formattedValue);
+                }}
+                placeholder="+1 234 567 8901"
+                ref={ref}
+              />
+            )}
           />
           {errors.phoneNumber && (
             <p className="text-red-500">{errors.phoneNumber.message}</p>

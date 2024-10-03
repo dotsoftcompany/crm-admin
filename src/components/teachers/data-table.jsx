@@ -26,7 +26,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { data, columns } from '@/components/teachers/data';
-import { Link } from 'react-router-dom';
 
 export default function TeachersDataTable({ children }) {
   const [sorting, setSorting] = React.useState([]);

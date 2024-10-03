@@ -121,6 +121,7 @@ function Groups() {
                       <Button
                         variant="ghost"
                         className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                        onClick={(e) => e.stopPropagation()} // Prevents the card's link from triggering
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -140,9 +141,21 @@ function Groups() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-[160px]">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents link click
+                          // Your edit logic here
+                        }}
+                      >
+                        Edit
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents link click
+                          // Your delete logic here
+                        }}
+                      >
                         Delete
                         <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
                       </DropdownMenuItem>
