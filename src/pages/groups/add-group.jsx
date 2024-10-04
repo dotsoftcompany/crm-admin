@@ -57,7 +57,7 @@ function AddGroup() {
     }
   };
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Guruh qo'shish</h2>
         <p className="text-muted-foreground">

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -21,6 +28,9 @@ function AddStudentDialog({ openAddStudentDialog, setOpenAddStudentDialog }) {
         <Button>O'quvchi qo'shish</Button>
       </DialogTrigger>
       <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle>O'quvchilarni ushbu guruhga qo'shish</DialogTitle>
+        </DialogHeader>
         <div>
           <Input placeholder="O'quvchilarni qidiring" />
         </div>

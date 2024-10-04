@@ -76,7 +76,6 @@ const AddTeacherForm = () => {
           )}
         </div>
       </div>
-
       <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="phone">Phone Number</Label>
@@ -110,7 +109,7 @@ const AddTeacherForm = () => {
           )}
         </div>
       </div>
-
+      {/* https://github.com/shadcn-ui/ui/discussions/1553 */}
       <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="dateOfBirth">Date of Birth</Label>
@@ -136,7 +135,6 @@ const AddTeacherForm = () => {
           )}
         </div>
       </div>
-
       <Button type="submit" variant="default">
         Submit
       </Button>

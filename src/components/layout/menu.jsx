@@ -1,20 +1,8 @@
 import { useLocation } from 'react-router-dom';
 
 import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
   LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
   Settings,
-  User,
-  UserPlus,
-  Users,
   Ellipsis,
   SunMoon,
   Sun,
@@ -58,7 +46,7 @@ export function Menu({ isOpen }) {
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
       <nav className="mt-8 h-full w-full">
-        <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
+        <ul className="flex flex-col  h-[calc(100vh-180px)] max-h-[calc(100vh-120px)] overflow-y-auto items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, index) => (
             <li className={cn('w-full', groupLabel ? 'pt-5' : '')} key={index}>
               {(isOpen && groupLabel) || isOpen === undefined ? (
@@ -134,81 +122,78 @@ export function Menu({ isOpen }) {
               )}
             </li>
           ))}
-
-          <li className="w-full grow flex items-end">
-            <TooltipProvider disableHoverableContent>
-              <DropdownMenu>
-                <Tooltip delayDuration={100}>
-                  <TooltipTrigger asChild>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        onClick={() => {}}
-                        variant="outline"
-                        className="w-full h-10 mt-5 justify-start pl-4"
-                      >
-                        <span className={cn(isOpen === false ? '' : 'mr-3')}>
-                          <Settings size={18} />
-                        </span>
-                        <p
-                          className={cn(
-                            'whitespace-nowrap',
-                            isOpen === false
-                              ? 'opacity-0 hidden'
-                              : 'opacity-100'
-                          )}
-                        >
-                          Settings
-                        </p>
-                      </Button>
-                    </DropdownMenuTrigger>
-                  </TooltipTrigger>
-                  {isOpen === false && (
-                    <TooltipContent side="right">Settings</TooltipContent>
-                  )}
-                </Tooltip>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>
-                        <SunMoon className="mr-2 h-4 w-4" />
-                        <span>Theme</span>
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent>
-                          <DropdownMenuItem onClick={() => setTheme('light')}>
-                            <Sun className="mr-2 h-4 w-4" />
-                            <span>Light</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => setTheme('dark')}>
-                            <Moon className="mr-2 h-4 w-4" />
-                            <span>Dark</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => setTheme('system')}>
-                            <Monitor className="mr-2 h-4 w-4" />
-                            <span>System</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TooltipProvider>
-          </li>
         </ul>
+        <div className="w-full grow flex items-end">
+          <TooltipProvider disableHoverableContent>
+            <DropdownMenu>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      onClick={() => {}}
+                      variant="outline"
+                      className="w-full h-10 mt-5 justify-start pl-4"
+                    >
+                      <span className={cn(isOpen === false ? '' : 'mr-3')}>
+                        <Settings size={18} />
+                      </span>
+                      <p
+                        className={cn(
+                          'whitespace-nowrap',
+                          isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
+                        )}
+                      >
+                        Settings
+                      </p>
+                    </Button>
+                  </DropdownMenuTrigger>
+                </TooltipTrigger>
+                {isOpen === false && (
+                  <TooltipContent side="right">Settings</TooltipContent>
+                )}
+              </Tooltip>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <SunMoon className="mr-2 h-4 w-4" />
+                      <span>Theme</span>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => setTheme('light')}>
+                          <Sun className="mr-2 h-4 w-4" />
+                          <span>Light</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme('dark')}>
+                          <Moon className="mr-2 h-4 w-4" />
+                          <span>Dark</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme('system')}>
+                          <Monitor className="mr-2 h-4 w-4" />
+                          <span>System</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TooltipProvider>
+        </div>
       </nav>
     </ScrollArea>
   );

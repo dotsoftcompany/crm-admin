@@ -37,7 +37,6 @@ function AddCourses() {
     reset,
   } = useForm({ defaultValues: defaultValue });
 
-
   const onSubmit = async (data) => {
     try {
       const userCourseRef = collection(
@@ -59,7 +58,7 @@ function AddCourses() {
   };
 
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Kurs qo'shish</h2>
         <p className="text-muted-foreground">

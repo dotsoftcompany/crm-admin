@@ -16,7 +16,7 @@ const Group = () => {
 
   if (!group) {
     return (
-      <div className="container mx-auto py-4">
+      <div className="px-4 lg:px-8 mx-auto py-4">
         <h2 className="text-2xl font-bold tracking-tight">404 error</h2>
         <p className="text-muted-foreground">
           Siz qidirayotgan guruh topilmadi!
@@ -29,7 +29,7 @@ const Group = () => {
     <>
       <GroupHeader group={group} />
 
-      <div className="container mx-auto space-y-2">
+      <div className="px-4 lg:px-8 mx-auto space-y-2">
         <StudentsDataTable>
           <AddStudentDialog
             openAddStudentDialog={openAddStudentDialog}

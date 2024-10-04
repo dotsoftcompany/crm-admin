@@ -1,5 +1,3 @@
-Tools:
-
 1.  React.js
 2.  Javascript
 3.  Vite
