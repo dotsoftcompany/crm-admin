@@ -24,13 +24,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import { useMainContext } from '@/context/main-context';
 
 function Groups() {
   const { groups, courses } = useMainContext();
 
-=======
 import EditDialog from '@/components/dialogs/edit-dialog';
 import CourseEdit from '@/components/courses/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
@@ -39,7 +37,6 @@ import GroupEdit from '@/components/groups/edit';
 function Groups() {
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
->>>>>>> 7d5e10636e085be33ea35a4a41875b83dd131b76
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <BreadcrumbComponent title="Kurslar" />
