@@ -7,12 +7,14 @@ import { Button } from '@/components/ui/button';
 import StudentsDataTable from '@/components/students/data-table';
 import GroupHeader from '@/components/groups/group-header';
 import AddStudentDialog from '@/components/groups/add-student-dialog';
+import { useMainContext } from '@/context/main-context';
 
 const Group = () => {
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
+  const { groups } = useMainContext();
   const { groupId } = useParams();
 
-  const group = cardData.find((g) => g.id === parseInt(groupId));
+  const group = groups.find((g) => g.id === groupId);
 
   if (!group) {
     return (

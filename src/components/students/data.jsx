@@ -79,7 +79,7 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'fullName',
     header: ({ column }) => {
       return (
         <Button
@@ -91,19 +91,14 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue('name')}</div>,
-  },
-  {
-    accessorKey: 'surname',
-    header: 'Surname',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('surname')}</div>
+      <div className="capitalize">{row.getValue('fullName')}</div>
     ),
   },
   {
-    accessorKey: 'phone',
+    accessorKey: 'phoneNumber',
     header: 'Phone',
-    cell: ({ row }) => <div>{row.getValue('phone')}</div>,
+    cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>,
   },
   {
     accessorKey: 'address',

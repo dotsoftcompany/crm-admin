@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatPhoneNumber } from '@/lib/utils';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
 
 const AddStudentForm = () => {
   const defaultValues = {
@@ -19,12 +21,24 @@ const AddStudentForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: defaultValues,
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const userStudentsRef = collection(
+        db,
+        `users/${auth.currentUser.uid}/students`
+      );
+
+      await addDoc(userStudentsRef, data).then(() => {
+        reset();
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

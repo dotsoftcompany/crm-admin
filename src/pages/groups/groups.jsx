@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BreadcrumbComponent from '@/components/breadcrumb';
-import { cardData } from '@/lib/data';
 import {
   Tooltip,
   TooltipContent,
@@ -25,18 +24,16 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { useMainContext } from '@/context/main-context';
-
-function Groups() {
-  const { groups, courses } = useMainContext();
-
 import EditDialog from '@/components/dialogs/edit-dialog';
 import CourseEdit from '@/components/courses/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import GroupEdit from '@/components/groups/edit';
 
 function Groups() {
+  const { groups, courses, teachers, getUsertime } = useMainContext();
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
+
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <BreadcrumbComponent title="Kurslar" />
@@ -116,13 +113,17 @@ function Groups() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <Badge variant={card.selectedDay === 'odd' ? 'odd' : 'even'}>
+                          <Badge
+                            variant={
+                              card.selectedDay === 'odd' ? 'odd' : 'even'
+                            }
+                          >
                             {card.timeInDay}
                           </Badge>
                         </TooltipTrigger>
                         <TooltipContent side="top">
                           <p className="text-xs font-medium text-accent-foreground">
-                            {card.days === 'odd'
+                            {card.selectedDay === 'odd'
                               ? 'Du - Chor - Jum'
                               : 'Se - Pay - Shan'}
                           </p>
@@ -188,7 +189,10 @@ function Groups() {
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg lg:text-xl font-semibold">
-                      {card.cour}
+                      {
+                        courses.filter((item) => item.id === card.courseId)[0]
+                          .courseTitle
+                      }
                     </h2>
                     <span className="text-base text-muted-foreground">
                       {card.groupNumber}
@@ -208,7 +212,7 @@ function Groups() {
                       className="text-sm px-2 font-medium"
                       variant="secondary"
                     >
-                      {/* Talabalar: {card.students}ta */}
+                      Talabalar: {10}ta
                     </Badge>
                   </div>
                 </div>
@@ -217,18 +221,27 @@ function Groups() {
               <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
                 <div className="flex items-center gap-2 w-52">
                   <Avatar className="h-8 w-8">
-                    {/* <AvatarImage
-                      src={card.teacher.avatar}
-                      alt={card.teacher.name}
-                    /> */}
+                    <AvatarImage
+                      src={
+                        teachers.filter((item) => item.id === card.teacherId)[0]
+                          .fullName
+                      }
+                      alt={
+                        teachers.filter((item) => item.id === card.teacherId)[0]
+                          .fullName
+                      }
+                    />
                     {/* <AvatarFallback>{card.teacher.fallback}</AvatarFallback> */}
                   </Avatar>
                   <span className="text-sm font-medium truncate">
-                    {/* {card.teacher.name} */}
+                    {
+                      teachers.filter((item) => item.id === card.teacherId)[0]
+                        .fullName
+                    }
                   </span>
                 </div>
                 <small className="text-sm px-2 font-medium text-muted-foreground">
-                  {/* {card.date} */}
+                  {getUsertime(new Date(card.startDate))}
                 </small>
               </div>
             </Card>

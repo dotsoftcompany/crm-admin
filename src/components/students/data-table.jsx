@@ -8,7 +8,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ChevronDown } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -25,13 +24,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { data, columns } from '@/components/students/data';
+import { columns } from '@/components/students/data';
+import { useMainContext } from '@/context/main-context';
 
 export default function StudentsDataTable({ children }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const { students } = useMainContext();
+  const data = students;
 
   const table = useReactTable({
     data,

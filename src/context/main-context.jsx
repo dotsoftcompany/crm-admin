@@ -17,6 +17,7 @@ export const MainContextProvider = ({ children }) => {
   const [courses, setCourses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [students, setStudents] = useState([]);
 
   const colorVariants = {
     green: 'bg-green-100 hover:!bg-green-200/50 text-green-500',
@@ -74,11 +75,27 @@ export const MainContextProvider = ({ children }) => {
     onSnapshot(groupsCollection, (snapshot) => {
       setGroups(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
+
+    const studentsCollection = collection(db, `users/${uid}/students`);
+    onSnapshot(studentsCollection, (snapshot) => {
+      setStudents(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
   }, [uid]);
 
   const logoutUser = () => {
     signOut(auth);
   };
+
+  function addLeadingzero(d) {
+    return d < 10 ? '0' + d : d;
+  }
+
+  function getUsertime(t) {
+    let Y = t.getUTCFullYear();
+    let M = addLeadingzero(t.getMonth() + 1);
+    let D = addLeadingzero(t.getDate());
+    return `${D}.${M}.${Y}`;
+  }
 
   const contextValue = {
     isOpen,
@@ -90,6 +107,8 @@ export const MainContextProvider = ({ children }) => {
     courses,
     teachers,
     groups,
+    getUsertime,
+    students,
   };
 
   return (
