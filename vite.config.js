@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   // base: '/dashboard',
   build: {
-    sourcemap: false, 
+    sourcemap: true,
   },
   server: {
     host: 'localhost',
