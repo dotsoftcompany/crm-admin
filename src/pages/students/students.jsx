@@ -6,7 +6,7 @@ import StudentsDataTable from '@/components/students/data-table';
 
 function Students() {
   return (
-    <div className="container mx-auto space-y-2">
+    <div className="px-4 lg:px-8 mx-auto space-y-2">
       <div className="pt-4">
         <h2 className="text-2xl font-bold tracking-tight">
           O'quvchilar ro'yxati

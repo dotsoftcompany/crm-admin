@@ -13,19 +13,31 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
+import { useState } from 'react';
+import { useMainContext } from '@/context/main-context';
 
 function AddGroup() {
+  const { courses } = useMainContext();
+
+  const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedTeacher, setSelectedTeacher] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [selectedDay, setSelectedDay] = useState('');
+
+  const defaultValue = {
+    groupNumber: '',
+    timeInDay: '',
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: defaultValue });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = (data) => {};
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Guruh qo'shish</h2>
         <p className="text-muted-foreground">
@@ -38,13 +50,19 @@ function AddGroup() {
         <div className="flex flex-col md:flex-row items-center gap-2 w-full">
           <div className="w-full">
             <Label>Select Course</Label>
-            <Select {...register('course', { required: true })}>
+            <Select
+              {...register('course', { required: true })}
+              onValueChange={(e) => setSelectedCourse(e)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Course" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="course1">Course 1</SelectItem>
-                <SelectItem value="course2">Course 2</SelectItem>
+                {courses.map((item) => {
+                  return (
+                    <SelectItem value={item.id}>{item.courseTitle}</SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
             {errors.course && (

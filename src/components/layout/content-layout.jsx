@@ -4,7 +4,7 @@ export function ContentLayout({ title, children }) {
   return (
     <div className="bg-indigo-200">
       <Navbar title={title} />
-      <div className="container pt-8 pb-8 px-4 sm:px-8">{children}</div>
+      <div className="px-4 lg:px- pt-8 pb-8 px-4 sm:px-8">{children}</div>
     </div>
   );
 }

@@ -29,7 +29,7 @@ import { Link } from 'react-router-dom';
 
 function Groups() {
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       {/* <BreadcrumbComponent title="Kurslar" /> */}
 
       <div>
@@ -49,7 +49,7 @@ function Groups() {
               className="ml-auto hidden h-8 lg:flex"
             >
               <Settings2 className="mr-2 h-4 w-4" />
-              Filterlash
+              Filtrlash
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[150px]">
@@ -91,7 +91,7 @@ function Groups() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cardData.map((card) => (
           <Link key={card.id} to={`/groups/${card.id}`}>
-            <Card key={card.id} className="cursor-pointer hover:shadow">
+            <Card key={card.id} className="group-card group-dark-card">
               <div className="p-4 pb-0 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">

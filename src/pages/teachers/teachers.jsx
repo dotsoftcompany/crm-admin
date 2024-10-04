@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
 
 function Teachers() {
   return (
-    <div className="container mx-auto space-y-2">
+    <div className="px-4 lg:px-8 mx-auto space-y-2">
       <div className="pt-4">
         <h2 className="text-2xl font-bold tracking-tight">
           O'qituvchilar ro'yxati
         </h2>
-        <p className="text-muted-foreground">Barcha o'qituvhilar ro'yxarti!</p>
+        <p className="text-muted-foreground">Barcha o'qituvchilar ro'yxati!</p>
       </div>
 
       <div>

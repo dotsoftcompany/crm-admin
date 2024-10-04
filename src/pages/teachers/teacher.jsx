@@ -36,7 +36,7 @@ const Teacher = () => {
 
   if (!teacher) {
     return (
-      <div className="container mx-auto py-4">
+      <div className="px-4 lg:px-8 mx-auto py-4">
         <h2 className="text-2xl font-bold tracking-tight">404 error</h2>
         <p className="text-muted-foreground">
           Siz qidirayotgan guruh topilmadi!
@@ -49,7 +49,7 @@ const Teacher = () => {
     <>
       <TeacherHeader teacher={teacher} />
 
-      <div className="container mx-auto flex items-center justify-between py-4">
+      <div className="px-4 lg:px-8 mx-auto flex items-center justify-between py-4">
         <Input className="max-w-sm" placeholder="Guruhlarni qidirish" />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -59,7 +59,7 @@ const Teacher = () => {
               className="ml-auto hidden h-8 lg:flex"
             >
               <Settings2 className="mr-2 h-4 w-4" />
-              Filterlash
+              Filtrlash
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[150px]">
@@ -72,7 +72,7 @@ const Teacher = () => {
         </DropdownMenu>
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="px-4 lg:px-8 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cardData.map((card) => (
           <Link key={card.id} to={`/groups/${card.id}`}>
             <Card key={card.id} className="cursor-pointer hover:shadow">

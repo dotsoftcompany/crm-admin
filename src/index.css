@@ -75,3 +75,12 @@
     pointer-events: none;
   }
 }
+
+@layer components{
+  .group-card{
+    @apply cursor-pointer ring-1 border-none shadow-none ring-border hover:ring-gray-400 active:ring-2 active:ring-gray-500 active:scale-[0.98] active:duration-200
+  }
+  .group-dark-card{
+    @apply cursor-pointer ring-1 border-none shadow-none dark:ring-border dark:hover:ring-gray-500 active:ring-2 dark:active:ring-gray-400 active:scale-[0.98] active:duration-200
+  }
+}
