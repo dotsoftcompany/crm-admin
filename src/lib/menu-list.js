@@ -17,7 +17,7 @@ export function getMenuList(pathname) {
         {
           href: '/',
           label: 'Asosiy',
-          active: pathname.includes(''),
+          active: pathname === '/',
           icon: LayoutGrid,
           submenus: [],
         },
