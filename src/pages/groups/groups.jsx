@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BreadcrumbComponent from '@/components/breadcrumb';
 
 import { cardData } from '@/lib/data';
@@ -26,11 +26,26 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import EditDialog from '@/components/dialogs/edit-dialog';
+import CourseEdit from '@/components/courses/edit';
+import DeleteAlert from '@/components/dialogs/delete-alert';
+import GroupEdit from '@/components/groups/edit';
 
 function Groups() {
+  const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
+  const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
-      {/* <BreadcrumbComponent title="Kurslar" /> */}
+      <BreadcrumbComponent title="Kurslar" />
+
+      <EditDialog open={openGroupEditDialog} setOpen={setOpenGroupEditDialog}>
+        <GroupEdit />
+      </EditDialog>
+
+      <DeleteAlert
+        open={openGroupDeleteDialog}
+        setOpen={setOpenGroupDeleteDialog}
+      />
 
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
@@ -121,7 +136,9 @@ function Groups() {
                       <Button
                         variant="ghost"
                         className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                        onClick={(e) => e.stopPropagation()} // Prevents the card's link from triggering
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -143,8 +160,9 @@ function Groups() {
                     <DropdownMenuContent align="end" className="w-[160px]">
                       <DropdownMenuItem
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevents link click
-                          // Your edit logic here
+                          e.stopPropagation();
+                          setOpenGroupEditDialog(true);
+                          document.body.style.pointerEvents = '';
                         }}
                       >
                         Edit
@@ -152,8 +170,9 @@ function Groups() {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevents link click
-                          // Your delete logic here
+                          e.stopPropagation();
+                          setOpenGroupDeleteDialog(true);
+                          document.body.style.pointerEvents = '';
                         }}
                       >
                         Delete

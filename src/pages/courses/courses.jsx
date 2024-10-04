@@ -77,7 +77,7 @@ function Courses() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {courses.map((item) => {
           return (
-            <Card className="flex flex-col">
+            <Card key={item.courseCode} className="flex flex-col">
               <div className="p-4 grow space-y-2 lg:space-y-4">
                 <div className="flex items-center justify-between">
                   <p className="text-base text-muted-foreground">
