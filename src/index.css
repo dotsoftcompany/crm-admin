@@ -70,4 +70,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .modal-overlay {
+    pointer-events: none;
+  }
 }

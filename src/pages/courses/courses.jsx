@@ -1,12 +1,5 @@
-import React from 'react';
-import BreadcrumbComponent from '@/components/breadcrumb';
+import React, { useState } from 'react';
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Settings2 } from 'lucide-react';
@@ -25,13 +18,28 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useMainContext } from '@/context/main-context';
 import { formatNumber } from '@/lib/utils';
+import EditDialog from '@/components/dialogs/edit-dialog';
+import BreadcrumbComponent from '@/components/breadcrumb';
+import CourseEdit from '@/components/courses/edit';
+import DeleteAlert from '@/components/dialogs/delete-alert';
 
 function Courses() {
   const { courses } = useMainContext();
+  const [openCourseEditDialog, setOpenCourseEditDialog] = useState(false);
+  const [openCourseDeleteDialog, setOpenCourseDeleteDialog] = useState(false);
 
   return (
     <div className="container mx-auto my-4 space-y-4">
-      {/* <BreadcrumbComponent title="Kurslar" /> */}
+      <BreadcrumbComponent title="Kurslar" />
+
+      <EditDialog open={openCourseEditDialog} setOpen={setOpenCourseEditDialog}>
+        <CourseEdit />
+      </EditDialog>
+
+      <DeleteAlert
+        open={openCourseDeleteDialog}
+        setOpen={setOpenCourseDeleteDialog}
+      />
 
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
@@ -99,10 +107,9 @@ function Courses() {
                     #{item.courseCode}
                   </p>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                    <DropdownMenuTrigger asChild aria-hidden="true">
                       <Button
                         variant="ghost"
-                        onClick={(e) => e.stopPropagation()}
                         className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
                       >
                         <svg
@@ -119,14 +126,24 @@ function Courses() {
                             d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
                           />
                         </svg>
-
-                        <span className="sr-only">Open menu</span>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-[160px]">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          setOpenCourseEditDialog(true);
+                          document.body.style.pointerEvents = '';
+                        }}
+                      >
+                        Edit
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          setOpenCourseDeleteDialog(true);
+                          document.body.style.pointerEvents = '';
+                        }}
+                      >
                         Delete
                         <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
                       </DropdownMenuItem>

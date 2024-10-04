@@ -37,7 +37,6 @@ function AddCourses() {
     reset,
   } = useForm({ defaultValues: defaultValue });
 
-
   const onSubmit = async (data) => {
     try {
       const userCourseRef = collection(

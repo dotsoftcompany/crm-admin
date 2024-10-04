@@ -19,5 +19,5 @@ export const formatPhoneNumber = (value) => {
       prefix ? ' ' : ' '
     }${lineNumber}`;
   }
-  return value; // Return unformatted value if no match
+  return value;
 };
