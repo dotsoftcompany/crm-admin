@@ -64,35 +64,12 @@ function Courses() {
           <DropdownMenuContent align="end" className="w-[150px]">
             <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* {table
-              .getAllColumns()
-              .filter(
-                (column) =>
-                  typeof column.accessorFn !== 'undefined' &&
-                  column.getCanHide()
-              )
-              .map((column) => {
-                return ( */}
-            <DropdownMenuCheckboxItem
-              // key={column.id}
-              className="capitalize"
-              // checked={column.getIsVisible()}
-              checked={true}
-              // onCheckedChange={(value) => column.toggleVisibility(!!value)}
-            >
+            <DropdownMenuCheckboxItem className="capitalize" checked={true}>
               Toq kunlar
             </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              // key={column.id}
-              className="capitalize"
-              // checked={column.getIsVisible()}
-              checked={true}
-              // onCheckedChange={(value) => column.toggleVisibility(!!value)}
-            >
+            <DropdownMenuCheckboxItem className="capitalize" checked={true}>
               Juft kunlar
             </DropdownMenuCheckboxItem>
-            {/* );
-              })} */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

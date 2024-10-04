@@ -7,6 +7,9 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   // base: '/dashboard',
+  build: {
+    sourcemap: false, 
+  },
   server: {
     host: 'localhost',
     port: 3000,
