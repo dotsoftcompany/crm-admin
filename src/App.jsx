@@ -1,6 +1,6 @@
 import Dashboard from '@/pages/dashboard';
 import Login from '@/pages/login';
-import { useMainContext } from './context/main-context';
+import { useMainContext } from '@/context/main-context';
 
 function App() {
   const { user } = useMainContext();
