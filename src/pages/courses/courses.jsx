@@ -30,7 +30,7 @@ function Courses() {
   const { courses } = useMainContext();
 
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       {/* <BreadcrumbComponent title="Kurslar" /> */}
 
       <div>
@@ -50,7 +50,7 @@ function Courses() {
               className="ml-auto hidden h-8 lg:flex"
             >
               <Settings2 className="mr-2 h-4 w-4" />
-              Filterlash
+              Filtrlash
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[150px]">

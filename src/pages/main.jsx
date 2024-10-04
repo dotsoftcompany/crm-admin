@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 function MainPage() {
   // https://github.com/Kiranism/next-shadcn-dashboard-starter
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-8 mx-auto my-4 space-y-4">
       <div className="space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">
