@@ -1,8 +1,6 @@
 import React from 'react';
 import BreadcrumbComponent from '@/components/breadcrumb';
-
 import { cardData } from '@/lib/data';
-
 import {
   Tooltip,
   TooltipContent,
@@ -26,8 +24,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { useMainContext } from '@/context/main-context';
 
 function Groups() {
+  const { groups, courses } = useMainContext();
+
   return (
     <div className="container mx-auto my-4 space-y-4">
       {/* <BreadcrumbComponent title="Kurslar" /> */}
@@ -89,7 +90,7 @@ function Groups() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {cardData.map((card) => (
+        {groups.map((card) => (
           <Link key={card.id} to={`/groups/${card.id}`}>
             <Card key={card.id} className="cursor-pointer hover:shadow">
               <div className="p-4 pb-0 space-y-2">
@@ -98,8 +99,8 @@ function Groups() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <Badge variant={card.days === 'odd' ? 'odd' : 'even'}>
-                            {card.time}
+                          <Badge variant={card.selectedDay === 'odd' ? 'odd' : 'even'}>
+                            {card.timeInDay}
                           </Badge>
                         </TooltipTrigger>
                         <TooltipContent side="top">
@@ -111,9 +112,9 @@ function Groups() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                    <Badge variant={card.status ? 'active' : 'inactive'}>
+                    {/* <Badge variant={card.status ? 'active' : 'inactive'}>
                       {card.status ? 'Aktiv' : 'Tugatildi'}
-                    </Badge>
+                    </Badge> */}
                   </div>
 
                   <DropdownMenu>
@@ -166,27 +167,27 @@ function Groups() {
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg lg:text-xl font-semibold">
-                      {card.title}
+                      {card.cour}
                     </h2>
                     <span className="text-base text-muted-foreground">
-                      {card.code}
+                      {card.groupNumber}
                     </span>
                   </div>
 
                   <div className="flex gap-2 mt-2">
                     <div className="flex items-center -space-x-3">
-                      {card.avatars.map((avatar, index) => (
+                      {/* {card.avatars.map((avatar, index) => (
                         <Avatar key={index} className="h-6 w-6 shadow border">
                           <AvatarImage src={avatar.src} alt={avatar.alt} />
                           <AvatarFallback>{avatar.fallback}</AvatarFallback>
                         </Avatar>
-                      ))}
+                      ))} */}
                     </div>
                     <Badge
                       className="text-sm px-2 font-medium"
                       variant="secondary"
                     >
-                      Talabalar: {card.students}ta
+                      {/* Talabalar: {card.students}ta */}
                     </Badge>
                   </div>
                 </div>
@@ -195,18 +196,18 @@ function Groups() {
               <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
                 <div className="flex items-center gap-2 w-52">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage
+                    {/* <AvatarImage
                       src={card.teacher.avatar}
                       alt={card.teacher.name}
-                    />
-                    <AvatarFallback>{card.teacher.fallback}</AvatarFallback>
+                    /> */}
+                    {/* <AvatarFallback>{card.teacher.fallback}</AvatarFallback> */}
                   </Avatar>
                   <span className="text-sm font-medium truncate">
-                    {card.teacher.name}
+                    {/* {card.teacher.name} */}
                   </span>
                 </div>
                 <small className="text-sm px-2 font-medium text-muted-foreground">
-                  {card.date}
+                  {/* {card.date} */}
                 </small>
               </div>
             </Card>

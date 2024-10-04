@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import {
   Select,
@@ -15,27 +15,47 @@ import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { useState } from 'react';
 import { useMainContext } from '@/context/main-context';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
 
 function AddGroup() {
-  const { courses } = useMainContext();
-
-  const [selectedCourse, setSelectedCourse] = useState('');
-  const [selectedTeacher, setSelectedTeacher] = useState('');
+  const { courses, teachers } = useMainContext();
   const [startDate, setStartDate] = useState('');
-  const [selectedDay, setSelectedDay] = useState('');
 
   const defaultValue = {
+    courseId: '',
+    teacherId: '',
     groupNumber: '',
     timeInDay: '',
+    selectedDay: '',
   };
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ defaultValues: defaultValue });
 
-  const onSubmit = (data) => {};
+  const onSubmit = async (data) => {
+    try {
+      const userGroupsRef = collection(
+        db,
+        `users/${auth.currentUser.uid}/groups`
+      );
+
+      await addDoc(userGroupsRef, {
+        ...data,
+        startDate: new Date(startDate).getTime(),
+      }).then(() => {
+        reset();
+        setStartDate('');
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="container mx-auto my-4 space-y-4">
       <div>
@@ -50,22 +70,29 @@ function AddGroup() {
         <div className="flex flex-col md:flex-row items-center gap-2 w-full">
           <div className="w-full">
             <Label>Select Course</Label>
-            <Select
-              {...register('course', { required: true })}
-              onValueChange={(e) => setSelectedCourse(e)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select Course" />
-              </SelectTrigger>
-              <SelectContent>
-                {courses.map((item) => {
-                  return (
-                    <SelectItem value={item.id}>{item.courseTitle}</SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-            {errors.course && (
+            <Controller
+              name="courseId"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select
+                  onValueChange={(value) => field.onChange(value)}
+                  value={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Course" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courses.map((item) => (
+                      <SelectItem key={item.id} value={item.id}>
+                        {item.courseTitle}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.courseId && (
               <span className="text-red-500">This field is required</span>
             )}
           </div>
@@ -73,16 +100,26 @@ function AddGroup() {
           {/* Select Teacher */}
           <div className="w-full">
             <Label>Select Teacher</Label>
-            <Select {...register('teacher', { required: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Teacher" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="teacher1">teacher 1</SelectItem>
-                <SelectItem value="teacher2">teacher 2</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.teacher && (
+            <Controller
+              name="teacherId"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Teacher" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {teachers.map((item) => (
+                      <SelectItem key={item.id} value={item.id}>
+                        {item.fullName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.teacherId && (
               <span className="text-red-500">This field is required</span>
             )}
           </div>
@@ -103,7 +140,11 @@ function AddGroup() {
 
           <div className="w-full flex flex-col">
             <Label>Start Date</Label>
-            <DatePicker className="w-full mt-2" />
+            <DatePicker
+              className="w-full mt-2"
+              setData={setStartDate}
+              data={startDate}
+            />
             {/* <Input type="date" {...register('startDate', { required: true })} /> */}
             {errors.startDate && (
               <span className="text-red-500">This field is required</span>
@@ -114,16 +155,23 @@ function AddGroup() {
         <div className="flex flex-col md:flex-row items-center gap-2">
           <div className="w-full">
             <Label>Select Day</Label>
-            <Select {...register('day', { required: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Day" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="odd">Toq kunlar</SelectItem>
-                <SelectItem value="even">Juft kunlar</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.teacher && (
+            <Controller
+              name="selectedDay"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="odd">Toq kunlar</SelectItem>
+                    <SelectItem value="even">Juft kunlar</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.selectedDay && (
               <span className="text-red-500">This field is required</span>
             )}
           </div>
