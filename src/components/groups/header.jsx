@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { useMainContext } from '@/context/main-context';
@@ -47,7 +48,7 @@ function GroupHeader({ group }) {
           {courses.filter((item) => item.id === group.courseId)[0].courseTitle}
         </h1>
         <span className="text-base text-muted-foreground">
-          {group.groupNumber}
+          #{group.groupNumber}
         </span>
       </div>
       <div className="flex items-end gap-2">
@@ -61,11 +62,27 @@ function GroupHeader({ group }) {
           <span className="mr-2 font-medium">
             {teachers.filter((item) => item.id === group.teacherId)[0].fullName}
           </span>
-          <img
-            src={group.teacher.avatar}
-            alt={group.teacher.name}
-            className="h-10 w-10 rounded-full border-2 border-white"
-          />
+          <Avatar className="h-8 w-8 shadow">
+            <AvatarImage
+              src={
+                teachers.filter((item) => item.id === group.teacherId)[0]
+                  .fullName
+              }
+              alt={
+                teachers.filter((item) => item.id === group.teacherId)[0]
+                  .fullName
+              }
+            />
+            <AvatarFallback className="text-xs bg-orange-500 text-white">
+              {teachers
+                .filter((item) => item.id === group.teacherId)[0]
+                ?.fullName?.split(' ')
+                .map((word) => word[0])
+                .join('')
+                .slice(0, 2)
+                .toUpperCase() || 'N/A'}
+            </AvatarFallback>
+          </Avatar>
         </div>
       </Link>
     </div>

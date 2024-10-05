@@ -15,9 +15,10 @@ import { BarGraph } from '@/components/charts/bar-graph';
 import { RecentlyAdded } from '@/components/recently-added';
 import { AreaGraph } from '@/components/charts/area-graph';
 import { PieGraph } from '@/components/charts/pie-graph';
-import { Link } from 'react-router-dom';
+import { useMainContext } from '@/context/main-context';
 
 function MainPage() {
+  const { courses, teachers, students } = useMainContext();
   // https://github.com/Kiranism/next-shadcn-dashboard-starter
   return (
     <div className="px-8 mx-auto my-4 space-y-4">
@@ -39,7 +40,7 @@ function MainPage() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12 ta</div>
+            <div className="text-2xl font-bold">{courses.length} ta</div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
@@ -51,7 +52,7 @@ function MainPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">7 ta</div>
+            <div className="text-2xl font-bold">{teachers.length} ta</div>
             <p className="text-xs text-muted-foreground">
               +180.1% from last month
             </p>
@@ -63,7 +64,7 @@ function MainPage() {
             <GraduationCapIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">217 ta</div>
+            <div className="text-2xl font-bold">{students.length} ta</div>
             <p className="text-xs text-muted-foreground">
               +19% from last month
             </p>
