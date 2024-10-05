@@ -17,6 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 import { formatNumber } from '@/lib/utils';
+import BreadcrumbComponent from '@/components/breadcrumb';
 
 function AddCourses() {
   const [isCertification, setIsCertification] = useState(false);
@@ -59,6 +60,8 @@ function AddCourses() {
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
+      <BreadcrumbComponent title="Kurs qo'shish" />
+
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Kurs qo'shish</h2>
         <p className="text-muted-foreground">

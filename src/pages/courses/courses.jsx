@@ -34,7 +34,7 @@ function Courses() {
 
   return (
     <div className="container mx-auto my-4 space-y-4">
-      <BreadcrumbComponent title="Kurslar" />
+      <BreadcrumbComponent title="Kurslar ro'yxati" />
 
       <EditDialog open={openCourseEditDialog} setOpen={setOpenCourseEditDialog}>
         <CourseEdit />

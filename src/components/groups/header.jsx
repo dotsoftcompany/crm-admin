@@ -10,12 +10,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { useMainContext } from '@/context/main-context';
+import { formatDate } from '@/lib/utils';
 
 function GroupHeader({ group }) {
-  const { getUsertime, teachers, courses } = useMainContext();
+  const { teachers, courses } = useMainContext();
 
   return (
-    <div className="relative px-[2rem] bg-background space-y-2 py-4 border-b border-border w-full">
+    <div className="relative bg-background space-y-2 py-4 border-b border-border w-full">
       <div className="flex items-center gap-2">
         <TooltipProvider>
           <Tooltip>
@@ -42,26 +43,21 @@ function GroupHeader({ group }) {
         >
           {group.status ? 'Aktiv' : 'Tugatildi'}
         </Badge>
+        <Badge className="md:text-sm" variant="secondary">
+          {formatDate(group.startDate)}
+        </Badge>
       </div>
       <div className="flex items-center gap-2">
         <h1 className="text-xl md:text-2xl font-semibold">
           {courses.filter((item) => item.id === group.courseId)[0].courseTitle}
         </h1>
-        <span className="text-base text-muted-foreground">
+        <span className="text-base text-muted-foreground mt-1">
           #{group.groupNumber}
         </span>
       </div>
-      <div className="flex items-end gap-2">
-        <p className="text-base text-muted-foreground">Since: </p>
-        <Badge className="md:text-sm" variant="outline">
-          {getUsertime(new Date(group.startDate))}
-        </Badge>
-      </div>
+
       <Link to={`/teachers/1`}>
-        <div className="absolute top-2 right-[2rem] z-10 flex items-center p-1 pl-3 rounded-md cursor-pointer hover:bg-accent duration-200 w-fit">
-          <span className="mr-2 font-medium">
-            {teachers.filter((item) => item.id === group.teacherId)[0].fullName}
-          </span>
+        <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent duration-200 w-fit mt-2">
           <Avatar className="h-8 w-8 shadow">
             <AvatarImage
               src={
@@ -83,6 +79,9 @@ function GroupHeader({ group }) {
                 .toUpperCase() || 'N/A'}
             </AvatarFallback>
           </Avatar>
+          <span className="ml-2 font-medium">
+            {teachers.filter((item) => item.id === group.teacherId)[0].fullName}
+          </span>
         </div>
       </Link>
     </div>

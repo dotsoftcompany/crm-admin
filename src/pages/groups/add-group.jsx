@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { useMainContext } from '@/context/main-context';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
+import BreadcrumbComponent from '@/components/breadcrumb';
 
 function AddGroup() {
   const { courses, teachers } = useMainContext();
@@ -58,6 +59,8 @@ function AddGroup() {
   };
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
+      <BreadcrumbComponent title="Guruh qo'shish" />
+
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Guruh qo'shish</h2>
         <p className="text-muted-foreground">

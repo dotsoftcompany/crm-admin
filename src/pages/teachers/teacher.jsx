@@ -27,6 +27,7 @@ import { Link } from 'react-router-dom';
 import TeacherHeader from '@/components/teachers/teacher-header';
 import { teachers } from '@/lib/fake-data/teachers';
 import cardData from '@/lib/data';
+import BreadcrumbComponent from '@/components/breadcrumb';
 
 const Teacher = () => {
   const [openAddGroupDialog, setOpenAddGroupDialog] = useState(false);
@@ -47,7 +48,14 @@ const Teacher = () => {
 
   return (
     <>
-      <TeacherHeader teacher={teacher} />
+      <div className="px-4 lg:px-8 mt-4">
+        <BreadcrumbComponent
+          title="O'qituvchilar ro'yxati"
+          titleLink="/teachers"
+          subtitle="John Doe"
+        />
+        <TeacherHeader teacher={teacher} />
+      </div>
 
       <div className="px-4 lg:px-8 mx-auto flex items-center justify-between py-4">
         <Input className="max-w-sm" placeholder="Guruhlarni qidirish" />

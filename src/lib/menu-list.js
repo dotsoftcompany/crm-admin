@@ -1,12 +1,10 @@
 import {
   User,
-  Settings,
   Users,
   BookOpen,
   LayoutGrid,
   GraduationCapIcon,
   LayoutList,
-  CircleUserRound,
 } from 'lucide-react';
 
 export function getMenuList(pathname) {
@@ -103,18 +101,6 @@ export function getMenuList(pathname) {
           label: "To'lovlar ro'yxati",
           active: pathname.includes('/payment-history'),
           icon: LayoutList,
-          submenus: [],
-        },
-      ],
-    },
-    {
-      groupLabel: 'Sozlamalar',
-      menus: [
-        {
-          href: '/account',
-          label: 'Account',
-          active: pathname.includes('/account'),
-          icon: CircleUserRound,
           submenus: [],
         },
       ],

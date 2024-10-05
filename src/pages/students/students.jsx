@@ -3,11 +3,14 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import StudentsDataTable from '@/components/students/data-table';
+import BreadcrumbComponent from '@/components/breadcrumb';
 
 function Students() {
   return (
-    <div className="px-4 lg:px-8 mx-auto space-y-2">
-      <div className="pt-4">
+    <div className="px-4 lg:px-8 mx-auto my-4 space-y-2">
+      <BreadcrumbComponent title="O'quvchilar ro'yxati" />
+
+      <div>
         <h2 className="text-2xl font-bold tracking-tight">
           O'quvchilar ro'yxati
         </h2>

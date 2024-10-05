@@ -48,7 +48,7 @@ const AddTeacherForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="fullName">Full Name</Label>

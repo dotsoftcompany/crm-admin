@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { useMainContext } from '@/context/main-context';
+import { formatDate } from '@/lib/utils';
 
 function GroupCard({ card, setOpenDelete, setOpenEdit }) {
   const { courses, teachers, getUsertime } = useMainContext();
@@ -155,7 +156,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
           </span>
         </div>
         <small className="text-sm px-2 font-medium text-muted-foreground">
-          {getUsertime(new Date(card.startDate))}
+          {formatDate(card.startDate)}
         </small>
       </div>
     </Card>

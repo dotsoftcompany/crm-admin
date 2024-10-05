@@ -8,10 +8,11 @@ import StudentsDataTable from '@/components/students/data-table';
 import GroupHeader from '@/components/groups/header';
 import AddStudentDialog from '@/components/groups/add-student-dialog';
 import { useMainContext } from '@/context/main-context';
+import BreadcrumbComponent from '@/components/breadcrumb';
 
 const Group = () => {
+  const { groups, courses } = useMainContext();
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
-  const { groups } = useMainContext();
   const { groupId } = useParams();
 
   const group = groups.find((g) => g.id === groupId);
@@ -29,7 +30,16 @@ const Group = () => {
 
   return (
     <>
-      <GroupHeader group={group} />
+      <div className="px-4 lg:px-8 mt-4">
+        <BreadcrumbComponent
+          title="Guruhlar ro'yxati"
+          titleLink="/groups"
+          subtitle={
+            courses.filter((item) => item.id === group.courseId)[0].courseTitle
+          }
+        />
+        <GroupHeader group={group} />
+      </div>
 
       <div className="px-4 lg:px-8 mx-auto space-y-2">
         <StudentsDataTable>

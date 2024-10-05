@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import {
   Breadcrumb,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -10,19 +11,30 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
-function BreadcrumbComponent({ title }) {
+function BreadcrumbComponent({ title, titleLink = null, subtitle }) {
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink>
-            <Link href="/">Asosiy</Link>
-          </BreadcrumbLink>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{title}</BreadcrumbPage>
+          <Link
+            to={subtitle ? titleLink : null}
+            className={subtitle ? 'cursor-pointer' : 'cursor-text'}
+          >
+            <BreadcrumbLink>{title}</BreadcrumbLink>
+          </Link>
         </BreadcrumbItem>
+        {subtitle && (
+          <>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{subtitle}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </>
+        )}
       </BreadcrumbList>
     </Breadcrumb>
   );

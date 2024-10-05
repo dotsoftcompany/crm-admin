@@ -57,7 +57,7 @@ function Groups() {
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
-      <BreadcrumbComponent title="Kurslar" />
+      <BreadcrumbComponent title="Guruhlar ro'yxati" />
 
       <EditDialog open={openGroupEditDialog} setOpen={setOpenGroupEditDialog}>
         <GroupEdit />

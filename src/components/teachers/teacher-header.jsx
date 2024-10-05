@@ -5,7 +5,7 @@ import { formatPhoneNumber } from '@/lib/utils';
 
 function TeacherHeader({ teacher }) {
   return (
-    <div className="px-[2rem] bg-background space-y-2 py-4 border-b border-border">
+    <div className="bg-background space-y-2 py-4 border-b border-border">
       <div className="flex items-center gap-2">
         <Badge>{teacher.position}</Badge>
       </div>
