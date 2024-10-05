@@ -8,6 +8,8 @@ import {
   Sun,
   Moon,
   Monitor,
+  UserCircle,
+  UserCircle2,
 } from 'lucide-react';
 
 import {
@@ -77,8 +79,11 @@ export function Menu({ isOpen }) {
                         <Tooltip delayDuration={100}>
                           <TooltipTrigger asChild>
                             <Button
-                              variant={active ? 'secondary' : 'ghost'}
-                              className="w-full justify-start h-10 mb-1"
+                              className={`w-full justify-start h-10 mb-1 ${
+                                active
+                                  ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
+                                  : 'bg-accent hover:bg-white text-primary dark:bg-transparent dark:hover:bg-accent'
+                              }`}
                               asChild
                             >
                               <Link to={href}>
@@ -132,10 +137,10 @@ export function Menu({ isOpen }) {
                     <Button
                       onClick={() => {}}
                       variant="outline"
-                      className="w-full h-10 mt-5 justify-start pl-4"
+                      className="w-full h-10 mt-5 mx-2 justify-start pl-4"
                     >
                       <span className={cn(isOpen === false ? '' : 'mr-3')}>
-                        <Settings size={18} />
+                        <UserCircle2 size={18} />
                       </span>
                       <p
                         className={cn(
@@ -143,13 +148,13 @@ export function Menu({ isOpen }) {
                           isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
                         )}
                       >
-                        Settings
+                        Sozlamalar
                       </p>
                     </Button>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
                 {isOpen === false && (
-                  <TooltipContent side="right">Settings</TooltipContent>
+                  <TooltipContent side="right">Sozlamalar</TooltipContent>
                 )}
               </Tooltip>
               <DropdownMenuContent className="w-56">

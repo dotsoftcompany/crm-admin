@@ -46,8 +46,11 @@ export function CollapseMenuButton({
         asChild
       >
         <Button
-          variant={active ? 'secondary' : 'ghost'}
-          className="w-full justify-start h-10"
+          className={`w-full justify-start h-10 mb-1 ${
+            active
+              ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
+              : 'bg-accent hover:bg-white text-primary dark:bg-transparent dark:hover:bg-accent'
+          }`}
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
@@ -85,8 +88,11 @@ export function CollapseMenuButton({
         {submenus.map(({ href, label, active }, index) => (
           <Button
             key={index}
-            variant={active ? 'secondary' : 'ghost'}
-            className="w-full justify-start h-8 mb-1"
+            className={`w-full justify-start h-8 mb-1 ${
+              active
+                ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
+                : 'bg-accent hover:bg-white text-primary dark:bg-transparent dark:hover:bg-accent'
+            }`}
             asChild
           >
             <Link to={href}>
@@ -115,8 +121,11 @@ export function CollapseMenuButton({
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
               <Button
-                variant={active ? 'secondary' : 'ghost'}
-                className="w-full justify-start h-10 mb-1"
+                className={`w-full justify-start h-10 mb-1 ${
+                  active
+                    ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
+                    : 'bg-accent hover:bg-white text-primary dark:bg-transparent dark:hover:bg-accent'
+                }`}
               >
                 <div className="w-full items-center flex justify-between">
                   <div className="flex items-center">
