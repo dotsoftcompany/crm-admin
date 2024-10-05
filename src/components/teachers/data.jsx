@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { formatDate } from '@/lib/utils';
 
 export const data = [
   {
@@ -99,7 +100,7 @@ export const columns = [
   {
     accessorKey: 'dateOfBirth',
     header: 'Date of Birth',
-    cell: ({ row }) => <div>{row.getValue('dateOfBirth')}</div>,
+    cell: ({ row }) => <div>{formatDate(row.getValue('dateOfBirth'))}</div>,
   },
   {
     accessorKey: 'phone',
@@ -121,7 +122,7 @@ export const columns = [
   {
     accessorKey: 'dateOfJoining',
     header: 'Date of Joining',
-    cell: ({ row }) => <div>{row.getValue('dateOfJoining')}</div>,
+    cell: ({ row }) => <div>{formatDate(row.getValue('dateOfJoining'))}</div>,
   },
   {
     id: 'actions',

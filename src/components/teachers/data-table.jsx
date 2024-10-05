@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   flexRender,
   getCoreRowModel,
@@ -24,10 +26,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { data, columns } from '@/components/teachers/data';
+import { columns } from '@/components/teachers/data';
 import { useMainContext } from '@/context/main-context';
 
 export default function TeachersDataTable({ children }) {
+  const history = useNavigate();
+
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -53,6 +57,10 @@ export default function TeachersDataTable({ children }) {
       rowSelection,
     },
   });
+
+  const handleRowClick = (teacherId) => {
+    history(`/teachers/${teacherId}`);
+  };
 
   return (
     <div className="w-full">
@@ -119,8 +127,10 @@ export default function TeachersDataTable({ children }) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleRowClick(1)} // row.original.id
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

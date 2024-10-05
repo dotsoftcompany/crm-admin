@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -22,7 +21,7 @@ function BreadcrumbComponent({ title, titleLink = null, subtitle }) {
         <BreadcrumbItem>
           <Link
             to={subtitle ? titleLink : null}
-            className={subtitle ? 'cursor-pointer' : 'cursor-text'}
+            className={subtitle ? 'cursor-pointer' : 'cursor-text text-white'}
           >
             <BreadcrumbLink>{title}</BreadcrumbLink>
           </Link>
