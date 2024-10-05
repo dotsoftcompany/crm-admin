@@ -17,7 +17,7 @@ import { formatNumber } from '@/lib/utils';
 
 function CourseCard({ item, setOpenDelete, setOpenEdit }) {
   return (
-    <Card key={item.courseCode} className="flex flex-col">
+    <Card className="flex flex-col">
       <div className="p-4 grow space-y-2 lg:space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-base text-muted-foreground">#{item.courseCode}</p>

@@ -5,7 +5,7 @@ import { cardData } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 
 import StudentsDataTable from '@/components/students/data-table';
-import GroupHeader from '@/components/groups/group-header';
+import GroupHeader from '@/components/groups/header';
 import AddStudentDialog from '@/components/groups/add-student-dialog';
 import { useMainContext } from '@/context/main-context';
 
