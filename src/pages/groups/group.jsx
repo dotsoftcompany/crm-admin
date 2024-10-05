@@ -9,10 +9,15 @@ import GroupHeader from '@/components/groups/header';
 import AddStudentDialog from '@/components/groups/add-student-dialog';
 import { useMainContext } from '@/context/main-context';
 import BreadcrumbComponent from '@/components/breadcrumb';
+import EditDialog from '@/components/dialogs/edit-dialog';
+import StudentEdit from '@/components/students/edit';
+import DeleteAlert from '@/components/dialogs/delete-alert';
 
 const Group = () => {
   const { groups, courses } = useMainContext();
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
+  const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
+  const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
   const { groupId } = useParams();
 
   const group = groups.find((g) => g.id === groupId);
@@ -41,8 +46,23 @@ const Group = () => {
         <GroupHeader group={group} />
       </div>
 
+      <EditDialog
+        open={openStudentEditDialog}
+        setOpen={setOpenStudentEditDialog}
+      >
+        <StudentEdit />
+      </EditDialog>
+
+      <DeleteAlert
+        open={openStudentDeleteDialog}
+        setOpen={setOpenStudentDeleteDialog}
+      />
+
       <div className="px-4 lg:px-8 mx-auto space-y-2">
-        <StudentsDataTable>
+        <StudentsDataTable
+          setOpenEdit={setOpenStudentEditDialog}
+          setOpenDelete={setOpenStudentDeleteDialog}
+        >
           <AddStudentDialog
             openAddStudentDialog={openAddStudentDialog}
             setOpenAddStudentDialog={setOpenAddStudentDialog}
