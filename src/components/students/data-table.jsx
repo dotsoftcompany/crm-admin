@@ -1,4 +1,16 @@
 import * as React from 'react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 import {
   flexRender,
   getCoreRowModel,
@@ -7,14 +19,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
 import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -24,16 +31,110 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { columns } from '@/components/students/data';
 import { useMainContext } from '@/context/main-context';
 
-export default function StudentsDataTable({ children }) {
+export default function StudentsDataTable({
+  setOpenDelete,
+  setOpenEdit,
+  children,
+}) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
   const { students } = useMainContext();
   const data = students;
+
+  const columns = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'fullName',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('fullName')}</div>
+      ),
+    },
+    {
+      accessorKey: 'phoneNumber',
+      header: 'Phone',
+      cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>,
+    },
+    {
+      accessorKey: 'address',
+      header: 'Address',
+      cell: ({ row }) => (
+        <div className="truncate">{row.getValue('address')}</div>
+      ),
+    },
+    {
+      accessorKey: 'isPay',
+      header: 'Payment Status',
+      cell: ({ row }) => (
+        <div
+          className={row.getValue('isPay') ? 'text-green-500' : 'text-red-500'}
+        >
+          {row.getValue('isPay') ? 'Paid' : 'Not Paid'}
+        </div>
+      ),
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        const student = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setOpenEdit(true)}>
+                Tahrirlash
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setOpenDelete(true)}>
+                O'chirish
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data,

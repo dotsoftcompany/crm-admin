@@ -24,7 +24,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import TeacherHeader from '@/components/teachers/teacher-header';
+import TeacherHeader from '@/components/teachers/header';
 import { teachers } from '@/lib/fake-data/teachers';
 import cardData from '@/lib/data';
 import BreadcrumbComponent from '@/components/breadcrumb';

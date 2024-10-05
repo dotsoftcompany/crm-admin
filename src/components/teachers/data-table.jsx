@@ -1,6 +1,19 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ArrowUpDown, MoreHorizontal, ChevronDown } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 import {
   flexRender,
   getCoreRowModel,
@@ -9,14 +22,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -26,10 +31,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { columns } from '@/components/teachers/data';
 import { useMainContext } from '@/context/main-context';
+import { formatDate } from '@/lib/utils';
 
-export default function TeachersDataTable({ children }) {
+export default function TeachersDataTable({
+  setOpenDelete,
+  setOpenEdit,
+  children,
+}) {
   const history = useNavigate();
 
   const [sorting, setSorting] = React.useState([]);
@@ -38,6 +47,116 @@ export default function TeachersDataTable({ children }) {
   const [rowSelection, setRowSelection] = React.useState({});
   const { teachers } = useMainContext();
   const data = teachers;
+
+  const columns = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'fullName',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Full Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.getValue('fullName')}</div>,
+    },
+    {
+      accessorKey: 'dateOfBirth',
+      header: 'Date of Birth',
+      cell: ({ row }) => <div>{formatDate(row.getValue('dateOfBirth'))}</div>,
+    },
+    {
+      accessorKey: 'phone',
+      header: 'Phone',
+      cell: ({ row }) => <div>{row.getValue('phone')}</div>,
+    },
+    {
+      accessorKey: 'address',
+      header: 'Address',
+      cell: ({ row }) => (
+        <div className="truncate">{row.getValue('address')}</div>
+      ),
+    },
+    {
+      accessorKey: 'position',
+      header: 'Position',
+      cell: ({ row }) => <div>{row.getValue('position')}</div>,
+    },
+    {
+      accessorKey: 'dateOfJoining',
+      header: 'Date of Joining',
+      cell: ({ row }) => <div>{formatDate(row.getValue('dateOfJoining'))}</div>,
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        const teacher = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                variant="ghost"
+                className="h-8 w-8 p-0"
+              >
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenEdit(true);
+                  document.body.style.pointerEvents = '';
+                }}
+              >
+                Tahrirlash
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDelete(true);
+                  document.body.style.pointerEvents = '';
+                }}
+              >
+                O'chirish
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data,
