@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { cardData } from '@/lib/data';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 
 import StudentsDataTable from '@/components/students/data-table';
@@ -34,17 +34,15 @@ const Group = () => {
   }
 
   return (
-    <>
-      <div className="px-4 lg:px-8 mt-4">
-        <BreadcrumbComponent
-          title="Guruhlar ro'yxati"
-          titleLink="/groups"
-          subtitle={
-            courses.filter((item) => item.id === group.courseId)[0].courseTitle
-          }
-        />
-        <GroupHeader group={group} />
-      </div>
+    <div className="px-4 lg:px-8 mt-4">
+      <BreadcrumbComponent
+        title="Guruhlar ro'yxati"
+        titleLink="/groups"
+        subtitle={`${
+          courses.filter((item) => item.id === group.courseId)[0].courseTitle
+        } #${group.groupNumber}`}
+      />
+      <GroupHeader group={group} />
 
       <EditDialog
         open={openStudentEditDialog}
@@ -58,18 +56,30 @@ const Group = () => {
         setOpen={setOpenStudentDeleteDialog}
       />
 
-      <div className="px-4 lg:px-8 mx-auto space-y-2">
-        <StudentsDataTable
-          setOpenEdit={setOpenStudentEditDialog}
-          setOpenDelete={setOpenStudentDeleteDialog}
+      <Tabs defaultValue="students" className="mt-4">
+        <TabsList>
+          <TabsTrigger value="students">O'quvchilar ro'yxati</TabsTrigger>
+          <TabsTrigger value="attendance_check">Yo'qlamalar</TabsTrigger>
+        </TabsList>
+        <TabsContent value="students" className="border-t border-border">
+          <StudentsDataTable
+            setOpenEdit={setOpenStudentEditDialog}
+            setOpenDelete={setOpenStudentDeleteDialog}
+          >
+            <AddStudentDialog
+              openAddStudentDialog={openAddStudentDialog}
+              setOpenAddStudentDialog={setOpenAddStudentDialog}
+            />
+          </StudentsDataTable>
+        </TabsContent>
+        <TabsContent
+          value="attendance_check"
+          className="border-t border-border"
         >
-          <AddStudentDialog
-            openAddStudentDialog={openAddStudentDialog}
-            setOpenAddStudentDialog={setOpenAddStudentDialog}
-          />
-        </StudentsDataTable>
-      </div>
-    </>
+          Change your password here.
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 

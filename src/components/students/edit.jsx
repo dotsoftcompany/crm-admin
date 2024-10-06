@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
+import { Checkbox } from '../ui/checkbox';
 
 const StudentEdit = () => {
   const defaultValues = {
@@ -95,6 +96,16 @@ const StudentEdit = () => {
             <p className="text-red-500">{errors.address.message}</p>
           )}
         </div>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Checkbox id="isPaid" />
+        <Label
+          htmlFor="isPaid"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          To'lov qilindi
+        </Label>
       </div>
 
       <Button type="submit" className="float-right">

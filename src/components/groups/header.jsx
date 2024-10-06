@@ -10,13 +10,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { useMainContext } from '@/context/main-context';
-import { formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
+import { Button } from '../ui/button';
 
 function GroupHeader({ group }) {
   const { teachers, courses } = useMainContext();
 
   return (
-    <div className="relative bg-background space-y-2 py-4 border-b border-border w-full">
+    <div className="relative bg-background space-y-2 pt-4 w-full">
       <div className="flex items-center gap-2">
         <TooltipProvider>
           <Tooltip>
@@ -43,7 +44,14 @@ function GroupHeader({ group }) {
         >
           {group.status ? 'Aktiv' : 'Tugatildi'}
         </Badge>
-        <Badge className="md:text-sm" variant="secondary">
+        <Badge
+          className={cn(
+            'md:text-sm',
+            'border border-gray-300', // Outline style for light mode
+            'dark:bg-secondary dark:border-none' // Secondary style for dark mode
+          )}
+          variant="outline"
+        >
           {formatDate(group.startDate)}
         </Badge>
       </div>
@@ -56,8 +64,8 @@ function GroupHeader({ group }) {
         </span>
       </div>
 
-      <Link to={`/teachers/1`}>
-        <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent duration-200 w-fit mt-2">
+      <Link to={`/teachers/1`} className="inline-flex">
+        <Button variant="secondary" className="flex items-center p-1 pr-3 mt-2">
           <Avatar className="h-8 w-8 shadow">
             <AvatarImage
               src={
@@ -82,7 +90,7 @@ function GroupHeader({ group }) {
           <span className="ml-2 font-medium">
             {teachers.filter((item) => item.id === group.teacherId)[0].fullName}
           </span>
-        </div>
+        </Button>
       </Link>
     </div>
   );
