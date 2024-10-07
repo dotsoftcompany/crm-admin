@@ -12,49 +12,13 @@ import { Link } from 'react-router-dom';
 import { useMainContext } from '@/context/main-context';
 import { cn, formatDate } from '@/lib/utils';
 import { Button } from '../ui/button';
+import { Activity, Calendar, Clock, Phone, User } from 'lucide-react';
 
 function GroupHeader({ group }) {
   const { teachers, courses } = useMainContext();
 
   return (
     <div className="relative bg-background space-y-2 pt-4 w-full">
-      <div className="flex items-center gap-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Badge
-                className="md:text-sm"
-                variant={group.selectedDay === 'odd' ? 'odd' : 'even'}
-              >
-                {group.timeInDay}
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              <p className="text-xs font-medium text-accent-foreground">
-                {group.selectedDay === 'odd'
-                  ? 'Du - Chor - Jum'
-                  : 'Se - Pay - Shan'}
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <Badge
-          variant={group.status ? 'active' : 'inactive'}
-          className="md:text-sm"
-        >
-          {group.status ? 'Aktiv' : 'Tugatildi'}
-        </Badge>
-        <Badge
-          className={cn(
-            'md:text-sm',
-            'border border-gray-300', // Outline style for light mode
-            'dark:bg-secondary dark:border-none' // Secondary style for dark mode
-          )}
-          variant="outline"
-        >
-          {formatDate(group.startDate)}
-        </Badge>
-      </div>
       <div className="flex items-center gap-2">
         <h1 className="text-xl md:text-2xl font-semibold">
           {courses.filter((item) => item.id === group.courseId)[0].courseTitle}
@@ -63,35 +27,60 @@ function GroupHeader({ group }) {
           #{group.groupNumber}
         </span>
       </div>
+      <div className="flex items-center gap-3 md:gap-5">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <div
+                className={`flex items-center gap-1 text-xs md:text-sm ${
+                  group.selectedDay === 'odd'
+                    ? 'text-orange-500'
+                    : group.selectedDay === 'even'
+                    ? 'text-purple-500'
+                    : 'text-primary'
+                }`}
+              >
+                <Clock className="h-4 w-4" />
+                <p className="text-sm md:text-base">{group.timeInDay}</p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <p className="text-xs font-medium text-accent-foreground">
+                {group.selectedDay === 'odd'
+                  ? 'Du - Chor - Jum'
+                  : group.selectedDay === 'even'
+                  ? 'Se - Pay - Shan'
+                  : 'Har kuni'}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <div
+          className={`flex items-center gap-1 text-xs md:text-sm ${
+            group.status ? 'text-green-500' : 'text-red-500'
+          }`}
+        >
+          <Activity className="w-4 h-4" />
+          <span>{group.status ? 'Aktiv' : 'Tugatildi'}</span>
+        </div>
 
-      <Link to={`/teachers/1`} className="inline-flex">
-        <Button variant="secondary" className="flex items-center p-1 pr-3 mt-2">
-          <Avatar className="h-8 w-8 shadow">
-            <AvatarImage
-              src={
+        <div className="flex items-center gap-1">
+          <User className="w-4 h-4" />
+          <Link to={`/teachers/1`} className="inline-flex">
+            <span className="hover:underline">
+              {
                 teachers.filter((item) => item.id === group.teacherId)[0]
                   .fullName
               }
-              alt={
-                teachers.filter((item) => item.id === group.teacherId)[0]
-                  .fullName
-              }
-            />
-            <AvatarFallback className="text-xs bg-orange-500 text-white">
-              {teachers
-                .filter((item) => item.id === group.teacherId)[0]
-                ?.fullName?.split(' ')
-                .map((word) => word[0])
-                .join('')
-                .slice(0, 2)
-                .toUpperCase() || 'N/A'}
-            </AvatarFallback>
-          </Avatar>
-          <span className="ml-2 font-medium">
-            {teachers.filter((item) => item.id === group.teacherId)[0].fullName}
-          </span>
-        </Button>
-      </Link>
+            </span>
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
+          <Calendar className="w-4 h-4" />
+          <span>{formatDate(group.startDate)}</span>
+        </div>
+      </div>
     </div>
   );
 }

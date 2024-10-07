@@ -1,41 +1,69 @@
 import React from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { formatPhoneNumber } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Calendar, CalendarPlus, MapPin, Users } from 'lucide-react';
+import { formatDate, formatPhoneNumber } from '@/lib/utils';
 
 function TeacherHeader({ teacher }) {
   return (
-    <div className="bg-background space-y-2 py-4 border-b border-border">
-      <div className="flex items-center gap-2">
+    <div className="bg-background space-y-2 border-b border-border pb-4">
+      <div className="flex items-center gap-2 md:gap-3">
+        <h1 className="text-xl md:text-2xl font-semibold">
+          {teacher.fullName}
+        </h1>
         <Badge>{teacher.position}</Badge>
       </div>
-      <div className="flex items-end gap-2">
-        <h1 className="text-xl md:text-2xl font-semibold">
-          {teacher.fullName},
-        </h1>
-        <span className="text-base text-muted-foreground">
-          {teacher.address}
-        </span>
-      </div>
-      <div className="flex items-end gap-2">
-        <div className="flex items-end gap-2">
-          <p className="text-base text-muted-foreground">Since: </p>
-          <Badge className="md:text-sm" variant="outline">
-            {teacher.dateOfJoin}
-          </Badge>
+      <div className="flex items-center gap-3 md:gap-5">
+        <div className="flex items-center gap-2">
+          <MapPin className="h-4 w-4" />
+          <p className="text-sm md:text-base">{teacher.address}</p>
         </div>
-        <Badge className="md:text-sm" variant="outline">
-          {formatPhoneNumber(teacher.phone)}
-        </Badge>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <p className="text-sm md:text-base">
+                  {formatDate(teacher.dateOfBirth)}
+                </p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <small className="text-xs">Tug'ulgan yil</small>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="flex items-center gap-2">
+                <CalendarPlus className="h-4 w-4" />
+                <p className="text-sm md:text-base">
+                  {formatDate(teacher.dateOfJoining)}
+                </p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <small className="text-xs">Ishga kirgan sana</small>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <div className="flex items-center gap-2">
+          <Users className="h-4 w-4" />
+          <a
+            href={`tel:${teacher.phone}`}
+            className="text-sm md:text-base hover:underline"
+          >
+            {formatPhoneNumber(teacher.phone)}
+          </a>
+        </div>
       </div>
-      {/* <div className="flex items-center p-1 pr-3 rounded-md cursor-pointer hover:bg-accent w-fit">
-        <img
-          src={teacher.teacher.avatar}
-          alt={teacher.teacher.name}
-          className="h-10 w-10 rounded-full border-2 border-white"
-        />
-        <span className="ml-2 font-medium">{teacher.teacher.name}</span>
-      </div> */}
     </div>
   );
 }

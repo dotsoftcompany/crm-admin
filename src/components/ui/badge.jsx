@@ -17,10 +17,19 @@ const badgeVariants = cva(
         outline: 'text-foreground',
         odd: 'bg-orange-100 text-orange-500 hover:bg-orange-200/80 dark:bg-orange-500 hover:dark:bg-orange-600 dark:text-white',
         even: 'bg-purple-100 text-purple-500 hover:bg-purple-200/80 dark:bg-purple-500 hover:dark:bg-purple-600 dark:text-white',
+        odd_outline:
+          'bg-orange-50 dark:bg-transparent border-orange-500 text-orange-500 hover:border-orange-600/80 dark:border-orange-500 hover:dark:border-orange-600 dark:text-orange-500',
+        even_outline:
+          'bg-purple-50 dark:bg-transparent border-purple-500 text-purple-500 hover:border-purple-600/80 dark:border-purple-500 hover:dark:border-purple-600 dark:text-purple-500',
         active:
           'bg-green-100 text-green-500 hover:bg-green-200/80 dark:bg-green-500 hover:dark:bg-green-600 dark:text-white cursor-text',
         inactive:
           'bg-red-100 text-red-500 hover:bg-red-200/80 dark:bg-red-500 hover:dark:bg-red-600 dark:text-white cursor-text',
+        active_outline:
+          'bg-green-50 dark:bg-transparent border-green-500 text-green-500 hover:border-green-600/80 dark:border-green-500 hover:dark:border-green-600 dark:text-green cursor-text',
+        inactive_outline:
+          'bg-red-50 dark:bg-transparent border-red-500 text-red-500 hover:border-red-600/80 dark:border-red-500 hover:dark:border-red-600 dark:text-red cursor-text',
+        white: 'bg-transparent border-primary text-primary cursor-text',
       },
     },
     defaultVariants: {
