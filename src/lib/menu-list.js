@@ -36,7 +36,7 @@ export function getMenuList(pathname) {
               active: pathname === '/courses',
             },
             {
-              href: '/add-courses',
+              href: '/add-course',
               label: "Kurs qo'shish",
               active: pathname === '/add-course',
             },
