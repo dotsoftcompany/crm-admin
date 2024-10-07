@@ -185,7 +185,7 @@ function AddCourses() {
           </form>
         </div>
         <div className='xl:w-1/2 h-[calc(100vh-160px)] xl:flex hidden items-center'>
-          <h1 className='text-9xl font-bold text-slate-200 -translate-y-24 -rotate-90'>ADD COOURSE</h1>
+          <h1 className='text-9xl font-bold text-border -translate-y-24 -rotate-90'>ADD COOURSE</h1>
         </div>
       </div>
     </div>
