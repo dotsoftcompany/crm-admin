@@ -36,7 +36,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
                         ? 'odd'
                         : card.selectedDay === 'even'
                         ? 'even'
-                        : 'default'
+                        : 'every'
                     }
                   >
                     {card.timeInDay}
