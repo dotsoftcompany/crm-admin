@@ -168,6 +168,7 @@ function AddGroup() {
                     <SelectValue placeholder="Select Day" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="odd">Har kuni</SelectItem>
                     <SelectItem value="odd">Toq kunlar</SelectItem>
                     <SelectItem value="even">Juft kunlar</SelectItem>
                   </SelectContent>
