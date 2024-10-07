@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }) {
       </nav> */}
       <main
         className={cn(
-          'min-h-screen transition-[margin-left] ease-in-out duration-300',
+          'min-h-[calc(100vh-50px)] transition-[margin-left] ease-in-out duration-300',
           !isOpen ? 'lg:ml-[90px]' : 'lg:ml-72'
         )}
       >

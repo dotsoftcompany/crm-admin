@@ -34,7 +34,7 @@ function MainPage() {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-accent dark:bg-background/95">
+        <Card className="dark:bg-background/95">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Kurslar</CardTitle>
             <BookOpen className="h-4 w-4 text-muted-foreground" />
@@ -46,7 +46,7 @@ function MainPage() {
             </p>
           </CardContent>
         </Card>
-        <Card className="bg-accent dark:bg-background/95">
+        <Card className="dark:bg-background/95">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">O'qituvchilar</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -58,7 +58,7 @@ function MainPage() {
             </p>
           </CardContent>
         </Card>
-        <Card className="bg-accent dark:bg-background/95">
+        <Card className="dark:bg-background/95">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Talabalar</CardTitle>
             <GraduationCapIcon className="h-4 w-4 text-muted-foreground" />
