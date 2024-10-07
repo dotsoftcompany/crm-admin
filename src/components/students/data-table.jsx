@@ -32,12 +32,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useMainContext } from '@/context/main-context';
+import { useNavigate } from 'react-router-dom';
+import { formatPhoneNumber } from '@/lib/utils';
 
 export default function StudentsDataTable({
   setOpenDelete,
   setOpenEdit,
   children,
 }) {
+  const history = useNavigate();
+
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -88,7 +92,9 @@ export default function StudentsDataTable({
     {
       accessorKey: 'phoneNumber',
       header: 'Phone',
-      cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>,
+      cell: ({ row }) => (
+        <div>{formatPhoneNumber(row.getValue('phoneNumber'))}</div>
+      ),
     },
     {
       accessorKey: 'address',
@@ -155,6 +161,10 @@ export default function StudentsDataTable({
     },
   });
 
+  const handleRowClick = (teacherId) => {
+    history(`/students/${teacherId}`);
+  };
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between">
@@ -220,8 +230,10 @@ export default function StudentsDataTable({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleRowClick(1)} // row.original.id
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

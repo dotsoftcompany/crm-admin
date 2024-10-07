@@ -1,4 +1,4 @@
-export const teachers = [
+export const teachersData = [
   {
     id: 1,
     fullName: 'John Doe',
@@ -45,3 +45,47 @@ export const teachers = [
     dateOfJoin: '2018-11-08',
   },
 ];
+
+export const students = [
+  {
+    id: 1,
+    fullName: "John Doe",
+    address: "123 Main St, Cityville",
+    isPaid: true,
+    parentPhoneNumber: "+1-555-1234",
+    phoneNumber: "+1-555-5678"
+  },
+  {
+    id: 2,
+    fullName: "Jane Smith",
+    address: "456 Oak Ave, Townsville",
+    isPaid: false,
+    parentPhoneNumber: "+1-555-2345",
+    phoneNumber: "+1-555-6789"
+  },
+  {
+    id: 3,
+    fullName: "Emily Johnson",
+    address: "789 Pine Rd, Village City",
+    isPaid: true,
+    parentPhoneNumber: "+1-555-3456",
+    phoneNumber: "+1-555-7890"
+  },
+  {
+    id: 4,
+    fullName: "Michael Brown",
+    address: "101 Maple Dr, Metropolis",
+    isPaid: false,
+    parentPhoneNumber: "+1-555-4567",
+    phoneNumber: "+1-555-8901"
+  },
+  {
+    id: 5,
+    fullName: "Sophia Lee",
+    address: "202 Birch Ln, Suburbia",
+    isPaid: true,
+    parentPhoneNumber: "+1-555-5678",
+    phoneNumber: "+1-555-9012"
+  }
+];
+

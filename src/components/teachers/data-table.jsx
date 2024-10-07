@@ -32,7 +32,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useMainContext } from '@/context/main-context';
-import { formatDate } from '@/lib/utils';
+import { formatDate, formatPhoneNumber } from '@/lib/utils';
 
 export default function TeachersDataTable({
   setOpenDelete,
@@ -92,7 +92,7 @@ export default function TeachersDataTable({
     {
       accessorKey: 'phone',
       header: 'Phone',
-      cell: ({ row }) => <div>{row.getValue('phone')}</div>,
+      cell: ({ row }) => <div>{formatPhoneNumber(row.getValue('phone'))}</div>,
     },
     {
       accessorKey: 'address',

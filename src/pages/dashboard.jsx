@@ -14,6 +14,7 @@ import AddTeacher from '@/pages/teachers/add-teacher';
 import AddStudent from '@/pages/students/add-student';
 import Students from '@/pages/students/students';
 import PaymentHistory from '@/pages/payment-history';
+import Student from './students/student';
 
 function Dashboard() {
   return (
@@ -28,6 +29,7 @@ function Dashboard() {
           <Route path="/add-teacher" element={<AddTeacher />} />
           <Route path="/add-student" element={<AddStudent />} />
           <Route path="/students" element={<Students />} />
+          <Route path="/students/:studentId" element={<Student />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/groups/:groupId" element={<Group />} />
           <Route path="/add-group" element={<AddGroup />} />

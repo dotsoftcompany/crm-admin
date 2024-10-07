@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 
 import StudentsDataTable from '@/components/students/data-table';
 import GroupHeader from '@/components/groups/header';
