@@ -30,7 +30,15 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Badge variant={card.selectedDay === 'odd' ? 'odd' : 'even'}>
+                  <Badge
+                    variant={
+                      card.selectedDay === 'odd'
+                        ? 'odd'
+                        : card.selectedDay === 'even'
+                        ? 'even'
+                        : 'default'
+                    }
+                  >
                     {card.timeInDay}
                   </Badge>
                 </TooltipTrigger>
@@ -38,7 +46,9 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
                   <p className="text-xs font-medium text-accent-foreground">
                     {card.selectedDay === 'odd'
                       ? 'Du - Chor - Jum'
-                      : 'Se - Pay - Shan'}
+                      : card.selectedDay === 'even'
+                      ? 'Se - Pay - Shan'
+                      : 'Har kuni'}
                   </p>
                 </TooltipContent>
               </Tooltip>

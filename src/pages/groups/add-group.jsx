@@ -48,6 +48,7 @@ function AddGroup() {
 
       await addDoc(userGroupsRef, {
         ...data,
+        status: true,
         startDate: new Date(startDate).getTime(),
       }).then(() => {
         reset();
@@ -168,7 +169,7 @@ function AddGroup() {
                     <SelectValue placeholder="Select Day" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="odd">Har kuni</SelectItem>
+                    <SelectItem value="every_day">Har kuni</SelectItem>
                     <SelectItem value="odd">Toq kunlar</SelectItem>
                     <SelectItem value="even">Juft kunlar</SelectItem>
                   </SelectContent>
@@ -181,25 +182,31 @@ function AddGroup() {
           </div>
 
           <div className="w-full">
-            <Label>Time in a Day (e.g., 18:00 - 20:00)</Label>
-            <Input
-              type="text"
-              placeholder="18:00 - 20:00"
-              {...register('timeInDay', { required: true })}
+            <Label>Time in a Day</Label>
+            <Controller
+              name="timeInDay"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Time" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="08:00 - 10:00">08:00 - 10:00</SelectItem>
+                    <SelectItem value="10:00 - 12:00">10:00 - 12:00</SelectItem>
+                    <SelectItem value="14:00 - 16:00">14:00 - 16:00</SelectItem>
+                    <SelectItem value="16:00 - 18:00">16:00 - 18:00</SelectItem>
+                    <SelectItem value="18:00 - 20:00">18:00 - 20:00</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
             />
             {errors.timeInDay && (
               <span className="text-red-500">This field is required</span>
             )}
           </div>
         </div>
-
-        {/* Is Active */}
-        {/* <div>
-          <Label>Is Active</Label>
-          <Checkbox {...register('isActive')} />
-        </div> */}
-
-        {/* Time in a Day */}
 
         <Button type="submit">Add Group</Button>
       </form>
