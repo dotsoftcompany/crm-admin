@@ -8,8 +8,11 @@ import EditDialog from '@/components/dialogs/edit-dialog';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import GroupEdit from '@/components/groups/edit';
 import StudentEdit from '@/components/students/edit';
+import { useMainContext } from '@/context/main-context';
+import { PlusCircle } from 'lucide-react';
 
 function Students() {
+  const { students } = useMainContext();
   const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
   const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
   return (
@@ -35,16 +38,21 @@ function Students() {
         <p className="text-muted-foreground">Barcha o'quvchilar ro'yxarti!</p>
       </div>
 
-      <div>
-        <StudentsDataTable
-          setOpenEdit={setOpenStudentEditDialog}
-          setOpenDelete={setOpenStudentDeleteDialog}
-        >
-          <Link to="/add-student">
-            <Button>O'quvchi qo'shish</Button>
-          </Link>
-        </StudentsDataTable>
-      </div>
+      <StudentsDataTable
+        data={students}
+        setOpenEdit={setOpenStudentEditDialog}
+        setOpenDelete={setOpenStudentDeleteDialog}
+      >
+        <Link to="/add-student">
+          <Button
+            variant="secondary"
+            className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
+          >
+            <PlusCircle className="w-4 h-4 -ml-1" />
+            <span>O'quvchi qo'shish</span>
+          </Button>
+        </Link>
+      </StudentsDataTable>
     </div>
   );
 }

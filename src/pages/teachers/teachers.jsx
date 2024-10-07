@@ -7,12 +7,13 @@ import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import TeacherEdit from '@/components/teachers/edit';
+import { PlusCircle } from 'lucide-react';
 
 function Teachers() {
   const [openTeacherEditDialog, setOpenTeacherEditDialog] = useState(false);
   const [openTeacherDeleteDialog, setOpenTeacherDeleteDialog] = useState(false);
   return (
-    <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto py-4 space-y-4">
       <BreadcrumbComponent title="O'qituvchilar ro'yxati" />
 
       <EditDialog
@@ -40,7 +41,13 @@ function Teachers() {
           setOpenDelete={setOpenTeacherDeleteDialog}
         >
           <Link to="/add-teacher">
-            <Button>O'qituvchi qo'shish</Button>
+            <Button
+              variant="secondary"
+              className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
+            >
+              <PlusCircle className="w-4 h-4 -ml-1" />
+              <span>O'qituvchi qo'shish</span>
+            </Button>
           </Link>
         </TeachersDataTable>
       </div>

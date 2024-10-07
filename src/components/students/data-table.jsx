@@ -36,6 +36,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '@/lib/utils';
 
 export default function StudentsDataTable({
+  data,
   setOpenDelete,
   setOpenEdit,
   children,
@@ -46,8 +47,6 @@ export default function StudentsDataTable({
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const { students } = useMainContext();
-  const data = students;
 
   const columns = [
     {
@@ -86,21 +85,27 @@ export default function StudentsDataTable({
         );
       },
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue('fullName')}</div>
+        <div className="capitalize whitespace-nowrap">
+          {row.getValue('fullName')}
+        </div>
       ),
     },
     {
       accessorKey: 'phoneNumber',
       header: 'Phone',
       cell: ({ row }) => (
-        <div>{formatPhoneNumber(row.getValue('phoneNumber'))}</div>
+        <div className="whitespace-nowrap">
+          {formatPhoneNumber(row.getValue('phoneNumber'))}
+        </div>
       ),
     },
     {
       accessorKey: 'address',
       header: 'Address',
       cell: ({ row }) => (
-        <div className="truncate">{row.getValue('address')}</div>
+        <div className="truncate whitespace-nowrap">
+          {row.getValue('address')}
+        </div>
       ),
     },
     {
@@ -108,7 +113,11 @@ export default function StudentsDataTable({
       header: 'Payment Status',
       cell: ({ row }) => (
         <div
-          className={row.getValue('isPay') ? 'text-green-500' : 'text-red-500'}
+          className={
+            row.getValue('isPay')
+              ? 'text-green-500 whitespace-nowrap'
+              : 'text-red-500 whitespace-nowrap'
+          }
         >
           {row.getValue('isPay') ? 'Paid' : 'Not Paid'}
         </div>
@@ -168,7 +177,7 @@ export default function StudentsDataTable({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between">
-        <div className="flex items-center py-4 gap-2">
+        <div className="flex items-center py-2 gap-2">
           <Input
             placeholder="Filter Name..."
             value={table.getColumn('name')?.getFilterValue() ?? ''}

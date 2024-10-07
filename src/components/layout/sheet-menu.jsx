@@ -26,9 +26,17 @@ export function SheetMenu() {
             variant="link"
             asChild
           >
-            <Link to="/dashboard" className="flex items-center gap-2">
-              <PanelsTopLeft className="w-6 h-6 mr-1" />
-              <SheetTitle className="font-bold text-lg">Brand</SheetTitle>
+            <Link to="/" className="flex items-center gap-2">
+              <img
+                className="w-20 block dark:hidden"
+                src="/assets/logo-white.svg"
+                alt="Light mode logo"
+              />
+              <img
+                className="w-20 hidden dark:block"
+                src="/assets/logo-dark.svg"
+                alt="Light mode logo"
+              />
             </Link>
           </Button>
         </SheetHeader>

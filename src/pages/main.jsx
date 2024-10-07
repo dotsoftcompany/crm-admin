@@ -16,6 +16,7 @@ import { RecentlyAdded } from '@/components/recently-added';
 import { AreaGraph } from '@/components/charts/area-graph';
 import { PieGraph } from '@/components/charts/pie-graph';
 import { useMainContext } from '@/context/main-context';
+import { SheetMenu } from '@/components/layout/sheet-menu';
 
 function MainPage() {
   const { courses, teachers, students } = useMainContext();
@@ -24,12 +25,14 @@ function MainPage() {
     <div className="px-8 mx-auto my-4 space-y-4">
       <div className="space-y-2">
         <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Hi, Welcome back 👋
-          </h2>
+          <div className='flex items-center gap-2'>
+            <SheetMenu />
+            <h2 className="text-2xl font-bold tracking-tight">
+              Hi, Welcome back 👋
+            </h2>
+          </div>
           <div className="hidden items-center space-x-2 md:flex">
             <DatePicker />
-            {/* <Button>Download</Button> */}
           </div>
         </div>
       </div>

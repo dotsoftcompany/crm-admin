@@ -27,12 +27,12 @@ export function Sidebar() {
         >
           <Link to="/" className="flex items-center gap-2">
             <img
-              className="w-24 block dark:hidden"
+              className="w-20 block dark:hidden"
               src="/assets/logo-white.svg"
               alt="Light mode logo"
             />
             <img
-              className="w-24 hidden dark:block"
+              className="w-20 hidden dark:block"
               src="/assets/logo-dark.svg"
               alt="Light mode logo"
             />

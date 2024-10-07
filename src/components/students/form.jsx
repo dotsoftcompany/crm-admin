@@ -15,6 +15,8 @@ const AddStudentForm = () => {
     phoneNumber: '',
     address: '',
     isPaid: false,
+    username: '',
+    password: '',
   };
   const {
     control,
@@ -40,6 +42,8 @@ const AddStudentForm = () => {
       console.log(error);
     }
   };
+
+  const existingUsernames = ['johnDoe', 'janeDoe']; // just example
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
@@ -107,6 +111,42 @@ const AddStudentForm = () => {
           />
           {errors.address && (
             <p className="text-red-500">{errors.address.message}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row items-center gap-2">
+        <div className="w-full">
+          <Label htmlFor="username">Username</Label>
+          <Input
+            type="text"
+            id="username"
+            {...register('username', {
+              required: 'Username is required',
+              validate: (value) =>
+                existingUsernames.includes(value)
+                  ? 'Username is already taken'
+                  : true,
+            })}
+            placeholder="Enter username"
+          />
+          {errors.username && (
+            <p className="text-red-500">{errors.username.message}</p>
+          )}
+        </div>
+
+        <div className="w-full">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            type="password"
+            id="password"
+            {...register('password', {
+              required: 'Password is required',
+            })}
+            placeholder="Enter password"
+          />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
           )}
         </div>
       </div>

@@ -101,10 +101,7 @@ const Student = () => {
           <TabsTrigger value="groups">Guruhlar ro'yxati</TabsTrigger>
           <TabsTrigger value="attendance_check">To'lovlar tarixi</TabsTrigger>
         </TabsList>
-        <TabsContent
-          value="groups"
-          className="border-t border-border py-4 space-y-4"
-        >
+        <TabsContent value="groups" className="py-2 space-y-4">
           <EditDialog
             open={openGroupEditDialog}
             setOpen={setOpenGroupEditDialog}
@@ -118,13 +115,15 @@ const Student = () => {
           />
 
           <FilterGroups
+            url="/add-student"
+            title="Add student"
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             filterOption={filterOption}
             setFilterOption={setFilterOption}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredGroups.map((card) => (
               <Link key={card.id} to={`/groups/${card.id}`}>
                 <GroupCard
@@ -136,10 +135,7 @@ const Student = () => {
             ))}
           </div>
         </TabsContent>
-        <TabsContent
-          value="attendance_check"
-          className="border-t border-border py-4 space-y-4"
-        >
+        <TabsContent value="attendance_check" className="py-2 space-y-4">
           <Table className="rounded-md">
             <TableCaption>A list of recent student payments.</TableCaption>
             <TableHeader>

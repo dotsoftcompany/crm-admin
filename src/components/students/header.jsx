@@ -11,7 +11,7 @@ import { MapPin, Phone, Users } from 'lucide-react';
 
 function StudentHeader({ student }) {
   return (
-    <div className="bg-background space-y-2">
+    <div className="space-y-2 pb-4 w-full border-b border-border">
       <div className="flex items-center gap-2">
         <h1 className="text-xl md:text-2xl font-semibold">
           {student.fullName}

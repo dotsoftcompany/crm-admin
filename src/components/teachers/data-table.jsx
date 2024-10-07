@@ -82,17 +82,27 @@ export default function TeachersDataTable({
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue('fullName')}</div>,
+      cell: ({ row }) => (
+        <div className="whitespace-nowrap">{row.getValue('fullName')}</div>
+      ),
     },
     {
       accessorKey: 'dateOfBirth',
       header: 'Date of Birth',
-      cell: ({ row }) => <div>{formatDate(row.getValue('dateOfBirth'))}</div>,
+      cell: ({ row }) => (
+        <div className="whitespace-nowrap">
+          {formatDate(row.getValue('dateOfBirth'))}
+        </div>
+      ),
     },
     {
       accessorKey: 'phone',
       header: 'Phone',
-      cell: ({ row }) => <div>{formatPhoneNumber(row.getValue('phone'))}</div>,
+      cell: ({ row }) => (
+        <div className="whitespace-nowrap">
+          {formatPhoneNumber(row.getValue('phone'))}
+        </div>
+      ),
     },
     {
       accessorKey: 'address',
@@ -104,12 +114,18 @@ export default function TeachersDataTable({
     {
       accessorKey: 'position',
       header: 'Position',
-      cell: ({ row }) => <div>{row.getValue('position')}</div>,
+      cell: ({ row }) => (
+        <div className="whitespace-nowrap">{row.getValue('position')}</div>
+      ),
     },
     {
       accessorKey: 'dateOfJoining',
       header: 'Date of Joining',
-      cell: ({ row }) => <div>{formatDate(row.getValue('dateOfJoining'))}</div>,
+      cell: ({ row }) => (
+        <div className="whitespace-nowrap">
+          {formatDate(row.getValue('dateOfJoining'))}
+        </div>
+      ),
     },
     {
       id: 'actions',
