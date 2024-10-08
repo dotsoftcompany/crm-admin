@@ -10,16 +10,18 @@ export const formatNumber = (value) => {
 };
 
 export const formatPhoneNumber = (value) => {
-  if (!value) return '';
-  const cleaned = value.replace(/\D/g, '');
-  const match = cleaned.match(/^(\d{1,3})(\d{0,3})(\d{0,4})$/);
+  // Remove all non-digit characters
+  let cleaned = ('' + value).replace(/\D/g, '');
+
+  // Match the Uzbekistan phone number format
+  let match = cleaned.match(/^(\+998)(\d{2})(\d{3})(\d{4})$/);
+
   if (match) {
-    const [, areaCode, prefix, lineNumber] = match;
-    return `${areaCode ? `+${areaCode}` : ' '} ${prefix}${
-      prefix ? ' ' : ' '
-    }${lineNumber}`;
+    // Format it to +99893 008 2309
+    return `${match[1]}${match[2]} ${match[3]} ${match[4]}`;
   }
-  return value;
+
+  return value; // Return as-is if not matching
 };
 
 export const formatDate = (timestamp) => {

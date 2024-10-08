@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatPhoneNumber } from '@/lib/utils';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 
 const AddStudentForm = () => {
@@ -19,14 +19,34 @@ const AddStudentForm = () => {
     password: '',
   };
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
+    setError,
     reset,
   } = useForm({
     defaultValues: defaultValues,
   });
+
+  const [existingUsernames, setExistingUsernames] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchUsernames = async () => {
+      try {
+        const userStudentsRef = collection(
+          db,
+          `users/${auth.currentUser.uid}/students`
+        );
+        const querySnapshot = await getDocs(userStudentsRef);
+        const usernames = querySnapshot.docs.map((doc) => doc.data().username);
+        setExistingUsernames(usernames);
+      } catch (error) {
+        console.error('Error fetching usernames:', error);
+      }
+    };
+
+    fetchUsernames();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -35,19 +55,24 @@ const AddStudentForm = () => {
         `users/${auth.currentUser.uid}/students`
       );
 
-      await addDoc(userStudentsRef, data).then(() => {
-        reset();
-      });
+      if (existingUsernames.includes(data.username)) {
+        setError('username', {
+          type: 'manual',
+          message: 'Username is already taken',
+        });
+        return;
+      }
+
+      await addDoc(userStudentsRef, data);
+      reset();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const existingUsernames = ['johnDoe', 'janeDoe']; // just example
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label htmlFor="fullName">Full Name</Label>
           <Input
@@ -56,9 +81,7 @@ const AddStudentForm = () => {
             {...register('fullName', { required: 'Full name is required' })}
             placeholder="Enter full name"
           />
-          {errors.fullName && (
-            <p className="text-red-500">{errors.fullName.message}</p>
-          )}
+          <p className="text-xs md:text-sm text-red-500">{errors.fullName?.message}</p>
         </div>
 
         <div className="w-full">
@@ -75,13 +98,11 @@ const AddStudentForm = () => {
             })}
             placeholder="+1 234 567 8901"
           />
-          {errors.parentPhoneNumber && (
-            <p className="text-red-500">{errors.parentPhoneNumber.message}</p>
-          )}
+          <p className="text-xs md:text-sm text-red-500">{errors.parentPhoneNumber?.message}</p>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label htmlFor="phoneNumber">Phone Number</Label>
           <Input
@@ -96,9 +117,7 @@ const AddStudentForm = () => {
             })}
             placeholder="+1 234 567 8901"
           />
-          {errors.phoneNumber && (
-            <p className="text-red-500">{errors.phoneNumber.message}</p>
-          )}
+          <p className="text-xs md:text-sm text-red-500">{errors.phoneNumber?.message}</p>
         </div>
 
         <div className="w-full">
@@ -109,13 +128,11 @@ const AddStudentForm = () => {
             {...register('address', { required: 'Address is required' })}
             placeholder="Enter address"
           />
-          {errors.address && (
-            <p className="text-red-500">{errors.address.message}</p>
-          )}
+          <p className="text-xs md:text-sm text-red-500">{errors.address?.message}</p>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label htmlFor="username">Username</Label>
           <Input
@@ -123,16 +140,10 @@ const AddStudentForm = () => {
             id="username"
             {...register('username', {
               required: 'Username is required',
-              validate: (value) =>
-                existingUsernames.includes(value)
-                  ? 'Username is already taken'
-                  : true,
             })}
             placeholder="Enter username"
           />
-          {errors.username && (
-            <p className="text-red-500">{errors.username.message}</p>
-          )}
+          <p className="text-xs md:text-sm text-red-500">{errors.username?.message}</p>
         </div>
 
         <div className="w-full">
@@ -145,9 +156,7 @@ const AddStudentForm = () => {
             })}
             placeholder="Enter password"
           />
-          {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
-          )}
+          <p className="text-xs md:text-sm text-red-500">{errors.password?.message}</p>
         </div>
       </div>
 

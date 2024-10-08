@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { MapPin, Phone, Users } from 'lucide-react';
+import { formatPhoneNumber } from '@/lib/utils';
 
 function StudentHeader({ student }) {
   return (
@@ -31,7 +32,7 @@ function StudentHeader({ student }) {
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
                 <a
-                  href={`tel:${student.phoneNumber}`}
+                  href={`tel:${formatPhoneNumber(student.phoneNumber)}`}
                   className="text-sm md:text-base hover:underline"
                 >
                   {student.phoneNumber}
