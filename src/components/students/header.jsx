@@ -64,6 +64,9 @@ function StudentHeader({ student }) {
           </Tooltip>
         </TooltipProvider>
         {!student.isStudentUpdate && (
+          <div className="h-full w-[1px] bg-border">‎</div>
+        )}
+        {!student.isStudentUpdate && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>

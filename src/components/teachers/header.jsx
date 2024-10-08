@@ -16,6 +16,7 @@ import {
   Users,
 } from 'lucide-react';
 import { formatDate, formatPhoneNumber } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 function TeacherHeader({ teacher }) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -71,6 +72,9 @@ function TeacherHeader({ teacher }) {
             {formatPhoneNumber(teacher.phone)}
           </a>
         </div>
+        {!teacher.isTeacherUpdate && (
+          <div className="h-full w-[1px] bg-border">‎</div>
+        )}
         {!teacher.isTeacherUpdate && (
           <TooltipProvider>
             <Tooltip>
