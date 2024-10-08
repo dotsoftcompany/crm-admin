@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
+import { useToast } from '@/components/ui/use-toast';
 
 import {
   Select,
@@ -9,14 +12,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
-import { useState } from 'react';
 import { useMainContext } from '@/context/main-context';
-import { addDoc, collection } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
 import BreadcrumbComponent from '@/components/breadcrumb';
 
 function AddGroup() {
@@ -39,6 +38,8 @@ function AddGroup() {
     reset,
   } = useForm({ defaultValues: defaultValue });
 
+  const { toast } = useToast();
+
   const onSubmit = async (data) => {
     try {
       const userGroupsRef = collection(
@@ -53,6 +54,9 @@ function AddGroup() {
       }).then(() => {
         reset();
         setStartDate('');
+        toast({
+          title: "Guruh muvaffaqiyat qo'shildi",
+        });
       });
     } catch (error) {
       console.log(error);

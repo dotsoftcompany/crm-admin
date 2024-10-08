@@ -18,6 +18,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 import { formatNumber } from '@/lib/utils';
 import BreadcrumbComponent from '@/components/breadcrumb';
+import { useToast } from '@/components/ui/use-toast';
 
 function AddCourses() {
   const [isCertification, setIsCertification] = useState(false);
@@ -38,6 +39,8 @@ function AddCourses() {
     reset,
   } = useForm({ defaultValues: defaultValue });
 
+  const { toast } = useToast();
+
   const onSubmit = async (data) => {
     try {
       const userCourseRef = collection(
@@ -52,6 +55,9 @@ function AddCourses() {
         isCertification,
       }).then(() => {
         reset();
+        toast({
+          title: "Kurs muvaffaqiyat qo'shildi",
+        });
       });
     } catch (error) {
       console.log(error);
@@ -68,7 +74,7 @@ function AddCourses() {
           Here&apos;s a list of your tasks for this month!
         </p>
       </div>
-      <div className='xl:flex'>
+      <div className="xl:flex">
         <div className="xl:w-1/2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col md:flex-row items-center gap-2 mb-2 w-full">
@@ -184,8 +190,10 @@ function AddCourses() {
             </Button>
           </form>
         </div>
-        <div className='xl:w-1/2 h-[calc(100vh-160px)] xl:flex hidden items-center'>
-          <h1 className='text-9xl font-bold text-border -translate-y-24 -rotate-90'>ADD COOURSE</h1>
+        <div className="xl:w-1/2 h-[calc(100vh-160px)] xl:flex hidden items-center">
+          <h1 className="text-9xl font-bold text-border -translate-y-24 -rotate-90">
+            ADD COOURSE
+          </h1>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-export const teachersData = [
+export const teachers = [
   {
     id: 1,
     fullName: 'John Doe',

@@ -6,6 +6,8 @@ import { auth, db } from '@/api/firebase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '../ui/toast';
 
 const AddStudentForm = () => {
   const defaultValues = {
@@ -16,6 +18,7 @@ const AddStudentForm = () => {
     isPaid: false,
     username: '',
     password: '',
+    isStudentUpdate: false,
   };
   const {
     register,
@@ -28,6 +31,7 @@ const AddStudentForm = () => {
   });
 
   const [existingUsernames, setExistingUsernames] = React.useState([]);
+  const { toast } = useToast();
 
   React.useEffect(() => {
     const fetchUsernames = async () => {
@@ -55,6 +59,12 @@ const AddStudentForm = () => {
       );
 
       if (existingUsernames.includes(data.username)) {
+        toast({
+          variant: 'destructive',
+          title: `"${data.username}" already taken.`,
+          description: 'Please try another one.',
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
         setError('username', {
           type: 'manual',
           message: 'Username is already taken',
@@ -64,6 +74,10 @@ const AddStudentForm = () => {
 
       await addDoc(userStudentsRef, data);
       reset();
+
+      toast({
+        title: "O'quvchi muvaffaqiyat qo'shildi",
+      });
     } catch (error) {
       console.log(error);
     }

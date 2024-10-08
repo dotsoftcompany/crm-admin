@@ -7,10 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '../ui/toast';
 
 const AddTeacherForm = () => {
   const [dateOfBirth, setDateOfBirth] = React.useState('');
   const [dateOfJoining, setDateOfJoining] = React.useState('');
+
+  const { toast } = useToast();
 
   const defaultValue = {
     fullName: '',
@@ -19,6 +23,7 @@ const AddTeacherForm = () => {
     address: '',
     username: '',
     password: '',
+    isTeacherUpdate: false,
   };
 
   const {
@@ -39,6 +44,12 @@ const AddTeacherForm = () => {
       const existingUsernames = snapshot.docs.map((doc) => doc.data().username);
 
       if (existingUsernames.includes(data.username)) {
+        toast({
+          variant: 'destructive',
+          title: `"${data.username}" already taken.`,
+          description: 'Please try another one.',
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
         setError('username', {
           type: 'manual',
           message: 'Username is already taken',
@@ -55,6 +66,10 @@ const AddTeacherForm = () => {
       reset();
       setDateOfBirth('');
       setDateOfJoining('');
+
+      toast({
+        title: "Ustoz muvaffaqiyat qo'shildi",
+      });
     } catch (error) {
       console.log(error);
     }
