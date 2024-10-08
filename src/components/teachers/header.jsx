@@ -7,10 +7,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Calendar, CalendarPlus, MapPin, Users } from 'lucide-react';
+import {
+  Calendar,
+  CalendarPlus,
+  KeyRound,
+  MapPin,
+  User,
+  Users,
+} from 'lucide-react';
 import { formatDate, formatPhoneNumber } from '@/lib/utils';
 
 function TeacherHeader({ teacher }) {
+  const [showPassword, setShowPassword] = React.useState(false);
   return (
     <div className="bg-background space-y-2 border-b border-border pb-4">
       <div className="flex items-center gap-2 md:gap-3">
@@ -19,7 +27,7 @@ function TeacherHeader({ teacher }) {
         </h1>
         <Badge>{teacher.position}</Badge>
       </div>
-      <div className="flex items-center gap-3 md:gap-5">
+      <div className="flex flex-wrap items-center gap-3 md:gap-5">
         <div className="flex items-center gap-2">
           <MapPin className="h-4 w-4" />
           <p className="text-sm md:text-base">{teacher.address}</p>
@@ -63,6 +71,47 @@ function TeacherHeader({ teacher }) {
             {formatPhoneNumber(teacher.phone)}
           </a>
         </div>
+        {!teacher.isTeacherUpdate && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <p className="text-sm md:text-base">@{teacher.username}</p>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <small className="text-xs">Username</small>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+        {!teacher.isTeacherUpdate && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="flex items-center gap-2"
+                >
+                  <KeyRound className="h-4 w-4" />
+                  {showPassword ? (
+                    <p className="text-sm md:text-base">{teacher.password}</p>
+                  ) : (
+                    <p className="text-sm md:text-base">********</p>
+                  )}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {showPassword ? (
+                  <small className="text-xs">Password</small>
+                ) : (
+                  <small className="text-xs">Show Password</small>
+                )}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
     </div>
   );
