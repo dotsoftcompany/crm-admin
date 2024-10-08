@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useMainContext } from '@/context/main-context';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import StudentsDataTable from '@/components/students/data-table';
 import GroupHeader from '@/components/groups/header';
 import AddStudentDialog from '@/components/dialogs/add-student-dialog';
-import { useMainContext } from '@/context/main-context';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import StudentEdit from '@/components/students/edit';

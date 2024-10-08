@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ArrowUpDown, MoreHorizontal, ChevronDown } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -35,6 +34,7 @@ import { useMainContext } from '@/context/main-context';
 import { formatDate, formatPhoneNumber } from '@/lib/utils';
 
 export default function TeachersDataTable({
+  data,
   setOpenDelete,
   setOpenEdit,
   children,
@@ -46,7 +46,6 @@ export default function TeachersDataTable({
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
   const { teachers } = useMainContext();
-  const data = teachers;
 
   const columns = [
     {
@@ -265,7 +264,7 @@ export default function TeachersDataTable({
                   className="cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(1)} // row.original.id
+                  onClick={() => handleRowClick(row.original.id)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

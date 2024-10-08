@@ -1,15 +1,6 @@
 import * as React from 'react';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { useNavigate } from 'react-router-dom';
+import { ArrowUpDown, MoreHorizontal, ChevronDown } from 'lucide-react';
 
 import {
   flexRender,
@@ -20,9 +11,17 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { ChevronDown } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Table,
   TableBody,
@@ -31,8 +30,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useMainContext } from '@/context/main-context';
-import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '@/lib/utils';
 
 export default function StudentsDataTable({
@@ -242,7 +239,7 @@ export default function StudentsDataTable({
                   className="cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(1)} // row.original.id
+                  onClick={() => handleRowClick(row.original.id)} // row.original.id
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

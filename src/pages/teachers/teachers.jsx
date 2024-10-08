@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import TeachersDataTable from '@/components/teachers/data-table';
+import { Link } from 'react-router-dom';
+import { PlusCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import BreadcrumbComponent from '@/components/breadcrumb';
+import { useMainContext } from '@/context/main-context';
+
+import TeachersDataTable from '@/components/teachers/data-table';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import TeacherEdit from '@/components/teachers/edit';
-import { PlusCircle } from 'lucide-react';
 
 function Teachers() {
+  const { teachers } = useMainContext();
+
   const [openTeacherEditDialog, setOpenTeacherEditDialog] = useState(false);
   const [openTeacherDeleteDialog, setOpenTeacherDeleteDialog] = useState(false);
+
   return (
     <div className="px-4 lg:px-8 mx-auto py-4 space-y-4">
       <BreadcrumbComponent title="O'qituvchilar ro'yxati" />
@@ -37,6 +42,7 @@ function Teachers() {
 
       <div>
         <TeachersDataTable
+          data={teachers}
           setOpenEdit={setOpenTeacherEditDialog}
           setOpenDelete={setOpenTeacherDeleteDialog}
         >

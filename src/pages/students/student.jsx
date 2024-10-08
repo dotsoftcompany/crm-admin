@@ -15,7 +15,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { students } from '@/lib/fake-data/teachers';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import StudentHeader from '@/components/students/header';
 import GroupCard from '@/components/groups/card';
@@ -26,9 +25,9 @@ import DeleteAlert from '@/components/dialogs/delete-alert';
 
 const Student = () => {
   const { studentId } = useParams();
-  const { groups, courses, teachers } = useMainContext();
+  const { groups, courses, teachers, students } = useMainContext();
 
-  const student = students.find((s) => s.id === parseInt(studentId));
+  const student = students.find((s) => s.id === studentId);
 
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);

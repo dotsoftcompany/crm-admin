@@ -6,7 +6,6 @@ import StudentsDataTable from '@/components/students/data-table';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import DeleteAlert from '@/components/dialogs/delete-alert';
-import GroupEdit from '@/components/groups/edit';
 import StudentEdit from '@/components/students/edit';
 import { useMainContext } from '@/context/main-context';
 import { PlusCircle } from 'lucide-react';
