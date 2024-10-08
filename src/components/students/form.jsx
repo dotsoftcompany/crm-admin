@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { formatPhoneNumber } from '@/lib/utils';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
 
 const AddStudentForm = () => {
   const defaultValues = {
@@ -81,7 +80,9 @@ const AddStudentForm = () => {
             {...register('fullName', { required: 'Full name is required' })}
             placeholder="Enter full name"
           />
-          <p className="text-xs md:text-sm text-red-500">{errors.fullName?.message}</p>
+          <p className="text-xs md:text-sm text-red-500">
+            {errors.fullName?.message}
+          </p>
         </div>
 
         <div className="w-full">
@@ -98,7 +99,9 @@ const AddStudentForm = () => {
             })}
             placeholder="+1 234 567 8901"
           />
-          <p className="text-xs md:text-sm text-red-500">{errors.parentPhoneNumber?.message}</p>
+          <p className="text-xs md:text-sm text-red-500">
+            {errors.parentPhoneNumber?.message}
+          </p>
         </div>
       </div>
 
@@ -117,7 +120,9 @@ const AddStudentForm = () => {
             })}
             placeholder="+1 234 567 8901"
           />
-          <p className="text-xs md:text-sm text-red-500">{errors.phoneNumber?.message}</p>
+          <p className="text-xs md:text-sm text-red-500">
+            {errors.phoneNumber?.message}
+          </p>
         </div>
 
         <div className="w-full">
@@ -128,7 +133,9 @@ const AddStudentForm = () => {
             {...register('address', { required: 'Address is required' })}
             placeholder="Enter address"
           />
-          <p className="text-xs md:text-sm text-red-500">{errors.address?.message}</p>
+          <p className="text-xs md:text-sm text-red-500">
+            {errors.address?.message}
+          </p>
         </div>
       </div>
 
@@ -143,7 +150,9 @@ const AddStudentForm = () => {
             })}
             placeholder="Enter username"
           />
-          <p className="text-xs md:text-sm text-red-500">{errors.username?.message}</p>
+          <p className="text-xs md:text-sm text-red-500">
+            {errors.username?.message}
+          </p>
         </div>
 
         <div className="w-full">
@@ -156,7 +165,9 @@ const AddStudentForm = () => {
             })}
             placeholder="Enter password"
           />
-          <p className="text-xs md:text-sm text-red-500">{errors.password?.message}</p>
+          <p className="text-xs md:text-sm text-red-500">
+            {errors.password?.message}
+          </p>
         </div>
       </div>
 

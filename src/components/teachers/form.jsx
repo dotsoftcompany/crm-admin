@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
-import { useState } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
 
 const AddTeacherForm = () => {
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [dateOfJoining, setDateOfJoining] = useState('');
+  const [dateOfBirth, setDateOfBirth] = React.useState('');
+  const [dateOfJoining, setDateOfJoining] = React.useState('');
 
   const defaultValue = {
     fullName: '',
@@ -25,6 +25,7 @@ const AddTeacherForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
     reset,
   } = useForm({ defaultValues: defaultValue });
 
@@ -34,56 +35,70 @@ const AddTeacherForm = () => {
         db,
         `users/${auth.currentUser.uid}/teachers`
       );
+      const snapshot = await getDocs(userTeachersRef);
+      const existingUsernames = snapshot.docs.map((doc) => doc.data().username);
+
+      if (existingUsernames.includes(data.username)) {
+        setError('username', {
+          type: 'manual',
+          message: 'Username is already taken',
+        });
+        return;
+      }
 
       await addDoc(userTeachersRef, {
         ...data,
         dateOfBirth: new Date(dateOfBirth).getTime(),
         dateOfJoining: new Date(dateOfJoining).getTime(),
-      }).then(() => {
-        reset();
-        setDateOfBirth('');
-        setDateOfJoining('');
       });
+
+      reset();
+      setDateOfBirth('');
+      setDateOfJoining('');
     } catch (error) {
       console.log(error);
     }
   };
 
-  const existingUsernames = ['johnDoe', 'janeDoe']; // just example
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
-          <Label htmlFor="fullName">Full Name</Label>
+          <Label required={true} htmlFor="fullName">
+            Full Name
+          </Label>
           <Input
             type="text"
             id="fullName"
             {...register('fullName', { required: 'Full name is required' })}
             placeholder="Enter full name"
           />
-          {errors.fullName && (
-            <p className="text-red-500">{errors.fullName.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.fullName?.message}
+          </small>
         </div>
 
         <div className="w-full">
-          <Label htmlFor="position">Position</Label>
+          <Label required={true} htmlFor="position">
+            Position
+          </Label>
           <Input
             type="text"
             id="position"
             {...register('position', { required: 'Position is required' })}
             placeholder="Enter position"
           />
-          {errors.position && (
-            <p className="text-red-500">{errors.position.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.position?.message}
+          </small>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label required={true} htmlFor="phone">
+            Phone Number
+          </Label>
           <Input
             type="text"
             id="phone"
@@ -96,74 +111,80 @@ const AddTeacherForm = () => {
             })}
             placeholder="+1 234 567 8901"
           />
-          {errors.phoneNumber && (
-            <p className="text-red-500">{errors.phone.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.phone?.message}
+          </small>
         </div>
 
         <div className="w-full">
-          <Label htmlFor="address">Address</Label>
+          <Label required={true} htmlFor="address">
+            Address
+          </Label>
           <Input
             type="text"
             id="address"
             {...register('address', { required: 'Address is required' })}
             placeholder="Enter address"
           />
-          {errors.address && (
-            <p className="text-red-500">{errors.address.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.address?.message}
+          </small>
         </div>
       </div>
 
-      {/* https://github.com/shadcn-ui/ui/discussions/1553 */}
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
-          <Label htmlFor="dateOfBirth">Date of Birth</Label>
+          <Label optional={true} htmlFor="dateOfBirth">
+            Date of Birth
+          </Label>
           <DatePicker
             className="w-full mt-2"
             setData={setDateOfBirth}
             data={dateOfBirth}
           />
-          {errors.dateOfBirth && (
-            <p className="text-red-500">{errors.dateOfBirth.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.dateOfBirth?.message}
+          </small>
         </div>
 
         <div className="w-full">
-          <Label htmlFor="dateOfJoining">Date of Joining</Label>
+          <Label optional={true} htmlFor="dateOfJoining">
+            Date of Joining
+          </Label>
           <DatePicker
             className="w-full mt-2"
             setData={setDateOfJoining}
             data={dateOfJoining}
           />
-          {errors.dateOfJoining && (
-            <p className="text-red-500">{errors.dateOfJoining.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.dateOfJoining?.message}
+          </small>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
-          <Label htmlFor="username">Username</Label>
+          <Label required={true} htmlFor="username">
+            Username
+          </Label>
           <Input
             type="text"
             id="username"
             {...register('username', {
               required: 'Username is required',
-              validate: (value) =>
-                existingUsernames.includes(value)
-                  ? 'Username is already taken'
-                  : true,
+              validate: (value) => (value ? true : 'Username is required'),
             })}
             placeholder="Enter username"
           />
-          {errors.username && (
-            <p className="text-red-500">{errors.username.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.username?.message}
+          </small>
         </div>
 
         <div className="w-full">
-          <Label htmlFor="password">Password</Label>
+          <Label required={true} htmlFor="password">
+            Password
+          </Label>
           <Input
             type="password"
             id="password"
@@ -172,9 +193,9 @@ const AddTeacherForm = () => {
             })}
             placeholder="Enter password"
           />
-          {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
-          )}
+          <small className="text-xs md:text-sm text-red-500">
+            {errors.password?.message}
+          </small>
         </div>
       </div>
 
