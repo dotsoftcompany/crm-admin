@@ -9,8 +9,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import useDelete from '@/hooks/useDelete';
 
-function DeleteAlert({ open, setOpen }) {
+function DeleteAlert({ id, open, setOpen }) {
+  const { deleteItem, loading, error } = useDelete(id);
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
@@ -24,7 +27,9 @@ function DeleteAlert({ open, setOpen }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-          <AlertDialogAction>O'chirish</AlertDialogAction>
+          <AlertDialogAction onClick={deleteItem}>
+            {loading ? 'Deleting...' : 'Delete Course'}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

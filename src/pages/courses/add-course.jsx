@@ -35,7 +35,7 @@ function AddCourses() {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({ defaultValues: defaultValue });
 
@@ -185,8 +185,8 @@ function AddCourses() {
               <Label htmlFor="isCertification">Certification</Label>
             </div>
             {/* Submit Button */}
-            <Button type="submit" className="mt-2">
-              Add Course
+            <Button disabled={isSubmitting} type="submit" className="mt-2">
+              {isSubmitting ? "Kurs qo'shilmoqda" : "Kurs qo'shish"}
             </Button>
           </form>
         </div>

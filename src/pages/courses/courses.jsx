@@ -12,6 +12,9 @@ function Courses() {
   const { courses } = useMainContext();
   const [openCourseEditDialog, setOpenCourseEditDialog] = useState(false);
   const [openCourseDeleteDialog, setOpenCourseDeleteDialog] = useState(false);
+
+  const [id, setId] = useState('');
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
 
@@ -33,25 +36,23 @@ function Courses() {
   });
 
   return (
-    <div className="container mx-auto my-4 space-y-4">
+    <div className="px-4 lg:px-8 my-4 space-y-4">
       <BreadcrumbComponent title="Kurslar ro'yxati" />
-
       <EditDialog open={openCourseEditDialog} setOpen={setOpenCourseEditDialog}>
-        <CourseEdit />
+        <CourseEdit id={id} setCloseDialog={setOpenCourseEditDialog} />
       </EditDialog>
 
       <DeleteAlert
+        id={id}
         open={openCourseDeleteDialog}
         setOpen={setOpenCourseDeleteDialog}
       />
-
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
         <p className="text-muted-foreground">
           Here&apos;s a list of your tasks for this month!
         </p>
       </div>
-
       <FilterCourses
         url="/add-course"
         title="Add course"
@@ -60,7 +61,6 @@ function Courses() {
         filterOption={filterOption}
         setFilterOption={setFilterOption}
       />
-
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredCourses.length > 0 ? (
           filteredCourses.map((item) => (
@@ -69,6 +69,8 @@ function Courses() {
               item={item}
               setOpenDelete={setOpenCourseDeleteDialog}
               setOpenEdit={setOpenCourseEditDialog}
+              id={id}
+              setId={setId}
             />
           ))
         ) : (

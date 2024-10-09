@@ -11,50 +11,61 @@ import {
 import { Switch } from '@/components/ui/switch';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
 
-import { addDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 import { formatNumber } from '@/lib/utils';
+import { useMainContext } from '@/context/main-context';
 
-function CourseEdit() {
-  const [isCertification, setIsCertification] = useState(false);
+function CourseEdit({ id, setCloseDialog }) {
+  const { courses } = useMainContext();
+  const course = courses.find((c) => c.id === id);
 
   const defaultValue = {
-    courseTitle: '',
-    courseDescription: '',
-    courseCode: '',
-    courseDuration: '',
-    coursePrice: '',
-    isCertification: false,
+    courseTitle: course?.courseTitle,
+    courseDescription: course?.courseDescription,
+    courseCode: course?.courseCode,
+    courseDuration: course?.courseDuration,
+    coursePrice: course?.coursePrice,
+    isCertification: course?.isCertification,
   };
+
+  const [isCertification, setIsCertification] = useState(
+    defaultValue.isCertification
+  );
+
+  const { toast } = useToast();
+
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({ defaultValues: defaultValue });
 
   const onSubmit = async (data) => {
     try {
-      const userCourseRef = collection(
-        db,
-        `users/${auth.currentUser.uid}/courses`
-      );
+      const courseDocRef = doc(db, `users/${auth.currentUser.uid}/courses`, id);
 
-      await addDoc(userCourseRef, {
+      await updateDoc(courseDocRef, {
         ...data,
         coursePrice: Number(data.coursePrice),
         courseDuration: Number(data.courseDuration),
         isCertification,
-      }).then(() => {
-        reset();
-        console.log('Added');
       });
+
+      toast({
+        title: 'Kurs muvaffaqiyatli yangilandi',
+      });
+
+      setCloseDialog(false);
+
+      reset();
     } catch (error) {
       console.log(error);
     }
@@ -184,8 +195,12 @@ function CourseEdit() {
       </div>
 
       {/* Submit Button */}
-      <Button type="submit" className="mt-2 float-right">
-        Tahrirlash
+      <Button
+        disabled={isSubmitting}
+        type="submit"
+        className="mt-2 float-right"
+      >
+        {isSubmitting ? 'Tahrirlanmoqda' : 'Tahrirlash'}
       </Button>
     </form>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   DropdownMenu,
@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 
 import { formatNumber } from '@/lib/utils';
 
-function CourseCard({ item, setOpenDelete, setOpenEdit }) {
+function CourseCard({ item, setOpenDelete, setOpenEdit, id, setId }) {
   return (
     <Card className="flex flex-col">
       <div className="p-4 grow space-y-2 lg:space-y-4">
@@ -45,6 +45,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem
+                onClick={() => setId(item.id)}
                 onSelect={() => {
                   setOpenEdit(true);
                   document.body.style.pointerEvents = '';
@@ -54,6 +55,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
+                onClick={() => setId(item.id)}
                 onSelect={() => {
                   setOpenDelete(true);
                   document.body.style.pointerEvents = '';
