@@ -132,8 +132,7 @@ const Group = () => {
                   <TableHead className="text-right rounded-tr-md"></TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                {/* Sample data */}
+              <TableBody className="border-x border-b border-border">
                 <TableRow>
                   <TableCell className="font-medium">12.11.2024</TableCell>
                   <TableCell>9/10</TableCell>
@@ -184,7 +183,76 @@ const Group = () => {
             </Table>
           </div>
         </TabsContent>
-        <TabsContent value="exams">test</TabsContent>
+        <TabsContent value="exams">
+          <div className="space-y-2 pt-2">
+            <div className="flex gap-2 items-center">
+              <Input placeholder="Search by title" className="max-w-md" />
+              <small className='text-purple-500'>Demo table</small>
+            </div>
+
+            <Table className="rounded-b-md">
+              <TableCaption className="hidden">
+                A list of absent students for the selected date.
+              </TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-72 rounded-tl-md">Title</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right rounded-tr-md"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="border-x border-b border-border">
+                <TableRow>
+                  <TableCell>General Chemistry Final Exam</TableCell>
+                  <TableCell className="font-medium">12.11.2024</TableCell>
+                  <TableCell>scheduled</TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      onClick={() => setShowAbsenteeStudentsDialog(true)}
+                      variant="link"
+                    >
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Eye className="w-5 h-5" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <small>Batafsil</small>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Chemical Reactions and Equilibrium Test</TableCell>
+                  <TableCell className="font-medium rounded-bl-lg">
+                    23.12.2023
+                  </TableCell>
+                  <TableCell>Completed</TableCell>
+                  <TableCell className="text-right rounded-br-lg">
+                    <Button
+                      onClick={() => setShowAbsenteeStudentsDialog(true)}
+                      variant="link"
+                    >
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Eye className="w-5 h-5" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <small>Batafsil</small>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
       </Tabs>
     </div>
   );
