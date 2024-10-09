@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 
 import { formatNumber } from '@/lib/utils';
 
-function CourseCard({ item, setOpenDelete, setOpenEdit, id, setId }) {
+function CourseCard({ item, setOpenDelete, setOpenEdit }) {
   return (
     <Card className="flex flex-col">
       <div className="p-4 grow space-y-2 lg:space-y-4">
@@ -45,9 +45,8 @@ function CourseCard({ item, setOpenDelete, setOpenEdit, id, setId }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem
-                onClick={() => setId(item.id)}
+                onClick={setOpenEdit}
                 onSelect={() => {
-                  setOpenEdit(true);
                   document.body.style.pointerEvents = '';
                 }}
               >
@@ -55,9 +54,8 @@ function CourseCard({ item, setOpenDelete, setOpenEdit, id, setId }) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => setId(item.id)}
+                onClick={setOpenDelete}
                 onSelect={() => {
-                  setOpenDelete(true);
                   document.body.style.pointerEvents = '';
                 }}
               >
@@ -80,7 +78,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit, id, setId }) {
           <Badge className="text-sm px-2 font-medium" variant="secondary">
             Davomiyligi: {item.courseDuration} oy
           </Badge>
-          {item.isCertification ? (
+          {item.isCertification && (
             <Badge
               className="text-sm font-medium flex items-center gap-1"
               variant="secondary"
@@ -99,7 +97,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit, id, setId }) {
                 />
               </svg>
             </Badge>
-          ) : null}
+          )}
         </div>
       </div>
 

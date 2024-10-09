@@ -6,11 +6,9 @@ import { MainContextProvider } from '@/context/main-context.jsx';
 import { ThemeProvider } from '@/provider/ThemeProvider.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <MainContextProvider>
-        <App />
-      </MainContextProvider>
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <MainContextProvider>
+      <App />
+    </MainContextProvider>
+  </ThemeProvider>
 );

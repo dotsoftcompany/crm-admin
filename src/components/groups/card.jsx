@@ -21,7 +21,8 @@ import { useMainContext } from '@/context/main-context';
 import { formatDate } from '@/lib/utils';
 
 function GroupCard({ card, setOpenDelete, setOpenEdit }) {
-  const { courses, teachers, getUsertime } = useMainContext();
+  const { courses, teachers } = useMainContext();
+
   return (
     <Card key={card.id} className="group-card group-dark-card">
       <div className="p-4 pb-0 space-y-2">
@@ -54,7 +55,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
               </Tooltip>
             </TooltipProvider>
             <Badge variant={card.status ? 'active' : 'inactive'}>
-              {card?.status ? 'Aktiv' : 'Tugatildi'}
+              {card.status ? 'Aktiv' : 'Tugatildi'}
             </Badge>
           </div>
 
@@ -87,9 +88,9 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenEdit(true);
-                  document.body.style.pointerEvents = '';
+                  e.stopPropagation(); // Prevent the click event from propagating
+                  setOpenEdit(); // Call the function passed as a prop
+                  document.body.style.pointerEvents = ''; // Optionally manage pointer events
                 }}
               >
                 Edit
@@ -97,9 +98,9 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenDelete(true);
-                  document.body.style.pointerEvents = '';
+                  e.stopPropagation(); // Prevent the click event from propagating
+                  setOpenDelete(); // Call the function passed as a prop
+                  document.body.style.pointerEvents = ''; // Optionally manage pointer events
                 }}
               >
                 Delete
@@ -124,12 +125,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
 
           <div className="flex gap-0 mt-2">
             <div className="flex items-center -space-x-3">
-              {/* {card.avatars.map((avatar, index) => (
-                        <Avatar key={index} className="h-6 w-6 shadow border">
-                          <AvatarImage src={avatar.src} alt={avatar.alt} />
-                          <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                        </Avatar>
-                      ))} */}
+              {/* Optionally display avatars here */}
             </div>
             <Badge className="text-sm px-2 font-medium" variant="secondary">
               Talabalar: {10}ta
@@ -157,7 +153,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
                 ?.fullName?.split(' ')
                 .map((word) => word[0])
                 .join('')
-                .slice(0, 2)
+                ?.slice(0, 2)
                 .toUpperCase() || 'N/A'}
             </AvatarFallback>
           </Avatar>

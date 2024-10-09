@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import BreadcrumbComponent from '@/components/breadcrumb';
@@ -11,40 +11,55 @@ import GroupCard from '@/components/groups/card';
 import FilterGroups from '@/components/groups/filter';
 
 function Groups() {
-  const { groups, courses, teachers, students } = useMainContext();
+  const { groups, courses, teachers } = useMainContext();
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
+  const [filteredGroups, setFilteredGroups] = useState(groups);
+  const [id, setId] = useState('');
 
-  const filteredGroups = groups.filter((group) => {
-    switch (filterOption) {
-      case 'title':
-        return courses
-          .filter((item) => item.id === group.courseId)[0]
-          .courseTitle.toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      case 'teacher':
-        return teachers
-          .filter((item) => item.id === group.teacherId)[0]
-          .fullName.toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      default:
-        return false;
-    }
-  });
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const newFilteredGroups = groups.filter((group) => {
+        switch (filterOption) {
+          case 'title':
+            return (
+              courses
+                .filter((item) => item.id === group.courseId)[0]
+                ?.courseTitle.toLowerCase()
+                .includes(searchTerm.toLowerCase()) ?? false
+            );
+          case 'teacher':
+            return (
+              teachers
+                .filter((item) => item.id === group.teacherId)[0]
+                ?.fullName.toLowerCase()
+                .includes(searchTerm.toLowerCase()) ?? false
+            );
+          default:
+            return false;
+        }
+      });
+      setFilteredGroups(newFilteredGroups);
+    }, 300);
 
-  console.log(students);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, filterOption, groups, courses, teachers]);
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <BreadcrumbComponent title="Guruhlar ro'yxati" />
 
       <EditDialog open={openGroupEditDialog} setOpen={setOpenGroupEditDialog}>
-        <GroupEdit />
+        <GroupEdit id={id} setCloseDialog={setOpenGroupEditDialog} />
       </EditDialog>
 
       <DeleteAlert
+        id={id}
+        collection="groups"
         open={openGroupDeleteDialog}
         setOpen={setOpenGroupDeleteDialog}
       />
@@ -70,8 +85,14 @@ function Groups() {
           <Link key={card.id} to={`/groups/${card.id}`}>
             <GroupCard
               card={card}
-              setOpenDelete={setOpenGroupDeleteDialog}
-              setOpenEdit={setOpenGroupEditDialog}
+              setOpenDelete={() => {
+                setId(card.id);
+                setOpenGroupDeleteDialog(true);
+              }}
+              setOpenEdit={() => {
+                setId(card.id);
+                setOpenGroupEditDialog(true);
+              }}
             />
           </Link>
         ))}

@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
-export function DatePicker({ className, setData, data }) {
+export function DatePicker({ className, setData, data, ...props }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
