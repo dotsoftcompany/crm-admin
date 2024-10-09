@@ -41,6 +41,8 @@ const Group = () => {
   const [openAddAbsenteeDialog, setOpenAddAbsenteeDialog] = useState(false);
   const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
     useState(false);
+  const [id, setId] = useState('');
+
   const { groupId } = useParams();
 
   const group = groups.find((g) => g.id === groupId);
@@ -68,13 +70,16 @@ const Group = () => {
       <GroupHeader group={group} />
 
       <EditDialog
+        id={id}
         open={openStudentEditDialog}
         setOpen={setOpenStudentEditDialog}
       >
-        <StudentEdit />
+        <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
       </EditDialog>
 
       <DeleteAlert
+        id={id}
+        collection="students"
         open={openStudentDeleteDialog}
         setOpen={setOpenStudentDeleteDialog}
       />
@@ -97,6 +102,8 @@ const Group = () => {
         </TabsList>
         <TabsContent value="students">
           <StudentsDataTable
+            id={id}
+            setId={setId}
             data={students}
             setOpenEdit={setOpenStudentEditDialog}
             setOpenDelete={setOpenStudentDeleteDialog}
@@ -187,7 +194,7 @@ const Group = () => {
           <div className="space-y-2 pt-2">
             <div className="flex gap-2 items-center">
               <Input placeholder="Search by title" className="max-w-md" />
-              <small className='text-purple-500'>Demo table</small>
+              <small className="text-purple-500">Demo table</small>
             </div>
 
             <Table className="rounded-b-md">

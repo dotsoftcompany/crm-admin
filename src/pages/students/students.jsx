@@ -14,18 +14,23 @@ function Students() {
   const { students } = useMainContext();
   const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
   const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
+  const [id, setId] = useState('');
+
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-2">
       <BreadcrumbComponent title="O'quvchilar ro'yxati" />
 
       <EditDialog
+        id={id}
         open={openStudentEditDialog}
         setOpen={setOpenStudentEditDialog}
       >
-        <StudentEdit />
+        <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
       </EditDialog>
 
       <DeleteAlert
+        id={id}
+        collection="students"
         open={openStudentDeleteDialog}
         setOpen={setOpenStudentDeleteDialog}
       />
@@ -38,6 +43,8 @@ function Students() {
       </div>
 
       <StudentsDataTable
+        id={id}
+        setId={setId}
         data={students}
         setOpenEdit={setOpenStudentEditDialog}
         setOpenDelete={setOpenStudentDeleteDialog}

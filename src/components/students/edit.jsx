@@ -1,32 +1,68 @@
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 import { Checkbox } from '../ui/checkbox';
+import { useMainContext } from '@/context/main-context';
+import { useToast } from '../ui/use-toast';
 
-const StudentEdit = () => {
+const StudentEdit = ({ id, setCloseDialog }) => {
+  const { students } = useMainContext();
+  const student = students.find((s) => s.id === id);
+  console.log(student);
+
   const defaultValues = {
-    fullName: '',
-    parentPhoneNumber: '',
-    phoneNumber: '',
-    address: '',
-    isPaid: false,
+    fullName: student?.fullName,
+    parentPhoneNumber: student?.parentPhoneNumber,
+    phoneNumber: student?.phoneNumber,
+    address: student?.address,
+    isPaid: student?.isPaid,
   };
+
+  const { toast } = useToast();
+
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({
     defaultValues: defaultValues,
   });
 
-  const onSubmit = async (data) => {};
+  React.useEffect(() => {
+    reset(defaultValues);
+  }, [student, reset]);
+
+  const onSubmit = React.useCallback(
+    async (data) => {
+      try {
+        const docRef = doc(db, `users/${auth.currentUser.uid}/students`, id);
+
+        await updateDoc(docRef, data);
+
+        toast({
+          title: 'Talaba muvaffaqiyatli yangilandi',
+        });
+
+        setCloseDialog(false);
+
+        reset();
+      } catch (error) {
+        toast({
+          title: 'Xatolik yuz berdi',
+          description: error.message,
+          variant: 'destructive',
+        });
+      }
+    },
+    [id]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
@@ -98,8 +134,14 @@ const StudentEdit = () => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <Checkbox id="isPaid" />
+      <div className="flex items-center space-x-2 p-2 border border-border rounded-md">
+        <Controller
+          name="isPaid"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Checkbox checked={value} onCheckedChange={onChange} id="isPaid" />
+          )}
+        />
         <Label
           htmlFor="isPaid"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -108,7 +150,7 @@ const StudentEdit = () => {
         </Label>
       </div>
 
-      <Button type="submit" className="float-right">
+      <Button disabled={isSubmitting} type="submit" className="float-right">
         Tahrirlash
       </Button>
     </form>

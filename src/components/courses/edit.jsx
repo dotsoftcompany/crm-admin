@@ -17,7 +17,7 @@ function CourseEdit({ id, setCloseDialog }) {
   const { courses } = useMainContext();
   const course = courses.find((c) => c.id === id);
 
-  const defaultValue = {
+  const defaultValues = {
     courseTitle: course?.courseTitle,
     courseDescription: course?.courseDescription,
     courseCode: course?.courseCode,
@@ -35,11 +35,11 @@ function CourseEdit({ id, setCloseDialog }) {
     formState: { errors, isSubmitting },
     reset,
   } = useForm({
-    defaultValues: { isCertification: course?.isCertification || false },
+    defaultValues: defaultValues,
   });
 
   useEffect(() => {
-    reset(defaultValue);
+    reset(defaultValues);
   }, [course, reset]);
 
   const onSubmit = useCallback(
@@ -68,7 +68,7 @@ function CourseEdit({ id, setCloseDialog }) {
         toast({
           title: 'Xatolik yuz berdi',
           description: error.message,
-          status: 'error',
+          variant: 'destructive',
         });
       }
     },

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowUpDown, MoreHorizontal, ChevronDown } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal, ChevronDown, Eye } from 'lucide-react';
 
 import {
   flexRender,
@@ -33,6 +33,8 @@ import {
 import { formatPhoneNumber } from '@/lib/utils';
 
 export default function StudentsDataTable({
+  id,
+  setId,
   data,
   setOpenDelete,
   setOpenEdit,
@@ -44,6 +46,10 @@ export default function StudentsDataTable({
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const handleRowClick = (teacherId) => {
+    history(`/students/${teacherId}`);
+  };
 
   const columns = [
     {
@@ -111,13 +117,26 @@ export default function StudentsDataTable({
       cell: ({ row }) => (
         <div
           className={
-            row.getValue('isPay')
+            row.original.isPaid
               ? 'text-green-500 whitespace-nowrap'
               : 'text-red-500 whitespace-nowrap'
           }
         >
-          {row.getValue('isPay') ? 'Paid' : 'Not Paid'}
+          {row.original.isPaid ? 'Paid' : 'Not paid'}
         </div>
+      ),
+    },
+    {
+      accessorKey: 'view',
+      header: 'View',
+      cell: ({ row }) => (
+        <Button
+          onClick={() => handleRowClick(row.original.id)}
+          variant="ghost"
+          className="h-8 w-8 p-0"
+        >
+          <Eye className="h-4 w-4 cursor-pointer" />
+        </Button>
       ),
     },
     {
@@ -134,11 +153,21 @@ export default function StudentsDataTable({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setOpenEdit(true)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  setId(student.id);
+                  setOpenEdit(true);
+                }}
+              >
                 Tahrirlash
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setOpenDelete(true)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  setId(student.id);
+                  setOpenDelete(true);
+                }}
+              >
                 O'chirish
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -167,19 +196,15 @@ export default function StudentsDataTable({
     },
   });
 
-  const handleRowClick = (teacherId) => {
-    history(`/students/${teacherId}`);
-  };
-
   return (
     <div className="w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center py-2 gap-2">
           <Input
             placeholder="Filter Name..."
-            value={table.getColumn('name')?.getFilterValue() ?? ''}
+            value={table.getColumn('fullName')?.getFilterValue() ?? ''}
             onChange={(event) =>
-              table.getColumn('name')?.setFilterValue(event.target.value)
+              table.getColumn('fullName')?.setFilterValue(event.target.value)
             }
             className="w-full md:w-64 xl:w-72"
           />
@@ -236,10 +261,8 @@ export default function StudentsDataTable({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(row.original.id)} // row.original.id
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

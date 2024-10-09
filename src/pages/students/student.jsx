@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -33,24 +33,40 @@ const Student = () => {
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
+  const [filteredGroups, setFilteredGroups] = useState(groups);
+  const [id, setId] = useState('');
 
-  // You should put student's group right here.
-  const filteredGroups = groups.filter((group) => {
-    switch (filterOption) {
-      case 'title':
-        return courses
-          .filter((item) => item.id === group.courseId)[0]
-          .courseTitle.toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      case 'teacher':
-        return teachers
-          .filter((item) => item.id === group.teacherId)[0]
-          .fullName.toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      default:
-        return false;
-    }
-  });
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const newFilteredGroups = groups.filter((group) => {
+        switch (filterOption) {
+          case 'title':
+            return (
+              courses
+                .filter((item) => item.id === group.courseId)[0]
+                ?.courseTitle.toLowerCase()
+                .includes(searchTerm.toLowerCase()) ?? false
+            );
+          case 'teacher':
+            return (
+              teachers
+                .filter((item) => item.id === group.teacherId)[0]
+                ?.fullName.toLowerCase()
+                .includes(searchTerm.toLowerCase()) ?? false
+            );
+          default:
+            return false;
+        }
+      });
+      setFilteredGroups(newFilteredGroups);
+    }, 300);
+
+    console.log(id);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, filterOption, groups, courses, teachers]);
 
   if (!student) {
     return (
@@ -105,10 +121,12 @@ const Student = () => {
             open={openGroupEditDialog}
             setOpen={setOpenGroupEditDialog}
           >
-            <GroupEdit />
+            <GroupEdit id={id} setCloseDialog={setOpenGroupEditDialog} />
           </EditDialog>
 
           <DeleteAlert
+            id={id}
+            collection="groups"
             open={openGroupDeleteDialog}
             setOpen={setOpenGroupDeleteDialog}
           />
@@ -127,8 +145,14 @@ const Student = () => {
               <Link key={card.id} to={`/groups/${card.id}`}>
                 <GroupCard
                   card={card}
-                  setOpenDelete={setOpenGroupDeleteDialog}
-                  setOpenEdit={setOpenGroupEditDialog}
+                  setOpenDelete={() => {
+                    setId(card.id);
+                    setOpenGroupDeleteDialog(true);
+                  }}
+                  setOpenEdit={() => {
+                    setId(card.id);
+                    setOpenGroupEditDialog(true);
+                  }}
                 />
               </Link>
             ))}

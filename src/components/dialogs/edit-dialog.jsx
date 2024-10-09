@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useMainContext } from '@/context/main-context';
 
 function EditDialog({ open, setOpen, children }) {
   return (
