@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -25,8 +24,6 @@ function GroupEdit({ id, setCloseDialog }) {
   const group = groups.find((g) => g.id === id);
 
   const { toast } = useToast();
-
-  console.log(groups);
 
   const defaultValue = {
     groupNumber: group?.groupNumber,
@@ -161,7 +158,6 @@ function GroupEdit({ id, setCloseDialog }) {
             rules={{ required: 'Start date is required' }}
             render={({ field }) => (
               <DatePicker
-                // Convert timestamp to Date object if the field value exists
                 data={field.value ? new Date(field.value) : null}
                 setData={(date) => field.onChange(date ? date.getTime() : null)} // Convert back to timestamp
                 className="w-full mt-2"

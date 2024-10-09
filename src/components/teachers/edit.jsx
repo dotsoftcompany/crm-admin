@@ -1,32 +1,70 @@
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { useState } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
+import { useMainContext } from '@/context/main-context';
+import { useToast } from '../ui/use-toast';
 
-const TeacherEdit = () => {
+const TeacherEdit = ({ id, setCloseDialog }) => {
+  const { teachers } = useMainContext();
+  const teacher = teachers.find((s) => s.id === id);
+  console.log(teacher);
+
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [dateOfJoining, setDateOfJoining] = useState('');
+  const { toast } = useToast();
 
-  const defaultValue = {
-    fullName: '',
-    position: '',
-    phone: '',
-    address: '',
+  const defaultValues = {
+    fullName: teacher?.fullName,
+    position: teacher?.position,
+    phone: teacher?.phone,
+    address: teacher?.address,
+    dateOfBirth: teacher?.dateOfBirth,
+    dateOfJoining: teacher?.dateOfJoining,
   };
 
   const {
+    control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
-  } = useForm({ defaultValues: defaultValue });
+  } = useForm({
+    defaultValues: defaultValues,
+  });
 
-  const onSubmit = async (data) => {};
+  React.useEffect(() => {
+    if (teacher) {
+      reset(defaultValues);
+    }
+  }, [teacher, reset]);
+
+  const onSubmit = React.useCallback(
+    async (data) => {
+      try {
+        const docRef = doc(db, `users/${auth.currentUser.uid}/teachers`, id);
+
+        await updateDoc(docRef, data);
+        toast({
+          title: 'Uztos muvaffaqiyatli yangilandi',
+        });
+        setCloseDialog(false);
+        reset();
+      } catch (error) {
+        toast({
+          title: 'Xatolik yuz berdi',
+          description: error.message,
+          status: 'error',
+        });
+      }
+    },
+    [id]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -94,10 +132,17 @@ const TeacherEdit = () => {
       <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="dateOfBirth">Date of Birth</Label>
-          <DatePicker
-            className="w-full mt-2"
-            setData={setDateOfBirth}
-            data={dateOfBirth}
+          <Controller
+            name="dateOfBirth"
+            control={control}
+            rules={{ required: 'Date of birth is required' }}
+            render={({ field }) => (
+              <DatePicker
+                data={field.value ? new Date(field.value) : null}
+                setData={(date) => field.onChange(date ? date.getTime() : null)} // Convert back to timestamp
+                className="w-full mt-2"
+              />
+            )}
           />
           {errors.dateOfBirth && (
             <p className="text-red-500">{errors.dateOfBirth.message}</p>
@@ -106,10 +151,17 @@ const TeacherEdit = () => {
 
         <div className="w-full">
           <Label htmlFor="dateOfJoining">Date of Joining</Label>
-          <DatePicker
-            className="w-full mt-2"
-            setData={setDateOfJoining}
-            data={dateOfJoining}
+          <Controller
+            name="dateOfJoining"
+            control={control}
+            rules={{ required: 'dateOfJoining is required' }}
+            render={({ field }) => (
+              <DatePicker
+                data={field.value ? new Date(field.value) : null}
+                setData={(date) => field.onChange(date ? date.getTime() : null)} // Convert back to timestamp
+                className="w-full mt-2"
+              />
+            )}
           />
           {errors.dateOfJoining && (
             <p className="text-red-500">{errors.dateOfJoining.message}</p>

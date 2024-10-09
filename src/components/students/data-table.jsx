@@ -33,7 +33,6 @@ import {
 import { formatPhoneNumber } from '@/lib/utils';
 
 export default function StudentsDataTable({
-  id,
   setId,
   data,
   setOpenDelete,

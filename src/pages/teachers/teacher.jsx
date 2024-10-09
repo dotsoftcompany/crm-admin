@@ -22,6 +22,7 @@ const Teacher = () => {
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
+  const [id, setId] = useState('');
 
   // You should put teacher's group right here.
   const filteredGroups = groups.filter((group) => {
@@ -62,10 +63,12 @@ const Teacher = () => {
       <TeacherHeader teacher={teacher} />
 
       <EditDialog open={openGroupEditDialog} setOpen={setOpenGroupEditDialog}>
-        <GroupEdit />
+        <GroupEdit id={id} setCloseDialog={setOpenGroupEditDialog} />
       </EditDialog>
 
       <DeleteAlert
+        id={id}
+        collection="groups"
         open={openGroupDeleteDialog}
         setOpen={setOpenGroupDeleteDialog}
       />
@@ -84,8 +87,14 @@ const Teacher = () => {
           <Link key={card.id} to={`/groups/${card.id}`}>
             <GroupCard
               card={card}
-              setOpenDelete={setOpenGroupDeleteDialog}
-              setOpenEdit={setOpenGroupEditDialog}
+              setOpenDelete={() => {
+                setId(card.id);
+                setOpenGroupDeleteDialog(true);
+              }}
+              setOpenEdit={() => {
+                setId(card.id);
+                setOpenGroupEditDialog(true);
+              }}
             />
           </Link>
         ))}

@@ -16,19 +16,23 @@ function Teachers() {
 
   const [openTeacherEditDialog, setOpenTeacherEditDialog] = useState(false);
   const [openTeacherDeleteDialog, setOpenTeacherDeleteDialog] = useState(false);
+  const [id, setId] = useState('');
 
   return (
     <div className="px-4 lg:px-8 mx-auto py-4 space-y-4">
       <BreadcrumbComponent title="O'qituvchilar ro'yxati" />
 
       <EditDialog
+        id={id}
         open={openTeacherEditDialog}
         setOpen={setOpenTeacherEditDialog}
       >
-        <TeacherEdit />
+        <TeacherEdit id={id} setCloseDialog={setOpenTeacherEditDialog} />
       </EditDialog>
 
       <DeleteAlert
+        id={id}
+        collection="teachers"
         open={openTeacherDeleteDialog}
         setOpen={setOpenTeacherDeleteDialog}
       />
@@ -40,23 +44,22 @@ function Teachers() {
         <p className="text-muted-foreground">Barcha o'qituvchilar ro'yxati!</p>
       </div>
 
-      <div>
-        <TeachersDataTable
-          data={teachers}
-          setOpenEdit={setOpenTeacherEditDialog}
-          setOpenDelete={setOpenTeacherDeleteDialog}
-        >
-          <Link to="/add-teacher">
-            <Button
-              variant="secondary"
-              className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
-            >
-              <PlusCircle className="w-4 h-4 -ml-1" />
-              <span>O'qituvchi qo'shish</span>
-            </Button>
-          </Link>
-        </TeachersDataTable>
-      </div>
+      <TeachersDataTable
+        setId={setId}
+        data={teachers}
+        setOpenEdit={setOpenTeacherEditDialog}
+        setOpenDelete={setOpenTeacherDeleteDialog}
+      >
+        <Link to="/add-teacher">
+          <Button
+            variant="secondary"
+            className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
+          >
+            <PlusCircle className="w-4 h-4 -ml-1" />
+            <span>O'qituvchi qo'shish</span>
+          </Button>
+        </Link>
+      </TeachersDataTable>
     </div>
   );
 }

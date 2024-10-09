@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ArrowUpDown, MoreHorizontal, ChevronDown } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal, ChevronDown, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -34,6 +34,7 @@ import { useMainContext } from '@/context/main-context';
 import { formatDate, formatPhoneNumber } from '@/lib/utils';
 
 export default function TeachersDataTable({
+  setId,
   data,
   setOpenDelete,
   setOpenEdit,
@@ -46,6 +47,10 @@ export default function TeachersDataTable({
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
   const { teachers } = useMainContext();
+
+  const handleRowClick = (teacherId) => {
+    history(`/teachers/${teacherId}`);
+  };
 
   const columns = [
     {
@@ -127,6 +132,19 @@ export default function TeachersDataTable({
       ),
     },
     {
+      accessorKey: 'view',
+      header: 'View',
+      cell: ({ row }) => (
+        <Button
+          onClick={() => handleRowClick(row.original.id)}
+          variant="ghost"
+          className="h-8 w-8 p-0"
+        >
+          <Eye className="h-4 w-4 cursor-pointer" />
+        </Button>
+      ),
+    },
+    {
       id: 'actions',
       enableHiding: false,
       cell: ({ row }) => {
@@ -148,20 +166,18 @@ export default function TeachersDataTable({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
+                  setId(teacher.id);
                   setOpenEdit(true);
-                  document.body.style.pointerEvents = '';
                 }}
               >
                 Tahrirlash
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
+                  setId(teacher.id);
                   setOpenDelete(true);
-                  document.body.style.pointerEvents = '';
                 }}
               >
                 O'chirish
@@ -191,10 +207,6 @@ export default function TeachersDataTable({
       rowSelection,
     },
   });
-
-  const handleRowClick = (teacherId) => {
-    history(`/teachers/${teacherId}`);
-  };
 
   return (
     <div className="w-full">
@@ -261,10 +273,8 @@ export default function TeachersDataTable({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="cursor-pointer"
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(row.original.id)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

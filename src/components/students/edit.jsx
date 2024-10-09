@@ -13,7 +13,6 @@ import { useToast } from '../ui/use-toast';
 const StudentEdit = ({ id, setCloseDialog }) => {
   const { students } = useMainContext();
   const student = students.find((s) => s.id === id);
-  console.log(student);
 
   const defaultValues = {
     fullName: student?.fullName,
