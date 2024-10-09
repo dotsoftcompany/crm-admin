@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,12 +23,8 @@ function CourseEdit({ id, setCloseDialog }) {
     courseCode: course?.courseCode,
     courseDuration: course?.courseDuration,
     coursePrice: course?.coursePrice,
-    isCertification: course?.isCertification,
+    isCertification: course?.isCertification || false,
   };
-
-  const [isCertification, setIsCertification] = useState(
-    defaultValue.isCertification
-  );
 
   const { toast } = useToast();
 
@@ -46,30 +34,46 @@ function CourseEdit({ id, setCloseDialog }) {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({ defaultValues: defaultValue });
+  } = useForm({
+    defaultValues: { isCertification: course?.isCertification || false },
+  });
 
-  const onSubmit = async (data) => {
-    try {
-      const courseDocRef = doc(db, `users/${auth.currentUser.uid}/courses`, id);
+  useEffect(() => {
+    reset(defaultValue);
+  }, [course, reset]);
 
-      await updateDoc(courseDocRef, {
-        ...data,
-        coursePrice: Number(data.coursePrice),
-        courseDuration: Number(data.courseDuration),
-        isCertification,
-      });
+  const onSubmit = useCallback(
+    async (data) => {
+      try {
+        const courseDocRef = doc(
+          db,
+          `users/${auth.currentUser.uid}/courses`,
+          id
+        );
 
-      toast({
-        title: 'Kurs muvaffaqiyatli yangilandi',
-      });
+        await updateDoc(courseDocRef, {
+          ...data,
+          coursePrice: Number(data.coursePrice),
+          courseDuration: Number(data.courseDuration),
+        });
 
-      setCloseDialog(false);
+        toast({
+          title: 'Kurs muvaffaqiyatli yangilandi',
+        });
 
-      reset();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        setCloseDialog(false);
+
+        reset();
+      } catch (error) {
+        toast({
+          title: 'Xatolik yuz berdi',
+          description: error.message,
+          status: 'error',
+        });
+      }
+    },
+    [id]
+  );
 
   return (
     <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
@@ -77,6 +81,7 @@ function CourseEdit({ id, setCloseDialog }) {
         <div className="w-full">
           <Label htmlFor="courseTitle">Course Title</Label>
           <Input
+            disabled={isSubmitting}
             id="courseTitle"
             {...register('courseTitle', {
               required: 'Course title is required',
@@ -91,6 +96,7 @@ function CourseEdit({ id, setCloseDialog }) {
         <div className="w-full">
           <Label htmlFor="courseCode">Course Code</Label>
           <Input
+            disabled={isSubmitting}
             id="courseCode"
             {...register('courseCode', {
               required: 'Course code is required',
@@ -133,6 +139,7 @@ function CourseEdit({ id, setCloseDialog }) {
         <div className="w-full">
           <Label htmlFor="courseDuration">Duration (month)</Label>
           <Input
+            disabled={isSubmitting}
             type="number"
             id="courseDuration"
             {...register('courseDuration', {
@@ -153,6 +160,7 @@ function CourseEdit({ id, setCloseDialog }) {
         <Label htmlFor="courseDescription">Description</Label>
         <Textarea
           id="courseDescription"
+          defaultValue={defaultValue?.courseDescription}
           {...register('courseDescription', {
             required: 'Description is required',
           })}
@@ -166,29 +174,17 @@ function CourseEdit({ id, setCloseDialog }) {
       </div>
 
       <div className="flex flex-col md:flex-row items-center gap-2 w-full">
-        {/* <div className="w-full">
-      <Label htmlFor="teacher">Teacher</Label>
-      <Select
-        id="teacher"
-        {...register('teacher', { required: 'Teacher is required' })}
-      >
-        <SelectTrigger className="">
-          <SelectValue placeholder="teacher" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="john_doe">John Doe</SelectItem>
-          <SelectItem value="jane_smith">Jane Smith</SelectItem>
-        </SelectContent>
-      </Select>
-      {errors.teacher && (
-        <small className="text-red-500">{errors.teacher.message}</small>
-      )}
-    </div> */}
         <div className="flex items-center space-x-2">
-          <Switch
-            checked={isCertification}
-            onCheckedChange={setIsCertification}
-            id="isCertification"
+          <Controller
+            name="isCertification"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Switch
+                checked={value}
+                onCheckedChange={onChange}
+                id="isCertification"
+              />
+            )}
           />
           <Label htmlFor="isCertification">Certification</Label>
         </div>
@@ -200,7 +196,7 @@ function CourseEdit({ id, setCloseDialog }) {
         type="submit"
         className="mt-2 float-right"
       >
-        {isSubmitting ? 'Tahrirlanmoqda' : 'Tahrirlash'}
+        Tahrirlash
       </Button>
     </form>
   );
