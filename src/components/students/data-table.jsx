@@ -35,8 +35,11 @@ import { formatPhoneNumber } from '@/lib/utils';
 export default function StudentsDataTable({
   setId,
   data,
+  loading,
+  deleteGroupStudent = null,
   setOpenDelete,
   setOpenEdit,
+  setOpenDeleteDialog,
   children,
 }) {
   const history = useNavigate();
@@ -165,6 +168,7 @@ export default function StudentsDataTable({
                 onClick={() => {
                   setId(student.id);
                   setOpenDelete(true);
+                  setOpenDeleteDialog(true);
                 }}
               >
                 O'chirish
@@ -279,7 +283,7 @@ export default function StudentsDataTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {loading ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}

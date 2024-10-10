@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useMainContext } from '@/context/main-context';
@@ -32,20 +32,130 @@ import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react';
 import AddAbsenteeDialog from '@/components/dialogs/add-absentee';
 import ListAbsenteeDialog from '@/components/dialogs/list-absentee';
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
+import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
+import { useToast } from '@/components/ui/use-toast';
 
 const Group = () => {
-  const { groups, courses, students } = useMainContext();
+  const { toast } = useToast();
+  const { groupId } = useParams();
+  const { groups, courses } = useMainContext();
+  const group = groups.find((g) => g.id === groupId);
+
+  const [id, setId] = useState('');
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
   const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
   const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
   const [openAddAbsenteeDialog, setOpenAddAbsenteeDialog] = useState(false);
   const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
     useState(false);
-  const [id, setId] = useState('');
+  const [groupStudents, setGroupStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentGroupStudents, setCurrentGroupStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
 
-  const { groupId } = useParams();
+  const fetchGroupStudents = useCallback(async () => {
+    setLoading(true);
 
-  const group = groups.find((g) => g.id === groupId);
+    try {
+      const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
+      const groupSnap = await getDoc(groupRef);
+
+      if (groupSnap.exists()) {
+        const groupData = groupSnap.data();
+        const studentIds = groupData.students || [];
+        setCurrentGroupStudents(studentIds);
+
+        if (studentIds.length > 0) {
+          const userId = auth.currentUser.uid;
+          const studentsRef = collection(db, `users/${userId}/students`);
+          const q = query(studentsRef, where('__name__', 'in', studentIds));
+
+          const querySnapshot = await getDocs(q);
+          const fetchedStudents = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          setGroupStudents(fetchedStudents);
+        } else {
+          setGroupStudents([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching group data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [groupId]);
+
+  const handleAddStudent = async () => {
+    const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
+
+    try {
+      const groupSnap = await getDoc(groupRef);
+      const groupData = groupSnap.data();
+      const existingStudents = Array.isArray(groupData.students)
+        ? groupData.students
+        : [];
+
+      const newUniqueStudents = selectedStudents.filter(
+        (studentId) => !existingStudents.includes(studentId)
+      );
+      const updatedStudents = [...existingStudents, ...newUniqueStudents];
+
+      await updateDoc(groupRef, {
+        students: updatedStudents,
+      });
+
+      setCurrentGroupStudents(updatedStudents);
+      setSelectedStudents([]);
+      setOpenAddStudentDialog(false);
+
+      toast({
+        title: "Muvvafaqiyatli qo'shildi",
+      });
+
+      await fetchGroupStudents();
+    } catch (error) {
+      console.error('Error updating group:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGroupStudents();
+  }, [groupId]);
+
+  const handleRemoveStudent = async (studentId) => {
+    const updatedStudents = currentGroupStudents.filter(
+      (id) => id !== studentId
+    );
+    const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
+
+    try {
+      await updateDoc(groupRef, {
+        students: updatedStudents,
+      });
+
+      setCurrentGroupStudents(updatedStudents);
+      fetchGroupStudents();
+
+      toast({
+        title: "Muvvafaqiyatli o'chirildi",
+      });
+    } catch (error) {
+      console.error('Error updating group:', error);
+    }
+  };
 
   if (!group) {
     return (
@@ -77,9 +187,9 @@ const Group = () => {
         <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
       </EditDialog>
 
-      <DeleteAlert
+      <DeleteItemAlert
         id={id}
-        collection="students"
+        deleteGroupStudent={handleRemoveStudent}
         open={openStudentDeleteDialog}
         setOpen={setOpenStudentDeleteDialog}
       />
@@ -103,14 +213,23 @@ const Group = () => {
         <TabsContent value="students">
           <StudentsDataTable
             id={id}
+            deleteGroupStudent={handleRemoveStudent}
             setId={setId}
-            data={students}
+            data={groupStudents}
+            loading={loading}
             setOpenEdit={setOpenStudentEditDialog}
             setOpenDelete={setOpenStudentDeleteDialog}
+            setOpenDeleteDialog={setOpenStudentDeleteDialog}
           >
             <AddStudentDialog
-              openAddStudentDialog={openAddStudentDialog}
-              setOpenAddStudentDialog={setOpenAddStudentDialog}
+              groupId={groupId}
+              handleAddStudent={handleAddStudent}
+              selectedStudents={selectedStudents}
+              setSelectedStudents={setSelectedStudents}
+              currentGroupStudents={currentGroupStudents}
+              setCurrentGroupStudents={setCurrentGroupStudents}
+              openDialog={openAddStudentDialog}
+              setOpenDialog={setOpenAddStudentDialog}
             />
           </StudentsDataTable>
         </TabsContent>

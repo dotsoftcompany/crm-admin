@@ -160,7 +160,7 @@ function CourseEdit({ id, setCloseDialog }) {
         <Label htmlFor="courseDescription">Description</Label>
         <Textarea
           id="courseDescription"
-          defaultValue={defaultValue?.courseDescription}
+          defaultValue={defaultValues?.courseDescription}
           {...register('courseDescription', {
             required: 'Description is required',
           })}

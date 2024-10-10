@@ -24,8 +24,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMainContext } from '@/context/main-context';
 import { DatePicker } from '../ui/date-picker';
+import { Check } from 'lucide-react';
+import { Checkbox } from '../ui/checkbox';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
 
-function AddStudentDialog({ openAddStudentDialog, setOpenAddStudentDialog }) {
+function AddStudentDialog({
+  handleAddStudent,
+  selectedStudents,
+  setSelectedStudents,
+  currentGroupStudents,
+  openDialog,
+  setOpenDialog,
+}) {
   const { students } = useMainContext();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,8 +44,17 @@ function AddStudentDialog({ openAddStudentDialog, setOpenAddStudentDialog }) {
   const studentsFilter = students.filter((s) =>
     s.fullName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleCheckboxChange = (studentId) => {
+    setSelectedStudents((prevSelected) =>
+      prevSelected.includes(studentId)
+        ? prevSelected.filter((id) => id !== studentId)
+        : [...prevSelected, studentId]
+    );
+  };
+
   return (
-    <Dialog open={openAddStudentDialog} onOpenChange={setOpenAddStudentDialog}>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
         <Button>O'quvchi qo'shish</Button>
       </DialogTrigger>
@@ -51,26 +71,45 @@ function AddStudentDialog({ openAddStudentDialog, setOpenAddStudentDialog }) {
         </div>
         <ScrollArea className="h-[300px] overflow-auto rounded-md">
           <Table className="h-full">
-            <TableCaption>A list of your recent invoices.</TableCaption>
+            {!studentsFilter.length > 0 && (
+              <TableCaption>Student is not defined</TableCaption>
+            )}
             <TableHeader className="sticky top-0">
               <TableRow>
-                <TableHead className="w-[100px]">Ism familya</TableHead>
+                <TableHead></TableHead>
+                <TableHead>Ism familya</TableHead>
                 <TableHead>Manzil</TableHead>
                 <TableHead>Telefon raqam</TableHead>
-                <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="w-full">
               {studentsFilter.map((student) => (
-                <TableRow key={student.id}>
+                <TableRow
+                  title={
+                    currentGroupStudents.includes(student.id)
+                      ? 'This student already added this group'
+                      : null
+                  }
+                  key={student.id}
+                  className={
+                    currentGroupStudents.includes(student.id)
+                      ? 'opacity-40'
+                      : 'opacity-100'
+                  }
+                >
+                  <TableCell>
+                    <Checkbox
+                      disabled={currentGroupStudents.includes(student.id)}
+                      type="checkbox"
+                      checked={selectedStudents.includes(student.id)}
+                      onCheckedChange={() => handleCheckboxChange(student.id)}
+                    />
+                  </TableCell>
                   <TableCell className="truncate font-medium">
                     {student.fullName}
                   </TableCell>
                   <TableCell>{student.address}</TableCell>
                   <TableCell>{student.phoneNumber}</TableCell>
-                  <TableCell className="text-right">
-                    <Button className="h-8 text-sm">Qo'shish</Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -82,7 +121,7 @@ function AddStudentDialog({ openAddStudentDialog, setOpenAddStudentDialog }) {
               Close
             </Button>
           </DialogClose>
-          <Button type="submit">Confirm</Button>
+          <Button onClick={handleAddStudent}>Confirm</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
