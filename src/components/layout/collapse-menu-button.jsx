@@ -49,7 +49,7 @@ export function CollapseMenuButton({
           className={`w-full justify-start h-10 mb-1 ${
             active
               ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
-              : 'bg-accent hover:bg-white text-primary dark:bg-transparent dark:hover:bg-accent'
+              : 'bg-white hover:bg-accent text-primary dark:bg-transparent dark:hover:bg-accent'
           }`}
         >
           <div className="w-full items-center flex justify-between">
@@ -90,8 +90,8 @@ export function CollapseMenuButton({
             key={index}
             className={`w-full justify-start h-8 mb-1 ${
               active
-                ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
-                : 'bg-accent hover:bg-white text-primary dark:bg-transparent dark:hover:bg-accent'
+                ? 'bg-blue-600 text-white hover:opacity-90 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue0600'
+                : 'bg-white hover:bg-accent text-primary dark:bg-transparent dark:hover:bg-accent'
             }`}
             asChild
           >
