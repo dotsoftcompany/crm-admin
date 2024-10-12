@@ -29,7 +29,7 @@ const Student = () => {
 
   const student = students.find((s) => s.id === studentId);
   const studentGroups = groups.filter((group) =>
-    group.students.includes(studentId)
+    group?.students?.includes(studentId)
   );
 
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
