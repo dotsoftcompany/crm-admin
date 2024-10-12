@@ -26,7 +26,6 @@ import AddStudentDialog from '@/components/dialogs/add-student';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import StudentEdit from '@/components/students/edit';
-import DeleteAlert from '@/components/dialogs/delete-alert';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react';

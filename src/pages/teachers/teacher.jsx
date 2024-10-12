@@ -17,6 +17,7 @@ const Teacher = () => {
   const { teacherId } = useParams();
 
   const teacher = teachers.find((t) => t.id === teacherId);
+  const teacherGroups = groups.filter((group) => group.teacherId === teacherId);
 
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
@@ -25,7 +26,7 @@ const Teacher = () => {
   const [id, setId] = useState('');
 
   // You should put teacher's group right here.
-  const filteredGroups = groups.filter((group) => {
+  const filteredGroups = teacherGroups.filter((group) => {
     switch (filterOption) {
       case 'title':
         return courses

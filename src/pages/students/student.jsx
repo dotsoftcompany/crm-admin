@@ -28,6 +28,9 @@ const Student = () => {
   const { groups, courses, teachers, students } = useMainContext();
 
   const student = students.find((s) => s.id === studentId);
+  const studentGroups = groups.filter((group) =>
+    group.students.includes(studentId)
+  );
 
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
@@ -38,7 +41,7 @@ const Student = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      const newFilteredGroups = groups.filter((group) => {
+      const newFilteredGroups = studentGroups.filter((group) => {
         switch (filterOption) {
           case 'title':
             return (
@@ -60,8 +63,6 @@ const Student = () => {
       });
       setFilteredGroups(newFilteredGroups);
     }, 300);
-
-    console.log(id);
 
     return () => {
       clearTimeout(handler);

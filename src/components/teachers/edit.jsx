@@ -13,10 +13,7 @@ import { useToast } from '../ui/use-toast';
 const TeacherEdit = ({ id, setCloseDialog }) => {
   const { teachers } = useMainContext();
   const teacher = teachers.find((s) => s.id === id);
-  console.log(teacher);
 
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [dateOfJoining, setDateOfJoining] = useState('');
   const { toast } = useToast();
 
   const defaultValues = {

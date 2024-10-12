@@ -117,7 +117,9 @@ function GroupEdit({ id, setCloseDialog }) {
                 onValueChange={(e) => field.onChange(e)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select Teacher" />
+                  <SelectValue
+                    placeholder={field.value ? field.value : 'Select Teacher'}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {teachers.map((item) => (

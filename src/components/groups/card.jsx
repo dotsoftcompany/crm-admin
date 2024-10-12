@@ -23,6 +23,10 @@ import { formatDate } from '@/lib/utils';
 function GroupCard({ card, setOpenDelete, setOpenEdit }) {
   const { courses, teachers } = useMainContext();
 
+  const teacherFullName = teachers?.filter(
+    (item) => item.id === card?.teacherId
+  )[0]?.fullName;
+
   return (
     <Card key={card.id} className="group-card group-dark-card">
       <div className="p-4 pb-0 space-y-2">
@@ -128,7 +132,8 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
               {/* Optionally display avatars here */}
             </div>
             <Badge className="text-sm px-2 font-medium" variant="secondary">
-              Talabalar: {10}ta
+              Talabalar soni:
+              {card?.students?.length ? ` ${card?.students?.length} ta` : ' 0'}
             </Badge>
           </div>
         </div>
@@ -138,27 +143,24 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
         <div className="flex items-center gap-2 w-52">
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src={
-                teachers.filter((item) => item.id === card.teacherId)[0]
-                  .fullName
-              }
+              src=""
               alt={
-                teachers.filter((item) => item.id === card.teacherId)[0]
-                  .fullName
+                teacherFullName
+                  ? teacherFullName
+                  : 'Ustoz topilmadi - yangi ustoz tanlang'
               }
             />
             <AvatarFallback className="text-xs">
-              {teachers
-                .filter((item) => item.id === card.teacherId)[0]
-                ?.fullName?.split(' ')
+              {teacherFullName
+                ?.split(' ')
                 .map((word) => word[0])
                 .join('')
                 ?.slice(0, 2)
-                .toUpperCase() || 'N/A'}
+                .toUpperCase() || 'UT'}
             </AvatarFallback>
           </Avatar>
           <span className="text-sm font-medium truncate">
-            {teachers.filter((item) => item.id === card.teacherId)[0].fullName}
+            {teacherFullName ? teacherFullName : 'Ustoz tanlanmagan'}
           </span>
         </div>
         <small className="text-sm px-2 font-medium text-muted-foreground">
