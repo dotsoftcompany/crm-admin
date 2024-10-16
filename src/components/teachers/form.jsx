@@ -61,6 +61,7 @@ const AddTeacherForm = () => {
         ...data,
         dateOfBirth: new Date(dateOfBirth).getTime(),
         dateOfJoining: new Date(dateOfJoining).getTime(),
+        timestamp: new Date().getTime(),
       });
 
       reset();

@@ -53,6 +53,7 @@ function AddCourses() {
         coursePrice: Number(data.coursePrice),
         courseDuration: Number(data.courseDuration),
         isCertification,
+        timestamp: new Date().getTime(),
       }).then(() => {
         reset();
         toast({

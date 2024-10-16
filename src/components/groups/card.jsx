@@ -119,7 +119,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
             <h2 className="text-lg lg:text-xl font-semibold">
               {
                 courses.filter((item) => item.id === card.courseId)[0]
-                  .courseTitle
+                  ?.courseTitle
               }
             </h2>
             <span className="text-base text-muted-foreground">

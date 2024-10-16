@@ -51,6 +51,7 @@ function AddGroup() {
         ...data,
         status: true,
         startDate: new Date(startDate).getTime(),
+        timestamp: new Date().getTime(),
       }).then(() => {
         reset();
         setStartDate('');

@@ -1,73 +1,124 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useState } from 'react';
+
 import { Badge } from '@/components/ui/badge';
+import { useMainContext } from '@/context/main-context';
+import { formatNumber } from '@/lib/utils';
+import { Button } from './ui/button';
+import { ChevronRight } from 'lucide-react';
+import { ScrollArea } from './ui/scroll-area';
 
 export function RecentlyAdded() {
+  const { courses, teachers, students, groups } = useMainContext();
+  const [viewAll, setViewAll] = useState(false);
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+  };
+
+  const allData = [
+    ...courses.map((item) => ({ ...item, type: 'course' })),
+    ...teachers.map((item) => ({ ...item, type: 'teacher' })),
+    ...groups.map((item) => ({ ...item, type: 'group' })),
+    ...students.map((item) => ({ ...item, type: 'student' })),
+  ];
+
+  const sortedData = allData.sort((a, b) => b.timestamp - a.timestamp);
+
+  const displayedItems = !viewAll ? sortedData.slice(0, 5) : sortedData;
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/01.png" alt="Avatar" />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Olivia Martin</p>
-          <p className="text-sm text-muted-foreground">
-            olivia.martin@email.com
-          </p>
-        </div>
+    <ul>
+      <ScrollArea className="h-72">
+        {displayedItems.map((item, index) => {
+          switch (item.type) {
+            case 'course':
+              return (
+                <li key={index} className="flex items-center py-2">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {item.courseTitle}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(item.timestamp)}
+                    </p>
+                  </div>
 
-        <Badge className="ml-auto bg-blue-100 text-blue-500">Talaba</Badge>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
-          <AvatarImage src="/avatars/02.png" alt="Avatar" />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Jackson Lee</p>
-          <p className="text-sm text-muted-foreground">jackson.lee@email.com</p>
-        </div>
+                  <Badge variant="active" className="ml-auto">
+                    Kurs
+                  </Badge>
+                </li>
+              );
+            case 'teacher':
+              return (
+                <li key={index} className="flex items-center py-2">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {item.fullName}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(item.timestamp)}
+                    </p>
+                  </div>
 
-        <Badge className="ml-auto bg-purple-100 text-purple-500">Ustoz</Badge>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/03.png" alt="Avatar" />
-          <AvatarFallback>IN</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Frontend Development</p>
-          <p className="text-sm text-muted-foreground">
-            isabella.nguyen@email.com
-          </p>
-        </div>
+                  <Badge variant="odd" className="ml-auto">
+                    O'qituvchi
+                  </Badge>
+                </li>
+              );
+            case 'group':
+              const courseTitle =
+                courses.find((course) => course.id === item.courseId)
+                  ?.courseTitle || 'Unknown Course';
+              return (
+                <li key={index} className="flex items-center py-2">
+                  <div className="space-y-1">
+                    <p className="flex items-center gap-2 text-sm font-medium leading-none">
+                      {courseTitle}{' '}
+                      <span className="text-muted-foreground">
+                        #{item.groupNumber}
+                      </span>
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {' '}
+                      {formatDate(item.timestamp)}
+                    </p>
+                  </div>
 
-        <Badge className="ml-auto bg-indigo-100 text-indigo-500">Kurs</Badge>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/04.png" alt="Avatar" />
-          <AvatarFallback>WK</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">William Kim</p>
-          <p className="text-sm text-muted-foreground">will@email.com</p>
-        </div>
+                  <Badge variant="even" className="ml-auto">
+                    Guruh
+                  </Badge>
+                </li>
+              );
+            case 'student':
+              return (
+                <li key={index} className="flex items-center py-2">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {item.fullName}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(item.timestamp)}
+                    </p>
+                  </div>
 
-        <Badge className="ml-auto bg-blue-100 text-blue-500">Talaba</Badge>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/05.png" alt="Avatar" />
-          <AvatarFallback>SD</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Sofia Davis</p>
-          <p className="text-sm text-muted-foreground">sofia.davis@email.com</p>
-        </div>
-
-        <Badge className="ml-auto bg-blue-100 text-blue-500">Talaba</Badge>
-      </div>
-    </div>
+                  <Badge variant="inactive" className="ml-auto">
+                    O'quvchi
+                  </Badge>
+                </li>
+              );
+            default:
+              return null;
+          }
+        })}
+      </ScrollArea>
+      <Button
+        onClick={() => setViewAll((prev) => !prev)}
+        variant="link"
+        className="pl-0 mt-2 flex items-center gap-2 group mx-auto"
+      >
+        <span>{!viewAll ? 'View all' : 'Show less'}</span>
+        <ChevronRight className="w-4 h-4 group-hover:ml-0.5 duration-300" />
+      </Button>
+    </ul>
   );
 }

@@ -72,7 +72,10 @@ const AddStudentForm = () => {
         return;
       }
 
-      await addDoc(userStudentsRef, data);
+      await addDoc(userStudentsRef, {
+        ...data,
+        timestamp: new Date().getTime(),
+      });
       reset();
 
       toast({

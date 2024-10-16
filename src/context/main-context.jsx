@@ -19,6 +19,11 @@ export const MainContextProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
   const [students, setStudents] = useState([]);
 
+  console.log('courses', courses);
+  console.log('teachers', teachers);
+  console.log('groups', groups);
+  console.log('students', students);
+
   const colorVariants = {
     green: 'bg-green-100 hover:!bg-green-200/50 text-green-500',
     red: 'bg-rose-500 hover:!bg-rose-600 focus:!bg-rose-500  border !border-rose-500 focus:!text-white text-white hover:!text-white',

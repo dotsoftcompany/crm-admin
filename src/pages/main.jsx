@@ -18,10 +18,24 @@ import { PieGraph } from '@/components/charts/pie-graph';
 import { useMainContext } from '@/context/main-context';
 import { SheetMenu } from '@/components/layout/sheet-menu';
 import { MonthPicker } from '@/components/ui/month-picker';
+import { Badge } from '@/components/ui/badge';
 
 function MainPage() {
-  const { courses, teachers, students } = useMainContext();
+  const { courses, teachers, students, groups } = useMainContext();
   const [month, setMonth] = React.useState(null);
+
+  const allData = [
+    ...courses.map((item) => ({ ...item, type: 'course' })),
+    ...teachers.map((item) => ({ ...item, type: 'teacher' })),
+    ...groups.map((item) => ({ ...item, type: 'group' })),
+    ...students.map((item) => ({ ...item, type: 'student' })),
+  ];
+
+  // Sort the combined data based on the ID or any other relevant property (e.g., `startDate` or `dateOfJoining`)
+  const sortedData = allData.sort((a, b) => b.id.localeCompare(a.id)); // Assuming `id` is sortable
+
+  // Get the last 5 added items
+  const lastFiveItems = sortedData.slice(0, 5);
 
   // https://github.com/Kiranism/next-shadcn-dashboard-starter
   return (
@@ -39,43 +53,19 @@ function MainPage() {
           </div>
         </div>
       </div>
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="dark:bg-background/95">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Kurslar</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{courses.length} ta</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="dark:bg-background/95">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">O'qituvchilar</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{teachers.length} ta</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="dark:bg-background/95">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Talabalar</CardTitle>
-            <GraduationCapIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{students.length} ta</div>
-            <p className="text-xs text-muted-foreground">
-              +19% from last month
-            </p>
-          </CardContent>
-        </Card>
+        <MainCard title="Kurslar" Icon={BookOpen} count={courses?.length} />
+        <MainCard
+          title="O'qituvchilar"
+          Icon={GraduationCapIcon}
+          count={teachers?.length}
+        />
+        <MainCard
+          title="O'quvchilar"
+          Icon={GraduationCapIcon}
+          count={students?.length}
+        />
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="col-span-4">
@@ -83,8 +73,8 @@ function MainPage() {
         </div>
         <Card className="col-span-4 md:col-span-3">
           <CardHeader>
-            <CardTitle>Recently Added</CardTitle>
-            <CardDescription>You made 265 sales this month.</CardDescription>
+            <CardTitle>Oxirgi qo'shilganlar</CardTitle>
+            <CardDescription></CardDescription>
           </CardHeader>
           <CardContent>
             <RecentlyAdded />
@@ -102,3 +92,17 @@ function MainPage() {
 }
 
 export default MainPage;
+
+function MainCard({ title, Icon, count }) {
+  return (
+    <Card className="dark:bg-background/95">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{count} ta</div>
+      </CardContent>
+    </Card>
+  );
+}
