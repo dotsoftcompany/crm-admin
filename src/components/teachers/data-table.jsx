@@ -46,7 +46,7 @@ export default function TeachersDataTable({
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const { teachers } = useMainContext();
+  const { loading } = useMainContext();
 
   const handleRowClick = (teacherId) => {
     history(`/teachers/${teacherId}`);
@@ -249,7 +249,7 @@ export default function TeachersDataTable({
         </div>
         <>{children}</>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-b-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -290,9 +290,9 @@ export default function TeachersDataTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-16 text-center"
                 >
-                  No results.
+                  {loading ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}

@@ -7,9 +7,11 @@ import CourseEdit from '@/components/courses/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import CourseCard from '@/components/courses/card';
 import FilterCourses from '@/components/courses/filter';
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function Courses() {
-  const { courses } = useMainContext();
+  const { courses, loading } = useMainContext();
 
   const [openCourseDeleteDialog, setOpenCourseDeleteDialog] = useState(false);
   const [openCourseEditDialog, setOpenCourseEditDialog] = useState(false);
@@ -75,28 +77,62 @@ function Courses() {
         setFilterOption={setFilterOption}
       />
 
+      {loading && <CardLoading />}
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map((item) => (
-            <CourseCard
-              key={item.courseCode}
-              item={item}
-              setOpenDelete={() => {
-                setId(item.id);
-                setOpenCourseDeleteDialog(true);
-              }}
-              setOpenEdit={() => {
-                setId(item.id);
-                setOpenCourseEditDialog(true);
-              }}
-            />
-          ))
-        ) : (
-          <p className="py-2 text-muted-foreground">Kurs topilmadi.</p>
-        )}
+        {filteredCourses.map((item) => (
+          <CourseCard
+            key={item.courseCode}
+            item={item}
+            setOpenDelete={() => {
+              setId(item.id);
+              setOpenCourseDeleteDialog(true);
+            }}
+            setOpenEdit={() => {
+              setId(item.id);
+              setOpenCourseEditDialog(true);
+            }}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
 export default Courses;
+
+function CardLoading() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {[...Array(6)].map((_, index) => (
+        <Card className="flex flex-col">
+          <div className="p-4 grow space-y-2 lg:space-y-4">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-8 w-8 rounded-full" />
+            </div>
+
+            <div>
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-4 w-full mt-2" />
+              <Skeleton className="h-4 w-3/4 mt-2" />
+            </div>
+
+            <div className="flex gap-2 mt-4">
+              <Skeleton className="h-6 w-28" />
+              <Skeleton className="h-6 w-32" />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between py-3 px-4 border-t border-border">
+            <div className="hidden items-center gap-2 w-52">
+              <Skeleton className="h-8 w-8 rounded-full" />
+              <Skeleton className="h-6 w-32" />
+            </div>
+            <Skeleton className="h-6 w-24" />
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}

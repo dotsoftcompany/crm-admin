@@ -17,11 +17,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+
 import { useMainContext } from '@/context/main-context';
 import { formatDate } from '@/lib/utils';
 
 function GroupCard({ card, setOpenDelete, setOpenEdit }) {
-  const { courses, teachers } = useMainContext();
+  const { courses, teachers, loading } = useMainContext();
 
   const teacherFullName = teachers?.filter(
     (item) => item.id === card?.teacherId

@@ -19,11 +19,6 @@ export const MainContextProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
   const [students, setStudents] = useState([]);
 
-  console.log('courses', courses);
-  console.log('teachers', teachers);
-  console.log('groups', groups);
-  console.log('students', students);
-
   const colorVariants = {
     green: 'bg-green-100 hover:!bg-green-200/50 text-green-500',
     red: 'bg-rose-500 hover:!bg-rose-600 focus:!bg-rose-500  border !border-rose-500 focus:!text-white text-white hover:!text-white',
@@ -66,25 +61,46 @@ export const MainContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
+    let collectionsToLoad = 4;
+
+    const handleDataLoaded = () => {
+      collectionsToLoad -= 1;
+      if (collectionsToLoad === 0) {
+        setLoading(false);
+      }
+    };
+
     const coursesCollection = collection(db, `users/${uid}/courses`);
-    onSnapshot(coursesCollection, (snapshot) => {
+    const unsubscribeCourses = onSnapshot(coursesCollection, (snapshot) => {
       setCourses(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      handleDataLoaded();
     });
 
     const teachersCollection = collection(db, `users/${uid}/teachers`);
-    onSnapshot(teachersCollection, (snapshot) => {
+    const unsubscribeTeachers = onSnapshot(teachersCollection, (snapshot) => {
       setTeachers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      handleDataLoaded();
     });
 
     const groupsCollection = collection(db, `users/${uid}/groups`);
-    onSnapshot(groupsCollection, (snapshot) => {
+    const unsubscribeGroups = onSnapshot(groupsCollection, (snapshot) => {
       setGroups(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      handleDataLoaded();
     });
 
     const studentsCollection = collection(db, `users/${uid}/students`);
-    onSnapshot(studentsCollection, (snapshot) => {
+    const unsubscribeStudents = onSnapshot(studentsCollection, (snapshot) => {
       setStudents(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      handleDataLoaded();
     });
+
+    return () => {
+      unsubscribeCourses();
+      unsubscribeTeachers();
+      unsubscribeGroups();
+      unsubscribeStudents();
+    };
   }, [uid]);
 
   const logoutUser = () => {
@@ -114,6 +130,7 @@ export const MainContextProvider = ({ children }) => {
     groups,
     getUsertime,
     students,
+    loading,
   };
 
   return (

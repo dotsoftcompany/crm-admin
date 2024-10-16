@@ -20,13 +20,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+import { Input } from '@/components/ui/input';
 import StudentsDataTable from '@/components/students/data-table';
 import GroupHeader from '@/components/groups/header';
 import AddStudentDialog from '@/components/dialogs/add-student';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import StudentEdit from '@/components/students/edit';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react';
 import AddAbsenteeDialog from '@/components/dialogs/add-absentee';
@@ -43,11 +43,13 @@ import {
 import { auth, db } from '@/api/firebase';
 import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
 import { useToast } from '@/components/ui/use-toast';
+import Exams from '@/components/groups/exams';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Group = () => {
   const { toast } = useToast();
   const { groupId } = useParams();
-  const { groups, courses } = useMainContext();
+  const { groups, courses, loading } = useMainContext();
   const group = groups.find((g) => g.id === groupId);
 
   const [id, setId] = useState('');
@@ -58,13 +60,10 @@ const Group = () => {
   const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
     useState(false);
   const [groupStudents, setGroupStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentGroupStudents, setCurrentGroupStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
 
   const fetchGroupStudents = useCallback(async () => {
-    setLoading(true);
-
     try {
       const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
       const groupSnap = await getDoc(groupRef);
@@ -92,8 +91,6 @@ const Group = () => {
       }
     } catch (error) {
       console.error('Error fetching group data:', error);
-    } finally {
-      setLoading(false);
     }
   }, [groupId]);
 
@@ -156,13 +153,45 @@ const Group = () => {
     }
   };
 
-  if (!group) {
+  if (loading || !group) {
     return (
-      <div className="px-4 lg:px-8 mx-auto py-4">
-        <h2 className="text-2xl font-bold tracking-tight">404 error</h2>
-        <p className="text-muted-foreground">
-          Siz qidirayotgan guruh topilmadi!
-        </p>
+      <div className="px-4 lg:px-8 mx-auto py-4 space-y-3 md:space-y-5">
+        <Skeleton className="h-4 w-72" />
+        <div className="space-y-2 py-4 w-full border-b border-border">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-64" />
+          </div>
+
+          <div className="flex items-center gap-3 md:gap-5">
+            <div className="flex items-center gap-1 text-xs md:text-sm capitalize">
+              <Skeleton className="h-4 w-20" />
+            </div>
+
+            <Skeleton className="h-4 w-24" />
+
+            <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
+              <Skeleton className="h-4 w-16" />
+            </div>
+
+            <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
+              <Skeleton className="w-4 h-4" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+          </div>
+        </div>
+        <Skeleton className="h-10 w-72" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-9 w-64" />
+            <Skeleton className="h-9 w-20" />
+          </div>
+          <Skeleton className="h-9 w-24" />
+        </div>
+        <div className="space-y-1">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+        </div>
       </div>
     );
   }
@@ -215,7 +244,6 @@ const Group = () => {
             deleteGroupStudent={handleRemoveStudent}
             setId={setId}
             data={groupStudents}
-            loading={loading}
             setOpenEdit={setOpenStudentEditDialog}
             setOpenDelete={setOpenStudentDeleteDialog}
             setOpenDeleteDialog={setOpenStudentDeleteDialog}
@@ -309,74 +337,7 @@ const Group = () => {
           </div>
         </TabsContent>
         <TabsContent value="exams">
-          <div className="space-y-2 pt-2">
-            <div className="flex gap-2 items-center">
-              <Input placeholder="Search by title" className="max-w-md" />
-              <small className="text-purple-500">Demo table</small>
-            </div>
-
-            <Table className="rounded-b-md">
-              <TableCaption className="hidden">
-                A list of absent students for the selected date.
-              </TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-72 rounded-tl-md">Title</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right rounded-tr-md"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="border-x border-b border-border">
-                <TableRow>
-                  <TableCell>General Chemistry Final Exam</TableCell>
-                  <TableCell className="font-medium">12.11.2024</TableCell>
-                  <TableCell>scheduled</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      onClick={() => setShowAbsenteeStudentsDialog(true)}
-                      variant="link"
-                    >
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Eye className="w-5 h-5" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <small>Batafsil</small>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Chemical Reactions and Equilibrium Test</TableCell>
-                  <TableCell className="font-medium rounded-bl-lg">
-                    23.12.2023
-                  </TableCell>
-                  <TableCell>Completed</TableCell>
-                  <TableCell className="text-right rounded-br-lg">
-                    <Button
-                      onClick={() => setShowAbsenteeStudentsDialog(true)}
-                      variant="link"
-                    >
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Eye className="w-5 h-5" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <small>Batafsil</small>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+          <Exams groupId={groupId} setOpen={setShowAbsenteeStudentsDialog} />
         </TabsContent>
       </Tabs>
     </div>

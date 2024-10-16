@@ -31,18 +31,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { formatPhoneNumber } from '@/lib/utils';
+import { useMainContext } from '@/context/main-context';
 
 export default function StudentsDataTable({
   setId,
   data,
-  loading,
-  deleteGroupStudent = null,
   setOpenDelete,
   setOpenEdit,
   setOpenDeleteDialog,
   children,
 }) {
   const history = useNavigate();
+  const { loading } = useMainContext();
 
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -240,7 +240,7 @@ export default function StudentsDataTable({
         </div>
         <>{children}</>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-b-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -281,7 +281,7 @@ export default function StudentsDataTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-16 text-center"
                 >
                   {loading ? 'Loading...' : 'No results.'}
                 </TableCell>
