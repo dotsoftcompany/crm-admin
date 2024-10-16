@@ -11,9 +11,11 @@ import EditDialog from '@/components/dialogs/edit-dialog';
 import GroupEdit from '@/components/groups/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import FilterGroups from '@/components/groups/filter';
+import { Skeleton } from '@/components/ui/skeleton';
+import { GroupCarLoading } from '../groups/groups';
 
 const Teacher = () => {
-  const { groups, courses, teachers } = useMainContext();
+  const { groups, courses, teachers, loading } = useMainContext();
   const { teacherId } = useParams();
 
   const teacher = teachers.find((t) => t.id === teacherId);
@@ -25,7 +27,6 @@ const Teacher = () => {
   const [filterOption, setFilterOption] = useState('title');
   const [id, setId] = useState('');
 
-  // You should put teacher's group right here.
   const filteredGroups = teacherGroups.filter((group) => {
     switch (filterOption) {
       case 'title':
@@ -43,13 +44,31 @@ const Teacher = () => {
     }
   });
 
-  if (!teacher) {
+  if (loading || !teacher) {
     return (
-      <div className="px-4 lg:px-8 mx-auto py-4">
-        <h2 className="text-2xl font-bold tracking-tight">404 error</h2>
-        <p className="text-muted-foreground">
-          Siz qidirayotgan guruh topilmadi!
-        </p>
+      <div className="px-4 lg:px-8 mx-auto py-4 space-y-3 md:space-y-5">
+        <Skeleton className="h-4 w-72" />
+        <div className="space-y-2 pb-4 w-full border-b border-border">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-64" />
+          </div>
+
+          <div className="flex items-center gap-3 md:gap-5">
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-9 w-64" />
+            <Skeleton className="h-9 w-20" />
+          </div>
+          <Skeleton className="h-9 w-28" />
+        </div>
+        <GroupCarLoading />
       </div>
     );
   }

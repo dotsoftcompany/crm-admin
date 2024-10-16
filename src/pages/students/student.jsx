@@ -22,10 +22,12 @@ import FilterGroups from '@/components/groups/filter';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import GroupEdit from '@/components/groups/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
+import { GroupCarLoading } from '../groups/groups';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Student = () => {
   const { studentId } = useParams();
-  const { groups, courses, teachers, students } = useMainContext();
+  const { groups, courses, teachers, students, loading } = useMainContext();
 
   const student = students.find((s) => s.id === studentId);
   const studentGroups = groups.filter((group) =>
@@ -69,13 +71,32 @@ const Student = () => {
     };
   }, [searchTerm, filterOption, groups, courses, teachers]);
 
-  if (!student) {
+  if (loading || !student) {
     return (
-      <div className="px-4 lg:px-8 mx-auto py-4">
-        <h2 className="text-2xl font-bold tracking-tight">404 error</h2>
-        <p className="text-muted-foreground">
-          Siz qidirayotgan o'quvchi topilmadi!
-        </p>
+      <div className="px-4 lg:px-8 mx-auto py-4 space-y-3 md:space-y-5">
+        <Skeleton className="h-4 w-72" />
+        <div className="space-y-2 pb-4 w-full border-b border-border">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-64" />
+          </div>
+
+          <div className="flex items-center gap-3 md:gap-5">
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </div>
+        <Skeleton className="h-10 w-72" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-9 w-64" />
+            <Skeleton className="h-9 w-20" />
+          </div>
+          <Skeleton className="h-9 w-28" />
+        </div>
+        <GroupCarLoading />
       </div>
     );
   }

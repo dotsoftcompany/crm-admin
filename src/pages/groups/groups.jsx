@@ -82,7 +82,7 @@ function Groups() {
         setFilterOption={setFilterOption}
       />
 
-      {loading && <CardLoading />}
+      {loading && <GroupCarLoading />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredGroups.map((card) => (
@@ -107,7 +107,7 @@ function Groups() {
 
 export default Groups;
 
-function CardLoading() {
+export function GroupCarLoading() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {[...Array(6)].map((_, index) => (
