@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { usePDF } from 'react-to-pdf';
 
 import { useMainContext } from '@/context/main-context';
 
@@ -28,7 +29,7 @@ import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import StudentEdit from '@/components/students/edit';
 import { Button } from '@/components/ui/button';
-import { Eye } from 'lucide-react';
+import { Download, Eye } from 'lucide-react';
 import AddAbsenteeDialog from '@/components/dialogs/add-absentee';
 import ListAbsenteeDialog from '@/components/dialogs/list-absentee';
 import {
@@ -45,8 +46,11 @@ import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
 import { useToast } from '@/components/ui/use-toast';
 import Exams from '@/components/groups/exams';
 import { Skeleton } from '@/components/ui/skeleton';
+import SavePDF from '@/components/groups/save-pdf';
 
 const Group = () => {
+  const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
+
   const { toast } = useToast();
   const { groupId } = useParams();
   const { groups, courses, loading } = useMainContext();
@@ -197,149 +201,171 @@ const Group = () => {
   }
 
   return (
-    <div className="px-4 lg:px-8 mt-4">
-      <BreadcrumbComponent
-        title="Guruhlar ro'yxati"
-        titleLink="/groups"
-        subtitle={`${
-          courses.filter((item) => item.id === group.courseId)[0].courseTitle
-        } #${group.groupNumber}`}
-      />
-      <GroupHeader group={group} />
-
-      <EditDialog
-        id={id}
-        open={openStudentEditDialog}
-        setOpen={setOpenStudentEditDialog}
-      >
-        <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
-      </EditDialog>
-
-      <DeleteItemAlert
-        id={id}
-        deleteGroupStudent={handleRemoveStudent}
-        open={openStudentDeleteDialog}
-        setOpen={setOpenStudentDeleteDialog}
-      />
-
-      <AddAbsenteeDialog
-        open={openAddAbsenteeDialog}
-        setOpen={setOpenAddAbsenteeDialog}
-      />
-
-      <ListAbsenteeDialog
-        open={showAbsenteeStudentsDialog}
-        setOpen={setShowAbsenteeStudentsDialog}
-      />
-
-      <Tabs defaultValue="students" className="mt-4">
-        <TabsList>
-          <TabsTrigger value="students">O'quvchilar ro'yxati</TabsTrigger>
-          <TabsTrigger value="attendance_check">Yo'qlamalar</TabsTrigger>
-          <TabsTrigger value="exams">Imtihonlar</TabsTrigger>
-        </TabsList>
-        <TabsContent value="students">
-          <StudentsDataTable
-            id={id}
-            deleteGroupStudent={handleRemoveStudent}
-            setId={setId}
-            data={groupStudents}
-            setOpenEdit={setOpenStudentEditDialog}
-            setOpenDelete={setOpenStudentDeleteDialog}
-            setOpenDeleteDialog={setOpenStudentDeleteDialog}
+    <div className="relative h-screen overflow-hidden mt-4">
+      <div className="absolute inset-0 z-0 overflow-auto h-full bg-background px-4 lg:px-8">
+        <div className="flex items-center justify-between w-full">
+          <BreadcrumbComponent
+            title="Guruhlar ro'yxati"
+            titleLink="/groups"
+            subtitle={`${
+              courses.filter((item) => item.id === group.courseId)[0]
+                .courseTitle
+            } #${group.groupNumber}`}
+          />
+          <button
+            className="flex items-center gap-1.5 text-sm"
+            onClick={() => toPDF()}
           >
-            <AddStudentDialog
-              groupId={groupId}
-              handleAddStudent={handleAddStudent}
-              selectedStudents={selectedStudents}
-              setSelectedStudents={setSelectedStudents}
-              currentGroupStudents={currentGroupStudents}
-              setCurrentGroupStudents={setCurrentGroupStudents}
-              openDialog={openAddStudentDialog}
-              setOpenDialog={setOpenAddStudentDialog}
-            />
-          </StudentsDataTable>
-        </TabsContent>
-        <TabsContent value="attendance_check">
-          <div className="space-y-2 pt-2">
-            <div className="flex justify-between items-center">
-              <Input placeholder="Enter date" className="max-w-md" />
-              <Button
-                onClick={() => setOpenAddAbsenteeDialog(true)}
-                variant="secondary"
-                className="dark:bg-white dark:text-black"
-              >
-                Yo'qlama qilsh
-              </Button>
-            </div>
+            <Download className="w-4 h-4 text-muted-foreground" />
+            <span>Pdf saqlash</span>
+          </button>
+        </div>
 
-            <Table className="rounded-b-md">
-              <TableCaption className="hidden">
-                A list of absent students for the selected date.
-              </TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-72 rounded-tl-md">Sana</TableHead>
-                  <TableHead>Nechtadan</TableHead>
-                  <TableHead>Foizda (%)</TableHead>
-                  <TableHead className="text-right rounded-tr-md"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="border-x border-b border-border">
-                <TableRow>
-                  <TableCell className="font-medium">12.11.2024</TableCell>
-                  <TableCell>9/10</TableCell>
-                  <TableCell>90%</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      onClick={() => setShowAbsenteeStudentsDialog(true)}
-                      variant="link"
-                    >
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Eye className="w-5 h-5" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <small>Batafsil</small>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium rounded-bl-lg">
-                    23.12.2023
-                  </TableCell>
-                  <TableCell>8/10</TableCell>
-                  <TableCell>80%</TableCell>
-                  <TableCell className="text-right rounded-br-lg">
-                    <Button
-                      onClick={() => setShowAbsenteeStudentsDialog(true)}
-                      variant="link"
-                    >
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Eye className="w-5 h-5" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <small>Batafsil</small>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-        </TabsContent>
-        <TabsContent value="exams">
-          <Exams groupId={groupId} setOpen={setShowAbsenteeStudentsDialog} />
-        </TabsContent>
-      </Tabs>
+        <GroupHeader group={group} />
+
+        <EditDialog
+          id={id}
+          open={openStudentEditDialog}
+          setOpen={setOpenStudentEditDialog}
+        >
+          <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
+        </EditDialog>
+
+        <DeleteItemAlert
+          id={id}
+          deleteGroupStudent={handleRemoveStudent}
+          open={openStudentDeleteDialog}
+          setOpen={setOpenStudentDeleteDialog}
+        />
+
+        <AddAbsenteeDialog
+          open={openAddAbsenteeDialog}
+          setOpen={setOpenAddAbsenteeDialog}
+        />
+
+        <ListAbsenteeDialog
+          open={showAbsenteeStudentsDialog}
+          setOpen={setShowAbsenteeStudentsDialog}
+        />
+
+        <Tabs defaultValue="students" className="mt-4">
+          <TabsList>
+            <TabsTrigger value="students">O'quvchilar ro'yxati</TabsTrigger>
+            <TabsTrigger value="attendance_check">Yo'qlamalar</TabsTrigger>
+            <TabsTrigger value="exams">Imtihonlar</TabsTrigger>
+          </TabsList>
+          <TabsContent value="students">
+            <StudentsDataTable
+              id={id}
+              deleteGroupStudent={handleRemoveStudent}
+              setId={setId}
+              data={groupStudents}
+              setOpenEdit={setOpenStudentEditDialog}
+              setOpenDelete={setOpenStudentDeleteDialog}
+              setOpenDeleteDialog={setOpenStudentDeleteDialog}
+            >
+              <AddStudentDialog
+                groupId={groupId}
+                handleAddStudent={handleAddStudent}
+                selectedStudents={selectedStudents}
+                setSelectedStudents={setSelectedStudents}
+                currentGroupStudents={currentGroupStudents}
+                setCurrentGroupStudents={setCurrentGroupStudents}
+                openDialog={openAddStudentDialog}
+                setOpenDialog={setOpenAddStudentDialog}
+              />
+            </StudentsDataTable>
+          </TabsContent>
+          <TabsContent value="attendance_check">
+            <div className="space-y-2 pt-2">
+              <div className="flex justify-between items-center">
+                <Input placeholder="Enter date" className="max-w-md" />
+                <Button
+                  onClick={() => setOpenAddAbsenteeDialog(true)}
+                  variant="secondary"
+                  className="dark:bg-white dark:text-black"
+                >
+                  Yo'qlama qilsh
+                </Button>
+              </div>
+
+              <Table className="rounded-b-md">
+                <TableCaption className="hidden">
+                  A list of absent students for the selected date.
+                </TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-72 rounded-tl-md">Sana</TableHead>
+                    <TableHead>Nechtadan</TableHead>
+                    <TableHead>Foizda (%)</TableHead>
+                    <TableHead className="text-right rounded-tr-md"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="border-x border-b border-border">
+                  <TableRow>
+                    <TableCell className="font-medium">12.11.2024</TableCell>
+                    <TableCell>9/10</TableCell>
+                    <TableCell>90%</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        onClick={() => setShowAbsenteeStudentsDialog(true)}
+                        variant="link"
+                      >
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Eye className="w-5 h-5" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <small>Batafsil</small>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium rounded-bl-lg">
+                      23.12.2023
+                    </TableCell>
+                    <TableCell>8/10</TableCell>
+                    <TableCell>80%</TableCell>
+                    <TableCell className="text-right rounded-br-lg">
+                      <Button
+                        onClick={() => setShowAbsenteeStudentsDialog(true)}
+                        variant="link"
+                      >
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Eye className="w-5 h-5" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <small>Batafsil</small>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+          <TabsContent value="exams">
+            <Exams groupId={groupId} setOpen={setShowAbsenteeStudentsDialog} />
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      <div className="absolute inset-0 z-[-10] overflow-auto h-full no-scrollbar">
+        <SavePDF
+          targetRef={targetRef}
+          group={group}
+          groupId={groupId}
+          students={groupStudents}
+        />
+      </div>
     </div>
   );
 };

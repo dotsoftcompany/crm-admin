@@ -51,10 +51,10 @@ function StudentHeader({ student }) {
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 <a
-                  href={`tel:${student.phoneNumber}`}
+                  href={`tel:${student.parentPhoneNumber}`}
                   className="text-sm md:text-base hover:underline"
                 >
-                  {student.phoneNumber}
+                  {student.parentPhoneNumber}
                 </a>
               </div>
             </TooltipTrigger>

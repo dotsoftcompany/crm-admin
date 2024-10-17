@@ -38,6 +38,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.2",
+    "react-to-pdf": "^1.0.1",
     "recharts": "^2.12.7"
   },
   "devDependencies": {
