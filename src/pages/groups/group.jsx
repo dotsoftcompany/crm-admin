@@ -49,12 +49,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import SavePDF from '@/components/groups/save-pdf';
 
 const Group = () => {
-  const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
-
   const { toast } = useToast();
   const { groupId } = useParams();
   const { groups, courses, loading } = useMainContext();
   const group = groups.find((g) => g.id === groupId);
+
+  const { toPDF, targetRef } = usePDF({
+    filename: `${
+      courses.filter((item) => item.id === group.courseId)[0].courseTitle
+    } #${group.groupNumber}.pdf`,
+  });
 
   const [id, setId] = useState('');
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
