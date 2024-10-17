@@ -157,7 +157,7 @@ const Group = () => {
     return (
       <div className="px-4 lg:px-8 mx-auto py-4 space-y-3 md:space-y-5">
         <Skeleton className="h-4 w-72" />
-        <div className="space-y-2 py-4 w-full border-b border-border">
+        <div className="space-y-2 pb-4 w-full border-b border-border">
           <div className="flex items-center gap-2">
             <Skeleton className="h-6 w-64" />
           </div>

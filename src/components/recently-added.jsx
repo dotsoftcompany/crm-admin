@@ -6,9 +6,10 @@ import { formatNumber } from '@/lib/utils';
 import { Button } from './ui/button';
 import { ChevronRight } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
+import { Skeleton } from './ui/skeleton';
 
 export function RecentlyAdded() {
-  const { courses, teachers, students, groups } = useMainContext();
+  const { courses, teachers, students, groups, loading } = useMainContext();
   const [viewAll, setViewAll] = useState(false);
 
   const formatDate = (timestamp) => {
@@ -26,6 +27,32 @@ export function RecentlyAdded() {
   const sortedData = allData.sort((a, b) => b.timestamp - a.timestamp);
 
   const displayedItems = !viewAll ? sortedData.slice(0, 5) : sortedData;
+
+  const items = Array(5).fill({
+    courseTitle: 'Loading...',
+    timestamp: new Date(),
+  });
+
+  if (loading) {
+    return (
+      <ul className="space-y-2">
+        {items.map((item, index) => (
+          <li key={index} className="flex items-center justify-between py-2">
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                <Skeleton className="h-4 w-32" />{' '}
+                {/* Skeleton for course title */}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Skeleton className="h-3 w-24" /> {/* Skeleton for timestamp */}
+              </p>
+            </div>
+            <Skeleton className="h-4 w-12" />
+          </li>
+        ))}
+      </ul>
+    );
+  }
   return (
     <ul>
       <ScrollArea className="h-72">
@@ -114,10 +141,10 @@ export function RecentlyAdded() {
       <Button
         onClick={() => setViewAll((prev) => !prev)}
         variant="link"
-        className="pl-0 mt-2 flex items-center gap-2 group mx-auto"
+        className="pl-0 mt-2 flex items-center gap-1 mx-auto"
       >
         <span>{!viewAll ? 'View all' : 'Show less'}</span>
-        <ChevronRight className="w-4 h-4 group-hover:ml-0.5 duration-300" />
+        <ChevronRight className="w-4 h-4" />
       </Button>
     </ul>
   );
