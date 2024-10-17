@@ -24,6 +24,7 @@ import GroupEdit from '@/components/groups/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import { GroupCarLoading } from '../groups/groups';
 import { Skeleton } from '@/components/ui/skeleton';
+import LessonsSchedule from '@/components/students/lesson-schedule';
 
 const Student = () => {
   const { studentId } = useParams();
@@ -133,10 +134,11 @@ const Student = () => {
       />
       <StudentHeader student={student} />
 
-      <Tabs defaultValue="groups" className="mt-4">
+      <Tabs defaultValue="groups" className="">
         <TabsList>
           <TabsTrigger value="groups">Guruhlar ro'yxati</TabsTrigger>
-          <TabsTrigger value="attendance_check">To'lovlar tarixi</TabsTrigger>
+          <TabsTrigger value="lesson-schedule">Dars jadvali</TabsTrigger>
+          <TabsTrigger value="attendance-check">To'lovlar tarixi</TabsTrigger>
         </TabsList>
         <TabsContent value="groups" className="py-2 space-y-4">
           <EditDialog
@@ -180,7 +182,10 @@ const Student = () => {
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="attendance_check" className="py-2 space-y-4">
+        <TabsContent value="lesson-schedule">
+          <LessonsSchedule studentId={studentId} />
+        </TabsContent>
+        <TabsContent value="attendance-check" className="py-2 space-y-4">
           <Table className="rounded-md">
             <TableCaption>A list of recent student payments.</TableCaption>
             <TableHeader>

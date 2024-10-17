@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 
 import { useMainContext } from '@/context/main-context';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
+
 import TeacherHeader from '@/components/teachers/header';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import GroupCard from '@/components/groups/card';
@@ -11,8 +14,8 @@ import EditDialog from '@/components/dialogs/edit-dialog';
 import GroupEdit from '@/components/groups/edit';
 import DeleteAlert from '@/components/dialogs/delete-alert';
 import FilterGroups from '@/components/groups/filter';
-import { Skeleton } from '@/components/ui/skeleton';
 import { GroupCarLoading } from '../groups/groups';
+import LessonsSchedule from '@/components/teachers/lesson-schedule';
 
 const Teacher = () => {
   const { groups, courses, teachers, loading } = useMainContext();
@@ -82,43 +85,54 @@ const Teacher = () => {
       />
       <TeacherHeader teacher={teacher} />
 
-      <EditDialog open={openGroupEditDialog} setOpen={setOpenGroupEditDialog}>
-        <GroupEdit id={id} setCloseDialog={setOpenGroupEditDialog} />
-      </EditDialog>
-
-      <DeleteAlert
-        id={id}
-        collection="groups"
-        open={openGroupDeleteDialog}
-        setOpen={setOpenGroupDeleteDialog}
-      />
-
-      <FilterGroups
-        url="/add-teacher"
-        title="Add teacher"
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        filterOption={filterOption}
-        setFilterOption={setFilterOption}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {filteredGroups.map((card) => (
-          <Link key={card.id} to={`/groups/${card.id}`}>
-            <GroupCard
-              card={card}
-              setOpenDelete={() => {
-                setId(card.id);
-                setOpenGroupDeleteDialog(true);
-              }}
-              setOpenEdit={() => {
-                setId(card.id);
-                setOpenGroupEditDialog(true);
-              }}
-            />
-          </Link>
-        ))}
-      </div>
+      <Tabs defaultValue="groups" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="groups">Guruhlar ro'yxati</TabsTrigger>
+          <TabsTrigger value="lesson-schedule">Dars jadvali</TabsTrigger>
+        </TabsList>
+        <TabsContent value="groups">
+          <EditDialog
+            open={openGroupEditDialog}
+            setOpen={setOpenGroupEditDialog}
+          >
+            <GroupEdit id={id} setCloseDialog={setOpenGroupEditDialog} />
+          </EditDialog>
+          <DeleteAlert
+            id={id}
+            collection="groups"
+            open={openGroupDeleteDialog}
+            setOpen={setOpenGroupDeleteDialog}
+          />
+          <FilterGroups
+            url="/add-teacher"
+            title="Add teacher"
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            filterOption={filterOption}
+            setFilterOption={setFilterOption}
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+            {filteredGroups.map((card) => (
+              <Link key={card.id} to={`/groups/${card.id}`}>
+                <GroupCard
+                  card={card}
+                  setOpenDelete={() => {
+                    setId(card.id);
+                    setOpenGroupDeleteDialog(true);
+                  }}
+                  setOpenEdit={() => {
+                    setId(card.id);
+                    setOpenGroupEditDialog(true);
+                  }}
+                />
+              </Link>
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="lesson-schedule">
+          <LessonsSchedule teacherId={teacherId} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
