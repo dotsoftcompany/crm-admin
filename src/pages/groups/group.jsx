@@ -282,7 +282,7 @@ const Group = () => {
           </TabsContent>
           <TabsContent value="attendance_check">
             <div className="space-y-2 pt-2">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center gap-2">
                 <Input placeholder="Enter date" className="max-w-md" />
                 <Button
                   onClick={() => setOpenAddAbsenteeDialog(true)}
@@ -293,67 +293,75 @@ const Group = () => {
                 </Button>
               </div>
 
-              <Table className="rounded-b-md">
-                <TableCaption className="hidden">
-                  A list of absent students for the selected date.
-                </TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-72 rounded-tl-md">Sana</TableHead>
-                    <TableHead>Nechtadan</TableHead>
-                    <TableHead>Foizda (%)</TableHead>
-                    <TableHead className="text-right rounded-tr-md"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody className="border-x border-b border-border">
-                  <TableRow>
-                    <TableCell className="font-medium">12.11.2024</TableCell>
-                    <TableCell>9/10</TableCell>
-                    <TableCell>90%</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        onClick={() => setShowAbsenteeStudentsDialog(true)}
-                        variant="link"
-                      >
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <Eye className="w-5 h-5" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <small>Batafsil</small>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium rounded-bl-lg">
-                      23.12.2023
-                    </TableCell>
-                    <TableCell>8/10</TableCell>
-                    <TableCell>80%</TableCell>
-                    <TableCell className="text-right rounded-br-lg">
-                      <Button
-                        onClick={() => setShowAbsenteeStudentsDialog(true)}
-                        variant="link"
-                      >
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <Eye className="w-5 h-5" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <small>Batafsil</small>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <div className="max-w-[44rem] min-w-full overflow-x-auto">
+                <Table className="rounded-b-md">
+                  <TableCaption className="hidden">
+                    A list of absent students for the selected date.
+                  </TableCaption>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-72 rounded-tl-md whitespace-nowrap">
+                        Sana
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap">
+                        Nechtadan
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap">
+                        Foizda (%)
+                      </TableHead>
+                      <TableHead className="text-right rounded-tr-md"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="border-x border-b border-border">
+                    <TableRow>
+                      <TableCell className="font-medium">12.11.2024</TableCell>
+                      <TableCell>9/10</TableCell>
+                      <TableCell>90%</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          onClick={() => setShowAbsenteeStudentsDialog(true)}
+                          variant="link"
+                        >
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Eye className="w-5 h-5" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <small>Batafsil</small>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium rounded-bl-lg">
+                        23.12.2023
+                      </TableCell>
+                      <TableCell>8/10</TableCell>
+                      <TableCell>80%</TableCell>
+                      <TableCell className="text-right rounded-br-lg">
+                        <Button
+                          onClick={() => setShowAbsenteeStudentsDialog(true)}
+                          variant="link"
+                        >
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Eye className="w-5 h-5" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <small>Batafsil</small>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </TabsContent>
           <TabsContent value="exams">

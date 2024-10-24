@@ -91,51 +91,57 @@ function Exams({ groupId, setOpen }) {
         />
       </div>
 
-      <Table className="rounded-b-md">
-        <TableCaption>{loading && 'Loading...'}</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="max-w-56 rounded-tl-md">Title</TableHead>
-            <TableHead>Start date</TableHead>
-            <TableHead>End date</TableHead>
-            <TableHead>Place</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="rounded-tr-md text-center">View</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredExams.map((exam) => (
-            <TableRow key={exam.id}>
-              {' '}
-              <TableCell className="max-w-56">{exam?.title}</TableCell>
-              <TableCell>
-                {new Date(exam?.startDate).toLocaleDateString()}
-              </TableCell>{' '}
-              <TableCell>
-                {new Date(exam?.endDate).toLocaleDateString()}
-              </TableCell>
-              <TableCell>{exam?.place}</TableCell>
-              <TableCell>{exam?.status}</TableCell>
-              <TableCell className="text-center">
-                <Link to={`/groups/${groupId}/exam/${exam.id}`}>
-                  <Button onClick={() => setOpen(true)} variant="link">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Eye className="w-5 h-5" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <small>Batafsil</small>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </Button>
-                </Link>
-              </TableCell>
+      <div className="max-w-[44rem] min-w-full overflow-x-auto">
+        <Table className="rounded-b-md">
+          <TableCaption>{loading && 'Loading...'}</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="max-w-56 rounded-tl-md whitespace-nowrap">
+                Title
+              </TableHead>
+              <TableHead className="whitespace-nowrap">Start date</TableHead>
+              <TableHead className="whitespace-nowrap">End date</TableHead>
+              <TableHead className="whitespace-nowrap">Place</TableHead>
+              <TableHead className="whitespace-nowrap">Status</TableHead>
+              <TableHead className="rounded-tr-md text-center whitespace-nowrap">
+                View
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredExams.map((exam) => (
+              <TableRow key={exam.id}>
+                {' '}
+                <TableCell className="max-w-56 whitespace-nowrap">{exam?.title}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {new Date(exam?.startDate).toLocaleDateString()}
+                </TableCell>{' '}
+                <TableCell className="whitespace-nowrap">
+                  {new Date(exam?.endDate).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">{exam?.place}</TableCell>
+                <TableCell className="whitespace-nowrap">{exam?.status}</TableCell>
+                <TableCell className="text-center">
+                  <Link to={`/groups/${groupId}/exam/${exam.id}`}>
+                    <Button onClick={() => setOpen(true)} variant="link">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Eye className="w-5 h-5" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <small>Batafsil</small>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
