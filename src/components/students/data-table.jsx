@@ -240,14 +240,14 @@ export default function StudentsDataTable({
         </div>
         <>{children}</>
       </div>
-      <div className="rounded-b-md border">
+      <div className="rounded-b-md border max-w-[44rem] min-w-full overflow-x-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="whitespace-nowrap">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
