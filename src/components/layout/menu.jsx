@@ -10,6 +10,7 @@ import {
   Moon,
   Monitor,
   UserCircle2,
+  ShieldCheck,
 } from 'lucide-react';
 
 import {
@@ -40,8 +41,12 @@ import {
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/provider/ThemeProvider';
 import { auth } from '@/api/firebase';
+import { useEffect, useState } from 'react';
+import LogoutAlert from '../dialogs/logout';
 
 export function Menu({ isOpen }) {
+  const [openAlert, setOpenAlert] = useState(false);
+
   const { setTheme } = useTheme();
   let location = useLocation();
   const menuList = getMenuList(location.pathname);
@@ -56,8 +61,40 @@ export function Menu({ isOpen }) {
       });
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'd') {
+        event.preventDefault();
+        setTheme('dark');
+      }
+      if (event.ctrlKey && event.key === 'f') {
+        event.preventDefault();
+        setTheme('light');
+      }
+      if (event.ctrlKey && event.key === 'g') {
+        event.preventDefault();
+        setTheme('system');
+      }
+      if (event.ctrlKey && event.key === 'q') {
+        event.preventDefault();
+        setOpenAlert(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
+      <LogoutAlert
+        open={openAlert}
+        setOpen={setOpenAlert}
+        handleQuit={handleLogout}
+      />
       <nav className="mt-8 h-full w-full">
         <ul className="flex flex-col  h-[calc(100vh-180px)] overflow-x-hidden max-h-[calc(100vh-120px)] overflow-y-auto items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, index) => (
@@ -151,7 +188,7 @@ export function Menu({ isOpen }) {
                       className="w-full h-10 mt-5 mx-2 justify-start pl-4"
                     >
                       <span className={cn(isOpen === false ? '' : 'mr-3')}>
-                        <UserCircle2 size={18} />
+                        <ShieldCheck size={18} />
                       </span>
                       <p
                         className={cn(
@@ -159,7 +196,7 @@ export function Menu({ isOpen }) {
                           isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
                         )}
                       >
-                        Admin
+                        Administratsiya
                       </p>
                     </Button>
                   </DropdownMenuTrigger>
@@ -169,32 +206,32 @@ export function Menu({ isOpen }) {
                 )}
               </Tooltip>
               <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
                     <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    <span>Sozlamalar</span>
                   </DropdownMenuItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                       <SunMoon className="mr-2 h-4 w-4" />
-                      <span>Theme</span>
+                      <span>Mavzu</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
+                      <DropdownMenuSubContent className="w-40">
                         <DropdownMenuItem onClick={() => setTheme('light')}>
                           <Sun className="mr-2 h-4 w-4" />
-                          <span>Light</span>
+                          <span>Kunduzgi</span>
+                          <DropdownMenuShortcut>⌘F</DropdownMenuShortcut>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setTheme('dark')}>
                           <Moon className="mr-2 h-4 w-4" />
-                          <span>Dark</span>
+                          <span>Tungi</span>
+                          <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setTheme('system')}>
                           <Monitor className="mr-2 h-4 w-4" />
-                          <span>System</span>
+                          <span>Sistema</span>
+                          <DropdownMenuShortcut>⌘G</DropdownMenuShortcut>
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
@@ -203,8 +240,8 @@ export function Menu({ isOpen }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                  <span>Chiqish</span>
+                  <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
