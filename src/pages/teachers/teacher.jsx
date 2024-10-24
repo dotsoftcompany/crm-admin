@@ -81,7 +81,7 @@ const Teacher = () => {
       <BreadcrumbComponent
         title="O'qituvchilar ro'yxati"
         titleLink="/teachers"
-        subtitle="John Doe"
+        subtitle={teacher?.fullName}
       />
       <TeacherHeader teacher={teacher} />
 

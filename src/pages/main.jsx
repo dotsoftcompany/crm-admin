@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { BookOpen, GraduationCapIcon, Users } from 'lucide-react';
+import { BookOpen, GraduationCapIcon, Star, Users } from 'lucide-react';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Button } from '@/components/ui/button';
 import { BarGraph } from '@/components/charts/bar-graph';
@@ -18,7 +18,6 @@ import { PieGraph } from '@/components/charts/pie-graph';
 import { useMainContext } from '@/context/main-context';
 import { SheetMenu } from '@/components/layout/sheet-menu';
 import { MonthPicker } from '@/components/ui/month-picker';
-import { Badge } from '@/components/ui/badge';
 
 function MainPage() {
   const { courses, teachers, students, groups } = useMainContext();
@@ -39,7 +38,6 @@ function MainPage() {
 
   // https://github.com/Kiranism/next-shadcn-dashboard-starter
 
-  
   return (
     <div className="px-8 mx-auto my-4 space-y-4">
       <div className="space-y-2">
@@ -56,13 +54,10 @@ function MainPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MainCard title="Kurslar" Icon={BookOpen} count={courses?.length} />
-        <MainCard
-          title="O'qituvchilar"
-          Icon={GraduationCapIcon}
-          count={teachers?.length}
-        />
+        <MainCard title="O'qituvchilar" Icon={Star} count={teachers?.length} />
+        <MainCard title="Guruhlar" Icon={Users} count={groups?.length} />
         <MainCard
           title="O'quvchilar"
           Icon={GraduationCapIcon}

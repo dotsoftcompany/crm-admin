@@ -56,8 +56,8 @@ const Group = () => {
 
   const { toPDF, targetRef } = usePDF({
     filename: `${
-      courses.filter((item) => item.id === group.courseId)[0].courseTitle
-    } #${group.groupNumber}.pdf`,
+      courses.filter((item) => item.id === group.courseId)[0]?.courseTitle
+    } #${group?.groupNumber}.pdf`,
   });
 
   const [id, setId] = useState('');

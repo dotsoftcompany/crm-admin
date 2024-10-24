@@ -130,7 +130,7 @@ const Student = () => {
       <BreadcrumbComponent
         title="O'quvchilar ro'yxati"
         titleLink="/students"
-        subtitle="John Doe"
+        subtitle={student?.fullName}
       />
       <StudentHeader student={student} />
 

@@ -14,7 +14,7 @@ export function getMenuList(pathname) {
       menus: [
         {
           href: '/',
-          label: 'Asosiy',
+          label: 'Asosiy sahifa',
           active: pathname === '/',
           icon: LayoutGrid,
           submenus: [],
