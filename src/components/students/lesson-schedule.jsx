@@ -12,13 +12,13 @@ function LessonsSchedule({ studentId }) {
   );
 
   const days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+    'Dushanba',
+    'Seshanba',
+    'Chorshanba',
+    'Payshanba',
+    'Juma',
+    'Shanba',
+    'Yakshanba',
   ];
 
   const times = Array.from({ length: 13 }, (_, i) => {
@@ -26,15 +26,13 @@ function LessonsSchedule({ studentId }) {
     return `${hour < 10 ? '0' : ''}${hour}:00`;
   });
 
-  // Helper function to get the days based on selectedDay
   const getDaysForSchedule = (selectedDay) => {
-    if (selectedDay === 'odd') return ['Monday', 'Wednesday', 'Friday'];
-    if (selectedDay === 'even') return ['Tuesday', 'Thursday', 'Saturday'];
+    if (selectedDay === 'odd') return ['Dushanba', 'Chorshanba', 'Juma'];
+    if (selectedDay === 'even') return ['Seshanba', 'Payshanba', 'Shanba'];
     if (selectedDay === 'every_day') return days.slice(0, 6);
     return [];
   };
 
-  // Helper function to check if the current time is in the given range
   const isTimeInRange = (time, range) => {
     const [start, end] = range.split(' - ');
     const startHour = parseInt(start.split(':')[0], 10);
@@ -43,7 +41,6 @@ function LessonsSchedule({ studentId }) {
     return currentHour >= startHour && currentHour < endHour;
   };
 
-  // Helper function to assign background color based on selectedDay
   const getBackgroundColor = (selectedDay) => {
     if (selectedDay === 'odd') return 'bg-orange-200 dark:bg-orange-500';
     if (selectedDay === 'even') return 'bg-purple-200 dark:bg-purple-500';
@@ -62,17 +59,13 @@ function LessonsSchedule({ studentId }) {
             </div>
           ))}
 
-          {/* Time slots and schedule cells */}
           {times.map((time, timeIndex) => (
             <React.Fragment key={time}>
-              {/* Time column */}
               <div className="sticky left-0 z-10 flex items-center justify-center gap-1 md:gap-2 font-semibold text-center dark:bg-background p-2 bg-background">
                 <Clock className="w-4 h-4" />
                 <span>{time}</span>
               </div>
-              {/* Cells for each day */}
               {days.map((day) => {
-                // Find if there's a class scheduled for this time and day
                 const groupForDay = studentGroups.find((schedule) => {
                   const scheduleDays = getDaysForSchedule(schedule.selectedDay);
                   return (
@@ -122,7 +115,6 @@ function LessonsSchedule({ studentId }) {
                   );
                 }
 
-                // Render empty cell if no class is scheduled
                 return (
                   <div
                     key={day + time}
