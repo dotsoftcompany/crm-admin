@@ -20,7 +20,9 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
     <Card className="flex flex-col">
       <div className="p-4 grow space-y-2 lg:space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-base text-muted-foreground">#{item.courseCode}</p>
+          <p className="text-base text-muted-foreground">
+            #{item.courseCode ? item.courseCode : "noma'lum"}
+          </p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild aria-hidden="true">
               <Button
@@ -50,7 +52,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
                   document.body.style.pointerEvents = '';
                 }}
               >
-                Edit
+                Tahrirlash
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -59,7 +61,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
                   document.body.style.pointerEvents = '';
                 }}
               >
-                Delete
+                O'chirish
                 <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -78,12 +80,12 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
           <Badge className="text-sm px-2 font-medium" variant="secondary">
             Davomiyligi: {item.courseDuration} oy
           </Badge>
-          {item.isCertification && (
-            <Badge
-              className="text-sm font-medium flex items-center gap-1"
-              variant="secondary"
-            >
-              <span>Sertifikat:</span>
+          <Badge
+            className="text-sm font-medium flex items-center gap-1"
+            variant="secondary"
+          >
+            <span>Sertifikat:</span>
+            {item.isCertification ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -96,8 +98,21 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
                   clipRule="evenodd"
                 />
               </svg>
-            </Badge>
-          )}
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-4 w-4 text-red-500"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+          </Badge>
         </div>
       </div>
 

@@ -88,7 +88,6 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
                     d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
                   />
                 </svg>
-                <span className="sr-only">Open menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
@@ -99,7 +98,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
                   document.body.style.pointerEvents = ''; // Optionally manage pointer events
                 }}
               >
-                Edit
+                Tahrirlash
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -109,7 +108,7 @@ function GroupCard({ card, setOpenDelete, setOpenEdit }) {
                   document.body.style.pointerEvents = ''; // Optionally manage pointer events
                 }}
               >
-                Delete
+                O'chirish
                 <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>

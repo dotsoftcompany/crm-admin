@@ -79,7 +79,7 @@ export default function TeachersDataTable({
       accessorKey: 'fullName',
       header: ({ column }) => (
         <Button
-        className="pl-0"
+          className="pl-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >

@@ -19,9 +19,18 @@ import { auth, db } from '@/api/firebase';
 import { formatNumber } from '@/lib/utils';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import { useToast } from '@/components/ui/use-toast';
+import { Hash } from 'lucide-react';
+import { useCharacterLimit } from '@/hooks/useCharacterLimit';
 
 function AddCourses() {
   const [isCertification, setIsCertification] = useState(false);
+  const maxLength = 250;
+  const {
+    value,
+    characterCount,
+    handleChange,
+    maxLength: limit,
+  } = useCharacterLimit({ maxLength });
 
   const defaultValue = {
     courseTitle: '',
@@ -70,23 +79,27 @@ function AddCourses() {
       <BreadcrumbComponent title="Kurs qo'shish" />
 
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Kurs qo'shish</h2>
+        <h2 className="text-2xl font-bold tracking-tight">
+          Yangi kurs qo'shish
+        </h2>
         <p className="text-muted-foreground">
-          Here&apos;s a list of your tasks for this month!
+          Tizimga yangi kurs qoʻshish uchun quyidagi shaklni toʻldiring.
         </p>
       </div>
       <div className="xl:flex">
         <div className="xl:w-2/3">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col md:flex-row items-center gap-2 mb-2 w-full">
+            <div className="flex flex-col md:flex-row items-start gap-2 mb-2 w-full">
               <div className="w-full">
-                <Label htmlFor="courseTitle">Course Title</Label>
+                <Label required htmlFor="courseTitle">
+                  Kurs sarlavhasi
+                </Label>
                 <Input
                   id="courseTitle"
                   {...register('courseTitle', {
-                    required: 'Course title is required',
+                    required: "Bu yerni to'ldirish talab qilinadi",
                   })}
-                  placeholder="Course Title"
+                  placeholder="Frontend Development"
                 />
                 {errors.courseTitle && (
                   <small className="text-red-500">
@@ -96,60 +109,89 @@ function AddCourses() {
               </div>
 
               <div className="w-full">
-                <Label htmlFor="courseCode">Course Code</Label>
-                <Input
-                  id="courseCode"
-                  {...register('courseCode', {
-                    required: 'Course code is required',
-                  })}
-                  placeholder="Course Code"
-                />
-                {errors.courseCode && (
-                  <small className="text-red-500">
-                    {errors.courseCode.message}
-                  </small>
-                )}
+                <Label optional htmlFor="courseCode">
+                  Kurs kodi
+                </Label>
+                <div className="relative">
+                  <Input
+                    className="pl-7"
+                    id="courseCode"
+                    {...register('courseCode')}
+                    placeholder="899"
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                    <Hash size={16} strokeWidth={2} aria-hidden="true" />
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="mb-2">
-              <Label htmlFor="courseDescription">Description</Label>
-              <Textarea
-                id="courseDescription"
-                {...register('courseDescription', {
-                  required: 'Description is required',
-                })}
-                placeholder="Course Description"
-              />
-              {errors.courseDescription && (
-                <small className="text-red-500">
-                  {errors.courseDescription.message}
-                </small>
-              )}
-            </div>
-
-            <div className="flex flex-col md:flex-row items-center gap-2 mb-2 w-full">
-              <div className="w-full">
-                <Label htmlFor="coursePrice">Price</Label>
+              <Label optional htmlFor="courseDescription">
+                Kurs tavsifi
+              </Label>
+              <div className="relative">
                 <Controller
-                  name="coursePrice"
+                  name="courseDescription"
                   control={control}
                   defaultValue=""
-                  rules={{ required: 'Price is required', min: 0 }}
-                  render={({ field: { onChange, value, ref } }) => (
-                    <Input
-                      type="text"
-                      id="coursePrice"
-                      value={formatNumber(value)}
+                  render={({ field }) => (
+                    <Textarea
+                      {...field}
+                      value={value}
+                      maxLength={limit}
                       onChange={(e) => {
-                        const rawValue = e.target.value.replace(/\D/g, '');
-                        onChange(rawValue);
+                        handleChange(e);
+                        field.onChange(e);
                       }}
-                      placeholder="Price"
-                      ref={ref}
+                      aria-describedby="character-count"
+                      placeholder="Front-end dasturchi veb-saytlar va ilovalar uchun foydalanuvchi interfeysini (UI) yaratuvchi veb-ishlab chiquvchidir."
                     />
                   )}
                 />
+                <div
+                  id="character-count"
+                  className={`pointer-events-none absolute bottom-2 right-2 end-0 flex items-center justify-center pe-3 text-xs text-muted-foreground peer-disabled:opacity-50 ${
+                    characterCount === limit && 'text-red-500'
+                  }`}
+                  aria-live="polite"
+                  role="status"
+                >
+                  {characterCount}/{limit}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-start gap-2 mb-2 w-full">
+              <div className="w-full">
+                <Label required htmlFor="coursePrice">
+                  Kurs narxi
+                </Label>
+                <div className="relative">
+                  <Controller
+                    name="coursePrice"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: 'Price is required', min: 0 }}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <Input
+                        type="text"
+                        id="coursePrice"
+                        className="pe-12"
+                        value={formatNumber(value)}
+                        onChange={(e) => {
+                          const rawValue = e.target.value.replace(/\D/g, '');
+                          onChange(rawValue);
+                        }}
+                        placeholder="500 000"
+                        ref={ref}
+                      />
+                    )}
+                  />
+                  <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+                    so'm
+                  </span>
+                </div>
                 {errors.coursePrice && (
                   <small className="text-red-500">
                     {errors.coursePrice.message}
@@ -158,7 +200,9 @@ function AddCourses() {
               </div>
 
               <div className="w-full">
-                <Label htmlFor="courseDuration">Duration (month)</Label>
+                <Label required htmlFor="courseDuration">
+                  Kurs davomiyligi (oyda)
+                </Label>
                 <Input
                   type="number"
                   id="courseDuration"
@@ -166,7 +210,7 @@ function AddCourses() {
                     required: 'Duration is required',
                     min: 1,
                   })}
-                  placeholder="Course Duration"
+                  placeholder="8"
                 />
                 {errors.courseDuration && (
                   <small className="text-red-500">
@@ -183,7 +227,7 @@ function AddCourses() {
                 onCheckedChange={setIsCertification}
                 {...register('isCertification')}
               />
-              <Label htmlFor="isCertification">Certification</Label>
+              <Label htmlFor="isCertification">Sertifikati bormi?</Label>
             </div>
             {/* Submit Button */}
             <Button disabled={isSubmitting} type="submit" className="mt-2">

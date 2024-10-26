@@ -9,20 +9,16 @@ export const formatNumber = (value) => {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
-export const formatPhoneNumber = (value) => {
-  // Remove all non-digit characters
-  let cleaned = ('' + value).replace(/\D/g, '');
+export function formatPhoneNumber(phoneNumber) {
+  const formattedNumber = phoneNumber.replace(
+    /(\+998)(\d{2})(\d{3})(\d{2})(\d{2})/,
+    '$1 $2 $3 $4 $5'
+  );
+  return formattedNumber;
+}
 
-  // Match the Uzbekistan phone number format
-  let match = cleaned.match(/^(\+998)(\d{2})(\d{3})(\d{4})$/);
-
-  if (match) {
-    // Format it to +99893 008 2309
-    return `${match[1]}${match[2]} ${match[3]} ${match[4]}`;
-  }
-
-  return value; // Return as-is if not matching
-};
+const phoneNumber = '+998995572027';
+console.log(formatPhoneNumber(phoneNumber)); // Output: "+998 99 557 20 27"
 
 export const formatDate = (timestamp) => {
   const date = new Date(timestamp);

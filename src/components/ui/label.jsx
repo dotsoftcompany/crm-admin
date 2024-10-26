@@ -20,12 +20,12 @@ const Label = React.forwardRef(
     >
       {children}
       {required && (
-        <span title="required" className="text-red-500 ml-1">
+        <span title="Talab etiladi!" className="text-red-500 ml-1">
           *
         </span>
       )}
       {optional && (
-        <span className="text-muted-foreground ml-1 text-xs">(optional)</span>
+        <span className="text-muted-foreground ml-1 text-xs">(ixtiyoriy)</span>
       )}
     </LabelPrimitive.Root>
   )

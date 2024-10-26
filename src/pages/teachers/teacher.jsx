@@ -112,6 +112,7 @@ const Teacher = () => {
             filterOption={filterOption}
             setFilterOption={setFilterOption}
           />
+          {filteredGroups.length == 0 && <p className='mt-10 text-muted-foreground text-center'>Guruh topilmadi.</p>}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
             {filteredGroups.map((card) => (
               <Link key={card.id} to={`/groups/${card.id}`}>

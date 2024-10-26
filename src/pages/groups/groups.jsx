@@ -67,15 +67,17 @@ function Groups() {
       />
 
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
+        <h2 className="text-2xl font-bold tracking-tight">
+          Guruhlaringizni boshqaring
+        </h2>
         <p className="text-muted-foreground">
-          Here&apos;s a list of your tasks for this month!
+          Guruh tafsilotlarini koʻring, aʼzolarni boshqaring.
         </p>
       </div>
 
       <FilterGroups
         url="/add-group"
-        title="Add group"
+        title="Guruh qo'shish"
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         filterOption={filterOption}
@@ -83,6 +85,12 @@ function Groups() {
       />
 
       {loading && <GroupCarLoading />}
+
+      {filteredGroups.length == 0 && (
+        <p className="!mt-10 text-muted-foreground text-center">
+          Guruh topilmadi.
+        </p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredGroups.map((card) => (

@@ -62,15 +62,15 @@ function Courses() {
       />
 
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Mavjud kurslar</h2>
         <p className="text-muted-foreground">
-          Here&apos;s a list of your tasks for this month!
+          Osiyo-akt academyda hozir kunga qadar mavjud bo'lgan kurslar ro'yxati.
         </p>
       </div>
 
       <FilterCourses
         url="/add-course"
-        title="Add course"
+        title="Kurs qo'shish"
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         filterOption={filterOption}

@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as RPNInput from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
 import { ChevronDown, Phone } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 export default function PhoneNumberInput({ value, onChange }) {
-  console.log('value', value);
-
   return (
     <div className="space-y-2" dir="ltr">
       <RPNInput.default
@@ -53,7 +51,7 @@ const CountrySelect = ({ disabled, value, onChange, options }) => {
         disabled={disabled}
         value={value || ''}
         onChange={handleSelect}
-        className="absolute inset-0 text-sm opacity-0"
+        className="absolute inset-0 text-sm opacity-0 dark:bg-background"
         aria-label="Select country"
       >
         <option key="default" value="">
@@ -62,7 +60,7 @@ const CountrySelect = ({ disabled, value, onChange, options }) => {
         {options
           .filter((x) => x.value)
           .map((option) => (
-            <option key={option.value || 'empty'} value={option.value}>
+            <option selected value={option.value}>
               {option.label}{' '}
               {option.value &&
                 `+${RPNInput.getCountryCallingCode(option.value)}`}
