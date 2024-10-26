@@ -34,7 +34,7 @@ function Login() {
   };
 
   return (
-    <div className="w-full lg:grid lg:grid-cols-2 h-screen">
+    <div className="w-full lg:grid lg:grid-cols-3 h-screen">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
@@ -49,7 +49,7 @@ function Login() {
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="email@gmail.com"
                 required
                 value={data.email}
                 onChange={handleChange}
@@ -73,6 +73,7 @@ function Login() {
                 value={data.password}
                 onChange={handleChange}
                 name="password"
+                placeholder="password"
               />
             </div>
             <Button className="w-full" onClick={() => signIn()}>
@@ -90,9 +91,9 @@ function Login() {
           </div> */}
         </div>
       </div>
-      <div className="hidden bg-muted lg:block">
+      <div className="hidden bg-muted lg:block col-span-2">
         <img
-          src="/vite.svg"
+          src="https://firebasestorage.googleapis.com/v0/b/crm-system-4fefe.appspot.com/o/cover%2Fcrm-cover.png?alt=media&token=611e8787-6118-454e-aa02-1372d844fe7e"
           alt="Image"
           className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
