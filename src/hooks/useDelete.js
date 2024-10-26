@@ -12,7 +12,7 @@ const useDelete = (id, collection) => {
   const deleteItem = async () => {
     try {
       setLoading(true);
-      const docRef = doc(db, `users/${auth.currentUser.uid}/${collection}`, id);
+      const docRef = doc(db, collection, id);
       await deleteDoc(docRef);
       toast({
         title: "Muvaffaqiyatli o'chirildi",

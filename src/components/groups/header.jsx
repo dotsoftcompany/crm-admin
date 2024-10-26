@@ -14,6 +14,11 @@ import { Activity, Calendar, Clock, Phone, User } from 'lucide-react';
 function GroupHeader({ group }) {
   const { teachers, courses } = useMainContext();
 
+  const teacher = teachers.filter((item) => item.id === group.teacherId)[0]
+    ?.fullName;
+
+
+
   return (
     <div className="space-y-2 py-4 w-full border-b border-border">
       <div className="flex items-center gap-2">
@@ -63,12 +68,12 @@ function GroupHeader({ group }) {
 
         <div className="flex items-center gap-1">
           <User className="w-4 h-4" />
-          <Link to={`/teachers/${group?.teacherId}`} className="inline-flex">
-            <span className="hover:underline">
-              {
-                teachers.filter((item) => item.id === group.teacherId)[0]
-                  .fullName
-              }
+          <Link
+            to={teacher ? `/teachers/${group?.teacherId}` : null}
+            className="inline-flex"
+          >
+            <span className={teacher ? 'hover:underline' : 'cursor-text'}>
+              {teacher ? teacher : 'Ustoz tanlanmagan'}
             </span>
           </Link>
         </div>

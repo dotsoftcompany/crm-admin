@@ -41,7 +41,7 @@ const StudentEdit = ({ id, setCloseDialog }) => {
   const onSubmit = React.useCallback(
     async (data) => {
       try {
-        const docRef = doc(db, `users/${auth.currentUser.uid}/students`, id);
+        const docRef = doc(db, 'students', id);
 
         await updateDoc(docRef, data);
 

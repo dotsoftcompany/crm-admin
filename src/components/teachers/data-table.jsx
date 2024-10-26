@@ -79,6 +79,7 @@ export default function TeachersDataTable({
       accessorKey: 'fullName',
       header: ({ column }) => (
         <Button
+        className="pl-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -88,15 +89,6 @@ export default function TeachersDataTable({
       ),
       cell: ({ row }) => (
         <div className="whitespace-nowrap">{row.getValue('fullName')}</div>
-      ),
-    },
-    {
-      accessorKey: 'dateOfBirth',
-      header: 'Date of Birth',
-      cell: ({ row }) => (
-        <div className="whitespace-nowrap">
-          {formatDate(row.getValue('dateOfBirth'))}
-        </div>
       ),
     },
     {
@@ -120,15 +112,6 @@ export default function TeachersDataTable({
       header: 'Position',
       cell: ({ row }) => (
         <div className="whitespace-nowrap">{row.getValue('position')}</div>
-      ),
-    },
-    {
-      accessorKey: 'dateOfJoining',
-      header: 'Date of Joining',
-      cell: ({ row }) => (
-        <div className="whitespace-nowrap">
-          {formatDate(row.getValue('dateOfJoining'))}
-        </div>
       ),
     },
     {

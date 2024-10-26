@@ -28,7 +28,7 @@ function DeleteAlert({ id, collection, open, setOpen }) {
         <AlertDialogFooter>
           <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
           <AlertDialogAction onClick={deleteItem}>
-            {loading ? 'Deleting...' : 'Delete Course'}
+            {loading ? "O'chirilmoqda..." : "O'chirish"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

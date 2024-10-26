@@ -11,7 +11,7 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function Courses() {
-  const { courses, loading } = useMainContext();
+  const { courses, loading, uid } = useMainContext();
 
   const [openCourseDeleteDialog, setOpenCourseDeleteDialog] = useState(false);
   const [openCourseEditDialog, setOpenCourseEditDialog] = useState(false);
@@ -56,7 +56,7 @@ function Courses() {
 
       <DeleteAlert
         id={id}
-        collection="courses"
+        collection={`users/${uid}/courses`}
         open={openCourseDeleteDialog}
         setOpen={setOpenCourseDeleteDialog}
       />

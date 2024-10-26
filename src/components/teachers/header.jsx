@@ -20,6 +20,9 @@ import { Separator } from '@/components/ui/separator';
 
 function TeacherHeader({ teacher }) {
   const [showPassword, setShowPassword] = React.useState(false);
+
+  const username = teacher?.email?.replace(/@teacher\.uz$/, '');
+
   return (
     <div className="bg-background space-y-2 border-b border-border pb-4">
       <div className="flex items-center gap-2 md:gap-3">
@@ -33,36 +36,6 @@ function TeacherHeader({ teacher }) {
           <MapPin className="h-4 w-4" />
           <p className="text-sm md:text-base">{teacher.address}</p>
         </div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                <p className="text-sm md:text-base">
-                  {formatDate(teacher.dateOfBirth)}
-                </p>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              <small className="text-xs">Tug'ulgan yil</small>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <div className="flex items-center gap-2">
-                <CalendarPlus className="h-4 w-4" />
-                <p className="text-sm md:text-base">
-                  {formatDate(teacher.dateOfJoining)}
-                </p>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              <small className="text-xs">Ishga kirgan sana</small>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
         <div className="flex items-center gap-2">
           <Users className="h-4 w-4" />
           <a
@@ -81,7 +54,7 @@ function TeacherHeader({ teacher }) {
               <TooltipTrigger>
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4" />
-                  <p className="text-sm md:text-base">@{teacher.username}</p>
+                  <p className="text-sm md:text-base">{username}</p>
                 </div>
               </TooltipTrigger>
               <TooltipContent side="top">

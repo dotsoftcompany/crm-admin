@@ -19,7 +19,7 @@ function Teachers() {
   const [id, setId] = useState('');
 
   return (
-    <div className="px-4 lg:px-8 mx-auto py-4 space-y-4">
+    <div className="px-4 lg:px-8 mx-auto py-4 space-y-4 overflow-x-hidden">
       <BreadcrumbComponent title="O'qituvchilar ro'yxati" />
 
       <EditDialog

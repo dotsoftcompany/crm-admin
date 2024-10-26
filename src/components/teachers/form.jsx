@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
+import axios from 'axios';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '../ui/toast';
+import PhoneNumberInput from '../ui/phone-number-input';
 
 const AddTeacherForm = () => {
   const [dateOfBirth, setDateOfBirth] = React.useState('');
@@ -17,62 +19,54 @@ const AddTeacherForm = () => {
   const { toast } = useToast();
 
   const defaultValue = {
+    email: '',
+    password: '',
     fullName: '',
-    position: '',
     phone: '',
     address: '',
-    username: '',
-    password: '',
+    position: '',
     isTeacherUpdate: false,
   };
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     reset,
   } = useForm({ defaultValues: defaultValue });
 
   const onSubmit = async (data) => {
     try {
-      const userTeachersRef = collection(
-        db,
-        `users/${auth.currentUser.uid}/teachers`
-      );
-      const snapshot = await getDocs(userTeachersRef);
-      const existingUsernames = snapshot.docs.map((doc) => doc.data().username);
+      const url = 'http://localhost:8080/add-teacher';
 
-      if (existingUsernames.includes(data.username)) {
+      // Ensure you're including the email correctly
+      const response = await axios.post(url, {
+        email: `${data.email}@teacher.uz`,
+        password: data.password,
+        fullName: data.fullName,
+        phone: data.phone,
+        address: data.address,
+        position: data.position,
+        role: auth.currentUser?.uid,
+        isTeacherUpdate: false,
+      });
+
+      if (response.status === 201) {
+        reset();
+        setDateOfBirth('');
+        setDateOfJoining('');
         toast({
-          variant: 'destructive',
-          title: `"${data.username}" already taken.`,
-          description: 'Please try another one.',
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
+          title: "Ustoz muvaffaqiyat qo'shildi",
         });
-        setError('username', {
-          type: 'manual',
-          message: 'Username is already taken',
-        });
-        return;
       }
-
-      await addDoc(userTeachersRef, {
-        ...data,
-        dateOfBirth: new Date(dateOfBirth).getTime(),
-        dateOfJoining: new Date(dateOfJoining).getTime(),
-        timestamp: new Date().getTime(),
-      });
-
-      reset();
-      setDateOfBirth('');
-      setDateOfJoining('');
-
-      toast({
-        title: "Ustoz muvaffaqiyat qo'shildi",
-      });
     } catch (error) {
       console.log(error);
+      toast({
+        variant: 'destructive',
+        title: 'Error adding teacher',
+        description: error.message || 'An unexpected error occurred.',
+      });
     }
   };
 
@@ -115,17 +109,17 @@ const AddTeacherForm = () => {
           <Label required={true} htmlFor="phone">
             Phone Number
           </Label>
-          <Input
-            type="text"
-            id="phone"
-            {...register('phone', {
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            rules={{
               required: 'Phone number is required',
-              pattern: {
-                value: /^[0-9+()-\s]+$/,
-                message: 'Invalid phone number format',
-              },
-            })}
-            placeholder="+1 234 567 8901"
+              minLength: { value: 10, message: 'Phone number is too short' },
+            }}
+            render={({ field }) => (
+              <PhoneNumberInput value={field.value} onChange={field.onChange} />
+            )}
           />
           <small className="text-xs md:text-sm text-red-500">
             {errors.phone?.message}
@@ -148,7 +142,7 @@ const AddTeacherForm = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-start gap-2">
+      <div className="hidden flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label optional={true} htmlFor="dateOfBirth">
             Date of Birth
@@ -180,20 +174,27 @@ const AddTeacherForm = () => {
 
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
-          <Label required={true} htmlFor="username">
+          <Label required={true} htmlFor="email">
             Username
           </Label>
-          <Input
-            type="text"
-            id="username"
-            {...register('username', {
-              required: 'Username is required',
-              validate: (value) => (value ? true : 'Username is required'),
-            })}
-            placeholder="Enter username"
-          />
+
+          <div className="relative">
+            <Input
+              className="peer pe-12"
+              type="text"
+              id="email"
+              {...register('email', {
+                required: 'Username is required',
+                validate: (value) => (value ? true : 'Username is required'),
+              })}
+              placeholder="username"
+            />
+            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+              @teacher.uz
+            </span>
+          </div>
           <small className="text-xs md:text-sm text-red-500">
-            {errors.username?.message}
+            {errors.email?.message}
           </small>
         </div>
 

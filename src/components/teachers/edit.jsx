@@ -4,9 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
-import { useState } from 'react';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/api/firebase';
 import { useMainContext } from '@/context/main-context';
 import { useToast } from '../ui/use-toast';
 
@@ -21,8 +20,6 @@ const TeacherEdit = ({ id, setCloseDialog }) => {
     position: teacher?.position,
     phone: teacher?.phone,
     address: teacher?.address,
-    dateOfBirth: teacher?.dateOfBirth,
-    dateOfJoining: teacher?.dateOfJoining,
   };
 
   const {
@@ -44,7 +41,7 @@ const TeacherEdit = ({ id, setCloseDialog }) => {
   const onSubmit = React.useCallback(
     async (data) => {
       try {
-        const docRef = doc(db, `users/${auth.currentUser.uid}/teachers`, id);
+        const docRef = doc(db, 'teachers', id);
 
         await updateDoc(docRef, data);
         toast({
@@ -126,7 +123,7 @@ const TeacherEdit = ({ id, setCloseDialog }) => {
         </div>
       </div>
       {/* https://github.com/shadcn-ui/ui/discussions/1553 */}
-      <div className="flex flex-col md:flex-row items-center gap-2">
+      {/* <div className="flex flex-col md:flex-row items-center gap-2">
         <div className="w-full">
           <Label htmlFor="dateOfBirth">Date of Birth</Label>
           <Controller
@@ -145,26 +142,7 @@ const TeacherEdit = ({ id, setCloseDialog }) => {
             <p className="text-red-500">{errors.dateOfBirth.message}</p>
           )}
         </div>
-
-        <div className="w-full">
-          <Label htmlFor="dateOfJoining">Date of Joining</Label>
-          <Controller
-            name="dateOfJoining"
-            control={control}
-            rules={{ required: 'dateOfJoining is required' }}
-            render={({ field }) => (
-              <DatePicker
-                data={field.value ? new Date(field.value) : null}
-                setData={(date) => field.onChange(date ? date.getTime() : null)} // Convert back to timestamp
-                className="w-full mt-2"
-              />
-            )}
-          />
-          {errors.dateOfJoining && (
-            <p className="text-red-500">{errors.dateOfJoining.message}</p>
-          )}
-        </div>
-      </div>
+      </div> */}
       <Button className="float-right" type="submit" variant="default">
         Tahrirlash
       </Button>

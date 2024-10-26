@@ -18,7 +18,7 @@ import { GroupCarLoading } from '../groups/groups';
 import LessonsSchedule from '@/components/teachers/lesson-schedule';
 
 const Teacher = () => {
-  const { groups, courses, teachers, loading } = useMainContext();
+  const { groups, courses, teachers, loading, uid } = useMainContext();
   const { teacherId } = useParams();
 
   const teacher = teachers.find((t) => t.id === teacherId);
@@ -97,9 +97,10 @@ const Teacher = () => {
           >
             <GroupEdit id={id} setCloseDialog={setOpenGroupEditDialog} />
           </EditDialog>
+
           <DeleteAlert
             id={id}
-            collection="groups"
+            collection={`users/${uid}/groups`}
             open={openGroupDeleteDialog}
             setOpen={setOpenGroupDeleteDialog}
           />

@@ -60,7 +60,7 @@ function SavePDF({ targetRef, group, groupId, students }) {
         </div>
         <div className="flex items-center gap-3 md:gap-5">
           <span className="hover:underline text-base md:text-lg">
-            {teachers.filter((item) => item.id === group.teacherId)[0].fullName}
+            {teachers.filter((item) => item.id === group.teacherId)[0]?.fullName}
           </span>
           <p className="text-base md:text-lg">{group.timeInDay}</p>
           <div className="text-base md:text-lg">

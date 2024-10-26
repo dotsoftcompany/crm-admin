@@ -21,15 +21,11 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useMainContext } from '@/context/main-context';
-import { DatePicker } from '../ui/date-picker';
 
 function ListAbsenteeDialog({ open, setOpen }) {
   const { students } = useMainContext();
 
-  const [date, setDate] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
   const studentsFilter = students.filter((s) =>

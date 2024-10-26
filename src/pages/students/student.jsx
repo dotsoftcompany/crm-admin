@@ -28,7 +28,8 @@ import LessonsSchedule from '@/components/students/lesson-schedule';
 
 const Student = () => {
   const { studentId } = useParams();
-  const { groups, courses, teachers, students, loading } = useMainContext();
+  const { groups, courses, teachers, students, loading, uid } =
+    useMainContext();
 
   const student = students.find((s) => s.id === studentId);
   const studentGroups = groups.filter((group) =>
@@ -150,7 +151,7 @@ const Student = () => {
 
           <DeleteAlert
             id={id}
-            collection="groups"
+            collection={`users/${uid}/groups`}
             open={openGroupDeleteDialog}
             setOpen={setOpenGroupDeleteDialog}
           />

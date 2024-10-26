@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function Groups() {
-  const { groups, courses, teachers, loading } = useMainContext();
+  const { groups, courses, teachers, loading, uid } = useMainContext();
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,7 +61,7 @@ function Groups() {
 
       <DeleteAlert
         id={id}
-        collection="groups"
+        collection={`users/${uid}/groups`}
         open={openGroupDeleteDialog}
         setOpen={setOpenGroupDeleteDialog}
       />

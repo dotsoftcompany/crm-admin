@@ -1,6 +1,6 @@
 import { auth, db } from '@/api/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const MainContext = createContext({});
@@ -61,6 +61,11 @@ export const MainContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (!uid) {
+      console.error('UID is undefined. Unable to fetch data.');
+      return;
+    }
+
     setLoading(true);
     let collectionsToLoad = 4;
 
@@ -77,8 +82,10 @@ export const MainContextProvider = ({ children }) => {
       handleDataLoaded();
     });
 
-    const teachersCollection = collection(db, `users/${uid}/teachers`);
-    const unsubscribeTeachers = onSnapshot(teachersCollection, (snapshot) => {
+    const teachersCollection = collection(db, 'teachers');
+    const queryTeachers = query(teachersCollection, where('role', '==', uid));
+
+    const unsubscribeTeachers = onSnapshot(queryTeachers, (snapshot) => {
       setTeachers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       handleDataLoaded();
     });
@@ -101,7 +108,7 @@ export const MainContextProvider = ({ children }) => {
       unsubscribeGroups();
       unsubscribeStudents();
     };
-  }, [uid]);
+  }, [uid, db]);
 
   const logoutUser = () => {
     signOut(auth);
@@ -123,6 +130,7 @@ export const MainContextProvider = ({ children }) => {
     setIsOpen,
     colorVariants,
     user,
+    uid,
     setUser,
     logoutUser,
     courses,
