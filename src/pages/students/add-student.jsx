@@ -15,7 +15,7 @@ function AddStudent() {
       </div>
 
       <div className="xl:flex">
-        <div className="xl:w-1/2">
+        <div className="xl:w-2/3">
           <AddStudentForm />
         </div>
         <div className="xl:w-1/2 h-[calc(100vh-160px)] xl:flex hidden items-center">

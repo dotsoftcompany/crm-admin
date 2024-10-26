@@ -9,13 +9,15 @@ function AddTeacher() {
 
       <div>
         <h2 className="text-2xl font-bold tracking-tight">
-          O'qituvchilar ro'yxati
+          O'qituvchi qo'shish
         </h2>
-        <p className="text-muted-foreground">Barcha o'qituvhilar ro'yxarti!</p>
+        <p className="text-muted-foreground">
+          Tizimga yangi oʻqituvchi qoʻshish uchun quyidagi shaklni toʻldiring.
+        </p>
       </div>
 
       <div className="xl:flex">
-        <div className="xl:w-1/2">
+        <div className="xl:w-2/3">
           <AddTeacherForm />
         </div>
         <div className="xl:w-1/2 h-[calc(100vh-160px)] xl:flex hidden items-center">

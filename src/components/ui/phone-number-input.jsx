@@ -16,7 +16,7 @@ export default function PhoneNumberInput({ value, onChange }) {
         countrySelectComponent={CountrySelect}
         inputComponent={PhoneInput}
         id="input-46"
-        placeholder="Enter phone number"
+        placeholder="+99899 557 20 27"
         value={value}
         onChange={onChange}
       />
@@ -77,7 +77,7 @@ const FlagComponent = ({ country, countryName }) => {
   const Flag = flags[country];
 
   return (
-    <span className="w-5 overflow-hidden rounded-sm">
+    <span className="w-5 overflow-hidden rounded">
       {Flag ? (
         <Flag title={countryName} />
       ) : (

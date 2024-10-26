@@ -19,7 +19,11 @@ const Label = React.forwardRef(
       {...props}
     >
       {children}
-      {required && <span className="text-red-500 ml-1">*</span>}
+      {required && (
+        <span title="required" className="text-red-500 ml-1">
+          *
+        </span>
+      )}
       {optional && (
         <span className="text-muted-foreground ml-1 text-xs">(optional)</span>
       )}

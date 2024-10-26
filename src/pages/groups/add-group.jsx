@@ -75,7 +75,7 @@ function AddGroup() {
       </div>
 
       <div className="xl:flex">
-        <div className="xl:w-1/2">
+        <div className="xl:w-2/3">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Select Course */}
             <div className="flex flex-col md:flex-row items-center gap-2 w-full">

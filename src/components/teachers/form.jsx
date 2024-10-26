@@ -11,10 +11,15 @@ import { DatePicker } from '@/components/ui/date-picker';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '../ui/toast';
 import PhoneNumberInput from '../ui/phone-number-input';
+import { Eye, EyeOff } from 'lucide-react';
 
 const AddTeacherForm = () => {
   const [dateOfBirth, setDateOfBirth] = React.useState('');
   const [dateOfJoining, setDateOfJoining] = React.useState('');
+
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   const { toast } = useToast();
 
@@ -32,7 +37,7 @@ const AddTeacherForm = () => {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({ defaultValues: defaultValue });
 
@@ -75,13 +80,15 @@ const AddTeacherForm = () => {
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label required={true} htmlFor="fullName">
-            Full Name
+            Ism Familiya
           </Label>
           <Input
             type="text"
             id="fullName"
-            {...register('fullName', { required: 'Full name is required' })}
-            placeholder="Enter full name"
+            {...register('fullName', {
+              required: "Bu yerni to'ldirish talab qilinadi",
+            })}
+            placeholder="John Doe"
           />
           <small className="text-xs md:text-sm text-red-500">
             {errors.fullName?.message}
@@ -90,13 +97,15 @@ const AddTeacherForm = () => {
 
         <div className="w-full">
           <Label required={true} htmlFor="position">
-            Position
+            Yo'nalish
           </Label>
           <Input
             type="text"
             id="position"
-            {...register('position', { required: 'Position is required' })}
-            placeholder="Enter position"
+            {...register('position', {
+              required: "Bu yerni to'ldirish talab qilinadi",
+            })}
+            placeholder="Frontend Developer"
           />
           <small className="text-xs md:text-sm text-red-500">
             {errors.position?.message}
@@ -107,15 +116,15 @@ const AddTeacherForm = () => {
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label required={true} htmlFor="phone">
-            Phone Number
+            Telefon raqam
           </Label>
           <Controller
             name="phone"
             control={control}
             defaultValue=""
             rules={{
-              required: 'Phone number is required',
-              minLength: { value: 10, message: 'Phone number is too short' },
+              required: "Bu yerni to'ldirish talab qilinadi",
+              minLength: { value: 10, message: "Yetarlicha raqam qo'shilmadi" },
             }}
             render={({ field }) => (
               <PhoneNumberInput value={field.value} onChange={field.onChange} />
@@ -128,13 +137,15 @@ const AddTeacherForm = () => {
 
         <div className="w-full">
           <Label required={true} htmlFor="address">
-            Address
+            Manzil
           </Label>
           <Input
             type="text"
             id="address"
-            {...register('address', { required: 'Address is required' })}
-            placeholder="Enter address"
+            {...register('address', {
+              required: "Bu yerni to'ldirish talab qilinadi",
+            })}
+            placeholder="Toshkent, Yunusobod tumani"
           />
           <small className="text-xs md:text-sm text-red-500">
             {errors.address?.message}
@@ -184,10 +195,11 @@ const AddTeacherForm = () => {
               type="text"
               id="email"
               {...register('email', {
-                required: 'Username is required',
-                validate: (value) => (value ? true : 'Username is required'),
+                required: "Bu yerni to'ldirish talab qilinadi",
+                validate: (value) =>
+                  value ? true : "Bu yerni to'ldirish talab qilinadi",
               })}
-              placeholder="username"
+              placeholder="johndoe"
             />
             <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
               @teacher.uz
@@ -202,14 +214,30 @@ const AddTeacherForm = () => {
           <Label required={true} htmlFor="password">
             Password
           </Label>
-          <Input
-            type="password"
-            id="password"
-            {...register('password', {
-              required: 'Password is required',
-            })}
-            placeholder="Enter password"
-          />
+          <div className="relative">
+            <Input
+              type={isVisible ? 'text' : 'password'}
+              id="password"
+              {...register('password', {
+                required: "Bu yerni to'ldirish talab qilinadi",
+              })}
+              placeholder="**********"
+            />
+            <button
+              className="absolute inset-y-px end-px flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 transition-shadow hover:text-foreground focus-visible:border focus-visible:border-ring focus-visible:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+              type="button"
+              onClick={toggleVisibility}
+              aria-label={isVisible ? 'Hide password' : 'Show password'}
+              aria-pressed={isVisible}
+              aria-controls="password"
+            >
+              {isVisible ? (
+                <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
+              ) : (
+                <Eye size={16} strokeWidth={2} aria-hidden="true" />
+              )}
+            </button>
+          </div>
           <small className="text-xs md:text-sm text-red-500">
             {errors.password?.message}
           </small>
@@ -217,7 +245,7 @@ const AddTeacherForm = () => {
       </div>
 
       <Button type="submit" variant="default">
-        Submit
+        {!isSubmitting ? "Qo'shmoq" : "Qo'shilmoqda..."}
       </Button>
     </form>
   );

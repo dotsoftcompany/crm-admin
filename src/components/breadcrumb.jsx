@@ -13,12 +13,12 @@ import { SheetMenu } from './layout/sheet-menu';
 
 function BreadcrumbComponent({ title, titleLink = null, subtitle }) {
   return (
-    <div className='flex items-center gap-2'>
+    <div className="flex items-center gap-2">
       <SheetMenu />
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <BreadcrumbLink href="/">Asosiy sahifa</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

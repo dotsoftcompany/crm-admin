@@ -76,7 +76,7 @@ function AddCourses() {
         </p>
       </div>
       <div className="xl:flex">
-        <div className="xl:w-1/2">
+        <div className="xl:w-2/3">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col md:flex-row items-center gap-2 mb-2 w-full">
               <div className="w-full">
