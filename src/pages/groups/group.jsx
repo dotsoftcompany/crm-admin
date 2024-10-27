@@ -1,37 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Download } from 'lucide-react';
 import { usePDF } from 'react-to-pdf';
-
-import { useMainContext } from '@/context/main-context';
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-
-import { Input } from '@/components/ui/input';
-import StudentsDataTable from '@/components/students/data-table';
-import GroupHeader from '@/components/groups/header';
-import AddStudentDialog from '@/components/dialogs/add-student';
-import BreadcrumbComponent from '@/components/breadcrumb';
-import EditDialog from '@/components/dialogs/edit-dialog';
-import StudentEdit from '@/components/students/edit';
-import { Button } from '@/components/ui/button';
-import { Download, Eye } from 'lucide-react';
-import AddAbsenteeDialog from '@/components/dialogs/add-absentee';
-import ListAbsenteeDialog from '@/components/dialogs/list-absentee';
 import {
   doc,
   getDoc,
@@ -42,11 +12,22 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
-import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
+import { useMainContext } from '@/context/main-context';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
-import Exams from '@/components/groups/exams';
 import { Skeleton } from '@/components/ui/skeleton';
+
+import StudentsDataTable from '@/components/students/data-table';
+import GroupHeader from '@/components/groups/header';
+import AddStudentDialog from '@/components/dialogs/add-student';
+import BreadcrumbComponent from '@/components/breadcrumb';
+import EditDialog from '@/components/dialogs/edit-dialog';
+import StudentEdit from '@/components/students/edit';
+import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
+import Exams from '@/components/groups/exams';
 import SavePDF from '@/components/groups/save-pdf';
+import Absentee from '@/components/groups/absentee';
 
 const Group = () => {
   const { toast } = useToast();
@@ -64,7 +45,6 @@ const Group = () => {
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
   const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
   const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
-  const [openAddAbsenteeDialog, setOpenAddAbsenteeDialog] = useState(false);
   const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
     useState(false);
   const [groupStudents, setGroupStudents] = useState([]);
@@ -205,7 +185,7 @@ const Group = () => {
   }
 
   return (
-    <div className="relative h-screen overflow-hidden mt-4">
+    <div className="relative h-[97vh] overflow-hidden mt-4">
       <div className="absolute inset-0 z-0 overflow-auto h-full bg-background px-4 lg:px-8">
         <div className="flex items-center justify-between w-full">
           <BreadcrumbComponent
@@ -242,20 +222,10 @@ const Group = () => {
           setOpen={setOpenStudentDeleteDialog}
         />
 
-        <AddAbsenteeDialog
-          open={openAddAbsenteeDialog}
-          setOpen={setOpenAddAbsenteeDialog}
-        />
-
-        <ListAbsenteeDialog
-          open={showAbsenteeStudentsDialog}
-          setOpen={setShowAbsenteeStudentsDialog}
-        />
-
         <Tabs defaultValue="students" className="mt-4">
           <TabsList>
             <TabsTrigger value="students">O'quvchilar ro'yxati</TabsTrigger>
-            <TabsTrigger value="attendance_check">Yo'qlamalar</TabsTrigger>
+            <TabsTrigger value="absentee">Yo'qlamalar</TabsTrigger>
             <TabsTrigger value="exams">Imtihonlar</TabsTrigger>
           </TabsList>
           <TabsContent value="students">
@@ -280,89 +250,8 @@ const Group = () => {
               />
             </StudentsDataTable>
           </TabsContent>
-          <TabsContent value="attendance_check">
-            <div className="space-y-2 pt-2">
-              <div className="flex justify-between items-center gap-2">
-                <Input placeholder="Enter date" className="max-w-md" />
-                <Button
-                  onClick={() => setOpenAddAbsenteeDialog(true)}
-                  variant="secondary"
-                  className="dark:bg-white dark:text-black"
-                >
-                  Yo'qlama qilsh
-                </Button>
-              </div>
-
-              <div className="max-w-[44rem] min-w-full overflow-x-auto">
-                <Table className="rounded-b-md">
-                  <TableCaption className="hidden">
-                    A list of absent students for the selected date.
-                  </TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-72 rounded-tl-md whitespace-nowrap">
-                        Sana
-                      </TableHead>
-                      <TableHead className="whitespace-nowrap">
-                        Nechtadan
-                      </TableHead>
-                      <TableHead className="whitespace-nowrap">
-                        Foizda (%)
-                      </TableHead>
-                      <TableHead className="text-right rounded-tr-md"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="border-x border-b border-border">
-                    <TableRow>
-                      <TableCell className="font-medium">12.11.2024</TableCell>
-                      <TableCell>9/10</TableCell>
-                      <TableCell>90%</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          onClick={() => setShowAbsenteeStudentsDialog(true)}
-                          variant="link"
-                        >
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <Eye className="w-5 h-5" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <small>Batafsil</small>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium rounded-bl-lg">
-                        23.12.2023
-                      </TableCell>
-                      <TableCell>8/10</TableCell>
-                      <TableCell>80%</TableCell>
-                      <TableCell className="text-right rounded-br-lg">
-                        <Button
-                          onClick={() => setShowAbsenteeStudentsDialog(true)}
-                          variant="link"
-                        >
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <Eye className="w-5 h-5" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <small>Batafsil</small>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
+          <TabsContent value="absentee">
+            <Absentee groupId={groupId} allStudents={groupStudents} />
           </TabsContent>
           <TabsContent value="exams">
             <Exams groupId={groupId} setOpen={setShowAbsenteeStudentsDialog} />

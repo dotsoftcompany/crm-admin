@@ -93,7 +93,15 @@ function Exams({ groupId, setOpen }) {
 
       <div className="max-w-[44rem] min-w-full overflow-x-auto">
         <Table className="rounded-b-md">
-          <TableCaption>{loading && 'Loading...'}</TableCaption>
+          <TableCaption
+            className={
+              loading && !exams.length
+                ? 'bg-muted/50 py-4 rounded-b-md'
+                : 'py-4'
+            }
+          >
+            {(loading && 'Loading...') || (!exams.length && 'No result.')}
+          </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="max-w-56 rounded-tl-md whitespace-nowrap">
@@ -112,15 +120,21 @@ function Exams({ groupId, setOpen }) {
             {filteredExams.map((exam) => (
               <TableRow key={exam.id}>
                 {' '}
-                <TableCell className="max-w-56 whitespace-nowrap">{exam?.title}</TableCell>
+                <TableCell className="max-w-56 whitespace-nowrap">
+                  {exam?.title}
+                </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {new Date(exam?.startDate).toLocaleDateString()}
                 </TableCell>{' '}
                 <TableCell className="whitespace-nowrap">
                   {new Date(exam?.endDate).toLocaleDateString()}
                 </TableCell>
-                <TableCell className="whitespace-nowrap">{exam?.place}</TableCell>
-                <TableCell className="whitespace-nowrap">{exam?.status}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {exam?.place}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {exam?.status}
+                </TableCell>
                 <TableCell className="text-center">
                   <Link to={`/groups/${groupId}/exam/${exam.id}`}>
                     <Button onClick={() => setOpen(true)} variant="link">

@@ -23,24 +23,38 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { useMainContext } from '@/context/main-context';
 
-function ListAbsenteeDialog({ open, setOpen }) {
+function ListAbsenteeDialog({ id, absentees, open, setOpen }) {
   const { students } = useMainContext();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const filteredAbsentee = absentees.filter((absentee) => absentee.id === id);
 
-  const studentsFilter = students.filter((s) =>
-    s.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+  const absentStudentIds = filteredAbsentee.flatMap(
+    (absentee) => absentee.students
   );
+
+  const didNotComeStudents = students.filter((student) =>
+    absentStudentIds.includes(student.id)
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Darsga kelmagan o'quvchilar</DialogTitle>
+          <DialogTitle>
+            Darsga kelmagan o'quvchilar:
+            <span className="pl-2">{filteredAbsentee[0]?.date}</span>
+          </DialogTitle>
         </DialogHeader>
         <ScrollArea className="h-[300px] overflow-auto rounded-md">
           <Table>
-            <TableCaption className="hidden">
-              A list of your recent invoices.
+            <TableCaption
+              className={
+                !didNotComeStudents.length
+                  ? 'bg-muted/50 py-4 rounded-b-md'
+                  : 'py-4'
+              }
+            >
+              {!didNotComeStudents.length && 'No result.'}
             </TableCaption>
             <TableHeader className="sticky top-0">
               <TableRow>
@@ -52,8 +66,8 @@ function ListAbsenteeDialog({ open, setOpen }) {
                 <TableHead>Ota-onasi raqami</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="w-full">
-              {studentsFilter.map((student) => (
+            <TableBody className="w-full overflow-y-auto">
+              {didNotComeStudents.map((student) => (
                 <TableRow key={student.id} className="text-red-500">
                   <TableCell className="truncate font-medium">
                     {student.fullName}
@@ -69,7 +83,7 @@ function ListAbsenteeDialog({ open, setOpen }) {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              Close
+              Yopish
             </Button>
           </DialogClose>
         </DialogFooter>

@@ -25,16 +25,56 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMainContext } from '@/context/main-context';
 import { DatePicker } from '../ui/date-picker';
+import InputDatePicker from '../ui/input-date-picker';
+import { Search } from 'lucide-react';
+import { addDoc, collection, doc } from 'firebase/firestore';
+import { useToast } from '../ui/use-toast';
+import { db } from '@/api/firebase';
 
-function AddAbsenteeDialog({ open, setOpen }) {
-  const { students } = useMainContext();
+function AddAbsenteeDialog({ groupId, open, setOpen, fetchAbsentees }) {
+  const { students, uid } = useMainContext();
 
-  const [date, setDate] = useState('');
+  const { toast } = useToast();
+
+  const [selectedStudents, setSelectedStudents] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [formattedDate, setFormattedDate] = useState();
 
   const studentsFilter = students.filter((s) =>
     s.fullName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleCheckboxChange = (studentId) => {
+    setSelectedStudents((prevSelected) =>
+      prevSelected.includes(studentId)
+        ? prevSelected.filter((id) => id !== studentId)
+        : [...prevSelected, studentId]
+    );
+  };
+
+  const addAbsenteeData = async () => {
+    try {
+      const absenteesRef = collection(
+        doc(db, `users/${uid}/groups`, groupId),
+        'absentees'
+      );
+
+      await addDoc(absenteesRef, {
+        date: formattedDate,
+        students: selectedStudents,
+      });
+
+      setSelectedStudents('');
+      setOpen(false);
+      fetchAbsentees();
+
+      toast({
+        title: "Muvvafaqiyatli qo'shildi",
+      });
+    } catch (error) {
+      console.error('Error adding absentee data: ', error);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-2xl">
@@ -42,12 +82,22 @@ function AddAbsenteeDialog({ open, setOpen }) {
           <DialogTitle>Darsga kelmagan o'quvchilar</DialogTitle>
         </DialogHeader>
         <div className="flex items-center gap-2">
-          <Input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="O'quvchilarni qidiring"
+          <div className="relative w-full">
+            <Input
+              className="peer pe-9 ps-9 w-full"
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="O'quvchilarni qidiring"
+            />
+            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+              <Search size={16} strokeWidth={2} />
+            </div>
+          </div>
+          <InputDatePicker
+            formattedDate={formattedDate}
+            setFormattedDate={setFormattedDate}
           />
-          <DatePicker setData={setDate} data={date} className="w-fit h-10" />
         </div>
         <ScrollArea className="h-[300px] overflow-auto rounded-md">
           <Table>
@@ -68,7 +118,11 @@ function AddAbsenteeDialog({ open, setOpen }) {
               {studentsFilter.map((student) => (
                 <TableRow key={student.id}>
                   <TableCell>
-                    <Checkbox checked={true} />
+                    <Checkbox
+                      type="checkbox"
+                      checked={!selectedStudents.includes(student.id)}
+                      onCheckedChange={() => handleCheckboxChange(student.id)}
+                    />
                   </TableCell>
                   <TableCell className="truncate font-medium">
                     {student.fullName}
@@ -83,10 +137,12 @@ function AddAbsenteeDialog({ open, setOpen }) {
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              Close
+              Yopish
             </Button>
           </DialogClose>
-          <Button type="submit">Confirm</Button>
+          <Button onClick={addAbsenteeData} type="submit">
+            Tasdiqlash
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

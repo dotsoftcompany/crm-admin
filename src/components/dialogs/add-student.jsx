@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -23,11 +22,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMainContext } from '@/context/main-context';
-import { DatePicker } from '../ui/date-picker';
-import { Check } from 'lucide-react';
 import { Checkbox } from '../ui/checkbox';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
 
 function AddStudentDialog({
   handleAddStudent,
