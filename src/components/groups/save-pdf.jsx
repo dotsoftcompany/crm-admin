@@ -4,6 +4,7 @@ import { useMainContext } from '@/context/main-context';
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -14,7 +15,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 
 function SavePDF({ targetRef, group, groupId, students }) {
-  const { teachers, courses } = useMainContext();
+  const { teachers, courses, uid } = useMainContext();
   const [exams, setExams] = useState([]);
 
   useEffect(() => {
@@ -43,6 +44,32 @@ function SavePDF({ targetRef, group, groupId, students }) {
     }
   }, [db, groupId, auth.currentUser]);
 
+  const [absentees, setAbsentees] = useState([]);
+
+  const fetchAbsentees = async () => {
+    try {
+      const absenteeRef = collection(
+        db,
+        `users/${uid}/groups/${groupId}/absentees`
+      );
+
+      const snapshot = await getDocs(absenteeRef);
+      const absenteesData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setAbsentees(absenteesData);
+    } catch (error) {
+      console.error('Error fetching absentee data:', error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchAbsentees();
+  }, [uid, groupId]);
+
   return (
     <div
       className="absolute top-0 left-0 w-full text-black min-h-screen overflow-auto p-8 -z-10 space-y-4"
@@ -60,7 +87,10 @@ function SavePDF({ targetRef, group, groupId, students }) {
         </div>
         <div className="flex items-center gap-3 md:gap-5">
           <span className="hover:underline text-base md:text-lg">
-            {teachers.filter((item) => item.id === group.teacherId)[0]?.fullName}
+            {
+              teachers.filter((item) => item.id === group.teacherId)[0]
+                ?.fullName
+            }
           </span>
           <p className="text-base md:text-lg">{group.timeInDay}</p>
           <div className="text-base md:text-lg">
@@ -79,7 +109,12 @@ function SavePDF({ targetRef, group, groupId, students }) {
       <div>
         <h4 className="!mb-4 text-xl font-semibold">O'quvchilar ro'yxati</h4>
         <Table>
-          <TableHeader className="rounded-t-lg !bg-accent">
+          <TableCaption
+            className={students.length ? 'py-4 rounded-b-md' : 'py-4'}
+          >
+            {!students.length && 'No result.'}
+          </TableCaption>
+          <TableHeader className="!bg-accent">
             <TableRow>
               <TableHead className="w-52">Ism familiya</TableHead>
               <TableHead>Telefon</TableHead>
@@ -90,7 +125,7 @@ function SavePDF({ targetRef, group, groupId, students }) {
           </TableHeader>
           <TableBody>
             {students.map((student) => (
-              <TableRow key={student.id} className="!border-b-2">
+              <TableRow key={student.id} className="!bg-gray-100">
                 <TableCell className="font-medium">
                   {student?.fullName}
                 </TableCell>
@@ -113,7 +148,12 @@ function SavePDF({ targetRef, group, groupId, students }) {
       <div>
         <h4 className="!mb-4 text-xl font-semibold">Yo'qlamalar ro'yxati</h4>
         <Table>
-          <TableHeader className="rounded-t-lg !bg-accent">
+          <TableCaption
+            className={absentees.length ? 'py-4 rounded-b-md' : 'py-4'}
+          >
+            {!absentees.length && 'No result.'}
+          </TableCaption>
+          <TableHeader className="bg-accent">
             <TableRow>
               <TableHead>Sana</TableHead>
               <TableHead>Nechtadan</TableHead>
@@ -121,16 +161,24 @@ function SavePDF({ targetRef, group, groupId, students }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">12.11.2024</TableCell>
-              <TableCell>9/10</TableCell>
-              <TableCell>90%</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">23.12.2023</TableCell>
-              <TableCell>8/10</TableCell>
-              <TableCell>80%</TableCell>
-            </TableRow>
+            {absentees.map((absentee) => {
+              const attendancePercentage = (
+                ((students.length - absentee.students.length) /
+                  students.length) *
+                100
+              ).toFixed(0);
+
+              return (
+                <TableRow className="!bg-gray-100">
+                  <TableCell className="font-medium">{absentee.date}</TableCell>
+                  <TableCell>
+                    {students.length - absentee.students.length}/
+                    {students.length}
+                  </TableCell>
+                  <TableCell>{attendancePercentage}%</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
@@ -138,7 +186,10 @@ function SavePDF({ targetRef, group, groupId, students }) {
       <div>
         <h4 className="!mb-4 text-xl font-semibold">Imtihonlar ro'yxati</h4>
         <Table>
-          <TableHeader className="rounded-t-lg !bg-accent">
+          <TableCaption className={exams.length ? 'py-4 rounded-b-md' : 'py-4'}>
+            {!exams.length && 'No result.'}
+          </TableCaption>
+          <TableHeader className="!bg-accent">
             <TableRow>
               <TableHead>Sarlovha</TableHead>
               <TableHead>Boshlanish sanasi</TableHead>
@@ -149,7 +200,7 @@ function SavePDF({ targetRef, group, groupId, students }) {
           </TableHeader>
           <TableBody>
             {exams.map((exam) => (
-              <TableRow>
+              <TableRow className="!bg-gray-100">
                 <TableCell className="font-medium">{exam?.title}</TableCell>
                 <TableCell>{exam?.startDate}</TableCell>
                 <TableCell>{exam?.endDate}</TableCell>
