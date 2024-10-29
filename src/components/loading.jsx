@@ -1,5 +1,6 @@
-import { useMainContext } from '@/context/main-context';
+import { useEffect } from 'react';
 import ProgressBar from '@badrap/bar-of-progress';
+import Dashboard from '@/pages/dashboard';
 
 const progress = new ProgressBar({
   size: 3,
@@ -9,16 +10,16 @@ const progress = new ProgressBar({
 });
 
 function Loading() {
-  const { loading } = useMainContext();
-
-  if (loading) {
+  useEffect(() => {
     progress.start();
-
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       progress.finish();
     }, 2000);
-  }
-  return null;
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return <Dashboard />;
 }
 
 export default Loading;
