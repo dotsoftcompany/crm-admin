@@ -17,9 +17,6 @@ export function formatPhoneNumber(phoneNumber) {
   return formattedNumber;
 }
 
-const phoneNumber = '+998995572027';
-console.log(formatPhoneNumber(phoneNumber)); // Output: "+998 99 557 20 27"
-
 export const formatDate = (timestamp) => {
   const date = new Date(timestamp);
   const day = String(date.getDate()).padStart(2, '0');

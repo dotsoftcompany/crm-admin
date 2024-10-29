@@ -63,7 +63,6 @@ export const MainContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (!uid) {
-      console.error('UID is undefined. Unable to fetch data.');
       return;
     }
 

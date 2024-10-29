@@ -53,6 +53,10 @@ const Group = () => {
 
   const fetchGroupStudents = useCallback(async () => {
     try {
+      if (!auth.currentUser) {
+        return;
+      }
+
       const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
       const groupSnap = await getDoc(groupRef);
 

@@ -168,7 +168,7 @@ function SavePDF({ targetRef, group, groupId, students }) {
               ).toFixed(0);
 
               return (
-                <TableRow className="!bg-gray-100">
+                <TableRow key={absentee.id} className="!bg-gray-100">
                   <TableCell className="font-medium">{absentee.date}</TableCell>
                   <TableCell>
                     {students.length - absentee.students.length}/
@@ -199,7 +199,7 @@ function SavePDF({ targetRef, group, groupId, students }) {
           </TableHeader>
           <TableBody>
             {exams.map((exam) => (
-              <TableRow className="!bg-gray-100">
+              <TableRow key={exam?.id} className="!bg-gray-100">
                 <TableCell className="font-medium">{exam?.title}</TableCell>
                 <TableCell>{exam?.startDate}</TableCell>
                 <TableCell>{exam?.endDate}</TableCell>

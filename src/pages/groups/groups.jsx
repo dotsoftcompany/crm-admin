@@ -119,21 +119,18 @@ export function GroupCarLoading() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {[...Array(6)].map((_, index) => (
-        <Card>
+        <Card key={index}>
           <div className="p-4 pb-0 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {/* Skeleton for badge and time */}
                 <Skeleton className="h-6 w-16 rounded" />
                 <Skeleton className="h-6 w-24 rounded" />
               </div>
-              {/* Skeleton for dropdown menu button */}
               <Skeleton className="h-8 w-8 rounded-full" />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                {/* Skeleton for course title and group number */}
                 <Skeleton className="h-6 w-40 rounded" />
                 <Skeleton className="h-6 w-12 rounded" />
               </div>
@@ -147,11 +144,9 @@ export function GroupCarLoading() {
 
           <div className="flex items-center justify-between py-3 px-4 mt-4 border-t border-border">
             <div className="flex items-center gap-2 w-52">
-              {/* Skeleton for avatar and teacher name */}
               <Skeleton className="h-8 w-8 rounded-full" />
               <Skeleton className="h-6 w-32 rounded" />
             </div>
-            {/* Skeleton for date */}
             <Skeleton className="h-6 w-24 rounded" />
           </div>
         </Card>

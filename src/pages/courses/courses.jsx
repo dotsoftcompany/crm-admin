@@ -105,7 +105,7 @@ function CardLoading() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {[...Array(6)].map((_, index) => (
-        <Card className="flex flex-col">
+        <Card key={index} className="flex flex-col">
           <div className="p-4 grow space-y-2 lg:space-y-4">
             <div className="flex items-center justify-between">
               <Skeleton className="h-6 w-24" />

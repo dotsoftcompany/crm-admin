@@ -2,9 +2,8 @@ import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { useMainContext } from '@/context/main-context';
-import { formatNumber } from '@/lib/utils';
 import { Button } from './ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 import { Skeleton } from './ui/skeleton';
 
@@ -39,13 +38,12 @@ export function RecentlyAdded() {
         {items.map((item, index) => (
           <li key={index} className="flex items-center justify-between py-2">
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                <Skeleton className="h-4 w-32" />{' '}
-                {/* Skeleton for course title */}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <Skeleton className="h-3 w-24" /> {/* Skeleton for timestamp */}
-              </p>
+              <div className="text-sm font-medium leading-none">
+                <Skeleton className="h-4 w-32" />
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <Skeleton className="h-3 w-24" />
+              </div>
             </div>
             <Skeleton className="h-4 w-12" />
           </li>
@@ -143,8 +141,12 @@ export function RecentlyAdded() {
         variant="link"
         className="pl-0 mt-2 flex items-center gap-1 mx-auto"
       >
-        <span>{!viewAll ? 'View all' : 'Show less'}</span>
-        <ChevronRight className="w-4 h-4" />
+        <span>{!viewAll ? "Ko'proq" : 'Kamroq'}</span>
+        {viewAll ? (
+          <ChevronUp className="w-4 h-4" />
+        ) : (
+          <ChevronDown className="w-4 h-4" />
+        )}
       </Button>
     </ul>
   );

@@ -22,12 +22,13 @@ function BreadcrumbComponent({ title, titleLink = null, subtitle }) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <Link
-              to={subtitle ? titleLink : null}
-              className={subtitle ? 'cursor-pointer' : 'cursor-text text-white'}
-            >
-              <BreadcrumbLink>{title}</BreadcrumbLink>
-            </Link>
+            {subtitle ? (
+              <BreadcrumbLink href={titleLink} className="cursor-pointer">
+                {title}
+              </BreadcrumbLink>
+            ) : (
+              <span className="cursor-text text-white">{title}</span>
+            )}
           </BreadcrumbItem>
           {subtitle && (
             <>
