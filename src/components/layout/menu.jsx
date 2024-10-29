@@ -136,7 +136,7 @@ export function Menu({ isOpen }) {
                             >
                               <Link to={href}>
                                 <span
-                                  className={cn(isOpen === false ? '' : 'mr-4')}
+                                  className={cn(isOpen === false ? '' : 'mr-2')}
                                 >
                                   <Icon size={18} />
                                 </span>
@@ -187,7 +187,7 @@ export function Menu({ isOpen }) {
                       variant="outline"
                       className="w-full h-10 mt-5 mx-2 justify-start pl-4"
                     >
-                      <span className={cn(isOpen === false ? '' : 'mr-3')}>
+                      <span className={cn(isOpen === false ? '' : 'mr-2')}>
                         <ShieldCheck size={18} />
                       </span>
                       <p

@@ -11,13 +11,15 @@ const progress = new ProgressBar({
 });
 
 function Loading() {
-  useEffect(() => {
+  const { loading } = useMainContext();
+
+  if (loading) {
     progress.start();
 
     setTimeout(() => {
       progress.finish();
     }, 2000);
-  }, []);
+  }
 
   return <Dashboard />;
 }
