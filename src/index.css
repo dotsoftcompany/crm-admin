@@ -78,10 +78,10 @@
 
 @layer components {
   .group-card {
-    @apply cursor-pointer ring-1 border-none shadow-none ring-border hover:ring-slate-400 active:ring-4 active:ring-blue-600 active:scale-[0.98] active:duration-300;
+    @apply cursor-pointer ring-1 border-none shadow-none ring-border hover:ring-slate-400 active:ring-2 active:ring-blue-600 active:scale-[0.98] active:duration-300;
   }
   .group-dark-card {
-    @apply cursor-pointer ring-1 border-none shadow-none dark:ring-border dark:hover:ring-slate-500 active:ring-4 dark:active:ring-blue-600 active:scale-[0.98] active:duration-300;
+    @apply cursor-pointer ring-1 border-none shadow-none dark:ring-border dark:hover:ring-slate-500 active:ring-2 dark:active:ring-blue-600 active:scale-[0.98] active:duration-300;
   }
 }
 

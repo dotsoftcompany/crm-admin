@@ -12,7 +12,7 @@ function EditDialog({ open, setOpen, children }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="w-full max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Edit</DialogTitle>
+          <DialogTitle>Tahrirlash</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {children}

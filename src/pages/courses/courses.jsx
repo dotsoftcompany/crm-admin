@@ -82,7 +82,7 @@ function Courses() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredCourses.map((item) => (
           <CourseCard
-            key={item.courseCode}
+            key={item.id}
             item={item}
             setOpenDelete={() => {
               setId(item.id);

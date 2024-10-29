@@ -172,7 +172,10 @@ function AddCourses() {
                     name="coursePrice"
                     control={control}
                     defaultValue=""
-                    rules={{ required: 'Price is required', min: 0 }}
+                    rules={{
+                      required: "Bu yerni to'ldirish talab qilinadi",
+                      min: 0,
+                    }}
                     render={({ field: { onChange, value, ref } }) => (
                       <Input
                         type="text"
@@ -207,7 +210,7 @@ function AddCourses() {
                   type="number"
                   id="courseDuration"
                   {...register('courseDuration', {
-                    required: 'Duration is required',
+                    required: "Bu yerni to'ldirish talab qilinadi",
                     min: 1,
                   })}
                   placeholder="8"

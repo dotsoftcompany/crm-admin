@@ -16,6 +16,7 @@
     "npm": "please-use-yarn"
   },
   "dependencies": {
+    "@badrap/bar-of-progress": "^0.2.2",
     "@internationalized/date": "3.0.0-nightly.2967",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.0",

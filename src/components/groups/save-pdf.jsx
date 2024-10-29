@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatDate } from '@/lib/utils';
+import { formatDate, formatPhoneNumber } from '@/lib/utils';
 import { collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
 
@@ -21,10 +21,7 @@ function SavePDF({ targetRef, group, groupId, students }) {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const examsRef = collection(
-          db,
-          `users/${auth.currentUser.uid}/groups/${groupId}/exams`
-        );
+        const examsRef = collection(db, `users/${uid}/groups/${groupId}/exams`);
 
         const examsSnapshot = await getDocs(examsRef);
 
@@ -129,8 +126,10 @@ function SavePDF({ targetRef, group, groupId, students }) {
                 <TableCell className="font-medium">
                   {student?.fullName}
                 </TableCell>
-                <TableCell>{student?.phoneNumber}</TableCell>
-                <TableCell>{student?.parentPhoneNumber}</TableCell>
+                <TableCell>{formatPhoneNumber(student?.phoneNumber)}</TableCell>
+                <TableCell>
+                  {formatPhoneNumber(student?.parentPhoneNumber)}
+                </TableCell>
                 <TableCell>{student?.address}</TableCell>
                 <TableCell
                   className={`${

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import { Switch } from '@/components/ui/switch';
@@ -77,16 +77,18 @@ function CourseEdit({ id, setCloseDialog }) {
 
   return (
     <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col md:flex-row items-center gap-2 w-full">
+      <div className="flex flex-col md:flex-row items-start gap-2 w-full">
         <div className="w-full">
-          <Label htmlFor="courseTitle">Course Title</Label>
+          <Label required htmlFor="courseTitle">
+            Kurs sarlavhasi
+          </Label>
           <Input
             disabled={isSubmitting}
             id="courseTitle"
             {...register('courseTitle', {
-              required: 'Course title is required',
+              required: "Bu yerni to'ldirish talab qilinadi",
             })}
-            placeholder="Course Title"
+            placeholder="Frontend Development"
           />
           {errors.courseTitle && (
             <small className="text-red-500">{errors.courseTitle.message}</small>
@@ -94,59 +96,65 @@ function CourseEdit({ id, setCloseDialog }) {
         </div>
 
         <div className="w-full">
-          <Label htmlFor="courseCode">Course Code</Label>
+          <Label optional htmlFor="courseCode">
+            Kurs kodi
+          </Label>
           <Input
             disabled={isSubmitting}
+            {...register('courseCode')}
             id="courseCode"
-            {...register('courseCode', {
-              required: 'Course code is required',
-            })}
             placeholder="Course Code"
           />
-          {errors.courseCode && (
-            <small className="text-red-500">{errors.courseCode.message}</small>
-          )}
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-2 w-full">
+      <div className="flex flex-col md:flex-row items-start gap-2 w-full">
         <div className="w-full">
-          <Label htmlFor="coursePrice">Price</Label>
-          <Controller
-            name="coursePrice"
-            control={control}
-            defaultValue=""
-            rules={{ required: 'Price is required', min: 0 }}
-            render={({ field: { onChange, value, ref } }) => (
-              <Input
-                type="text"
-                id="coursePrice"
-                value={formatNumber(value)}
-                onChange={(e) => {
-                  const rawValue = e.target.value.replace(/\D/g, '');
-                  onChange(rawValue);
-                }}
-                placeholder="Price"
-                ref={ref}
-              />
-            )}
-          />
+          <Label required htmlFor="coursePrice">
+            Kurs narxi
+          </Label>
+          <div className="relative">
+            <Controller
+              name="coursePrice"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Bu yerni to'ldirish talab qilinadi", min: 0 }}
+              render={({ field: { onChange, value, ref } }) => (
+                <Input
+                  type="text"
+                  id="coursePrice"
+                  value={formatNumber(value)}
+                  onChange={(e) => {
+                    const rawValue = e.target.value.replace(/\D/g, '');
+                    onChange(rawValue);
+                  }}
+                  placeholder="500 000"
+                  ref={ref}
+                />
+              )}
+            />
+            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+              so'm
+            </span>
+          </div>
           {errors.coursePrice && (
             <small className="text-red-500">{errors.coursePrice.message}</small>
           )}
         </div>
 
         <div className="w-full">
-          <Label htmlFor="courseDuration">Duration (month)</Label>
+          <Label required htmlFor="courseDuration">
+            Kurs davomiyligi (oyda)
+          </Label>
           <Input
             disabled={isSubmitting}
             type="number"
             id="courseDuration"
             {...register('courseDuration', {
-              required: 'Duration is required',
+              required: "Bu yerni to'ldirish talab qilinadi",
               min: 1,
             })}
-            placeholder="Course Duration"
+            placeholder="8"
           />
           {errors.courseDuration && (
             <small className="text-red-500">
@@ -157,23 +165,18 @@ function CourseEdit({ id, setCloseDialog }) {
       </div>
 
       <div>
-        <Label htmlFor="courseDescription">Description</Label>
+        <Label optional htmlFor="courseDescription">
+          Kurs tavsifi
+        </Label>
         <Textarea
           id="courseDescription"
           defaultValue={defaultValues?.courseDescription}
-          {...register('courseDescription', {
-            required: 'Description is required',
-          })}
-          placeholder="Course Description"
+          {...register('courseDescription')}
+          placeholder="Front-end dasturchi veb-saytlar va ilovalar uchun foydalanuvchi interfeysini (UI) yaratuvchi veb-ishlab chiquvchidir."
         />
-        {errors.courseDescription && (
-          <small className="text-red-500">
-            {errors.courseDescription.message}
-          </small>
-        )}
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-2 w-full">
+      <div className="flex flex-col md:flex-row items-start gap-2 w-full">
         <div className="flex items-center space-x-2">
           <Controller
             name="isCertification"
@@ -186,11 +189,10 @@ function CourseEdit({ id, setCloseDialog }) {
               />
             )}
           />
-          <Label htmlFor="isCertification">Certification</Label>
+          <Label htmlFor="isCertification">Sertifikati bormi?</Label>
         </div>
       </div>
 
-      {/* Submit Button */}
       <Button
         disabled={isSubmitting}
         type="submit"
