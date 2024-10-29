@@ -12,6 +12,7 @@ export const useMainContext = () => {
 export const MainContextProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [userLogin, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
   const [uid, setUid] = useState();
   const [courses, setCourses] = useState([]);
@@ -47,7 +48,7 @@ export const MainContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
+    setUserLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (res) => {
       if (res) {
         setUser(res);
@@ -55,7 +56,7 @@ export const MainContextProvider = ({ children }) => {
       } else {
         setUser(null);
       }
-      setLoading(false);
+      setUserLoading(false);
     });
     return unsubscribe;
   }, []);
@@ -139,6 +140,7 @@ export const MainContextProvider = ({ children }) => {
     getUsertime,
     students,
     loading,
+    userLogin,
   };
 
   return (

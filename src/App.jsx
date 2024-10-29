@@ -6,9 +6,9 @@ import Login from '@/pages/login';
 import Loading from '@/components/loading';
 
 function App() {
-  const { user, loading } = useMainContext();
+  const { user, userLoading } = useMainContext();
 
-  if (loading) {
+  if (userLoading) {
     return <Loading />;
   }
 
