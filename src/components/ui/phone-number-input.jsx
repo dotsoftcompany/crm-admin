@@ -4,7 +4,7 @@ import flags from 'react-phone-number-input/flags';
 import { ChevronDown, Phone } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
-export default function PhoneNumberInput({ value, onChange }) {
+export default function PhoneNumberInput({ id, disabled, value, onChange }) {
   return (
     <div className="space-y-2" dir="ltr">
       <RPNInput.default
@@ -13,7 +13,8 @@ export default function PhoneNumberInput({ value, onChange }) {
         flagComponent={FlagComponent}
         countrySelectComponent={CountrySelect}
         inputComponent={PhoneInput}
-        id="input-46"
+        id={id}
+        disabled={disabled}
         placeholder="+99899 557 20 27"
         value={value}
         onChange={onChange}

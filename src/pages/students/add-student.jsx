@@ -8,10 +8,10 @@ function AddStudent() {
       <BreadcrumbComponent title="O'quvchi qo'shish" />
 
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">
-          O'quvchilar ro'yxati
-        </h2>
-        <p className="text-muted-foreground">Barcha o'qituvhilar ro'yxarti!</p>
+        <h2 className="text-2xl font-bold tracking-tight">O'quvchi qo'shish</h2>
+        <p className="text-muted-foreground">
+          Tizimga yangi oʻquvchi qoʻshish uchun quyidagi shaklni toʻldiring.
+        </p>
       </div>
 
       <div className="xl:flex">

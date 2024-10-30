@@ -25,3 +25,13 @@ export const formatDate = (timestamp) => {
 
   return `${day}.${month}.${year}`;
 };
+
+export function formatJSONDate(obj) {
+  // Extract year, month, and day from the object
+  const day = String(obj?.day).padStart(2, '0'); // Ensure two-digit day
+  const month = String(obj?.month).padStart(2, '0'); // Ensure two-digit month
+  const year = obj?.year;
+
+  // Format to "dd.mm.yyyy"
+  return `${day}.${month}.${year}`;
+}

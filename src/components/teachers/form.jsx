@@ -12,13 +12,13 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '../ui/toast';
 import PhoneNumberInput from '../ui/phone-number-input';
 import { Eye, EyeOff } from 'lucide-react';
+import { formatJSONDate } from '@/lib/utils';
 
 const AddTeacherForm = () => {
   const [dateOfBirth, setDateOfBirth] = React.useState('');
   const [dateOfJoining, setDateOfJoining] = React.useState('');
-
+  const [debouncedFullName, setDebouncedFullName] = React.useState('');
   const [isVisible, setIsVisible] = React.useState(false);
-
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   const { toast } = useToast();
@@ -36,16 +36,44 @@ const AddTeacherForm = () => {
   const {
     control,
     register,
+    watch,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
   } = useForm({ defaultValues: defaultValue });
 
+  const fullName = watch('fullName');
+  const bornDate = watch('bornDate');
+
+  const getYearFromDate = (date) => {
+    if (!date) return '';
+    return formatJSONDate(date).split('.').pop(); // Get last part of "dd.mm.yyyy"
+  };
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFullName(fullName);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [fullName]);
+
+  React.useEffect(() => {
+    if (debouncedFullName) {
+      const birthYear = getYearFromDate(bornDate);
+      const username =
+        debouncedFullName.replace(/\s+/g, '').toLowerCase() + birthYear;
+      const password = debouncedFullName.replace(/\s+/g, '').toLowerCase();
+      setValue('email', username);
+      setValue('password', password);
+    }
+  }, [debouncedFullName, bornDate, setValue]);
+
   const onSubmit = async (data) => {
     try {
       const url = 'http://localhost:8080/add-teacher';
 
-      // Ensure you're including the email correctly
       const response = await axios.post(url, {
         email: `${data.email}@teacher.uz`,
         password: data.password,
@@ -83,6 +111,7 @@ const AddTeacherForm = () => {
             Ism Familiya
           </Label>
           <Input
+            disabled={isSubmitting}
             type="text"
             id="fullName"
             {...register('fullName', {
@@ -100,6 +129,7 @@ const AddTeacherForm = () => {
             Yo'nalish
           </Label>
           <Input
+            disabled={isSubmitting}
             type="text"
             id="position"
             {...register('position', {
@@ -127,7 +157,12 @@ const AddTeacherForm = () => {
               minLength: { value: 10, message: "Yetarlicha raqam qo'shilmadi" },
             }}
             render={({ field }) => (
-              <PhoneNumberInput value={field.value} onChange={field.onChange} />
+              <PhoneNumberInput
+                id="phone"
+                disabled={isSubmitting}
+                value={field.value}
+                onChange={field.onChange}
+              />
             )}
           />
           <small className="text-xs md:text-sm text-red-500">
@@ -140,6 +175,7 @@ const AddTeacherForm = () => {
             Manzil
           </Label>
           <Input
+            disabled={isSubmitting}
             type="text"
             id="address"
             {...register('address', {
@@ -153,36 +189,6 @@ const AddTeacherForm = () => {
         </div>
       </div>
 
-      <div className="hidden flex flex-col md:flex-row items-start gap-2">
-        <div className="w-full">
-          <Label optional={true} htmlFor="dateOfBirth">
-            Date of Birth
-          </Label>
-          <DatePicker
-            className="w-full mt-2"
-            setData={setDateOfBirth}
-            data={dateOfBirth}
-          />
-          <small className="text-xs md:text-sm text-red-500">
-            {errors.dateOfBirth?.message}
-          </small>
-        </div>
-
-        <div className="w-full">
-          <Label optional={true} htmlFor="dateOfJoining">
-            Date of Joining
-          </Label>
-          <DatePicker
-            className="w-full mt-2"
-            setData={setDateOfJoining}
-            data={dateOfJoining}
-          />
-          <small className="text-xs md:text-sm text-red-500">
-            {errors.dateOfJoining?.message}
-          </small>
-        </div>
-      </div>
-
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full">
           <Label required={true} htmlFor="email">
@@ -191,6 +197,7 @@ const AddTeacherForm = () => {
 
           <div className="relative">
             <Input
+              disabled={isSubmitting}
               className="peer pe-12"
               type="text"
               id="email"
@@ -216,6 +223,7 @@ const AddTeacherForm = () => {
           </Label>
           <div className="relative">
             <Input
+              disabled={isSubmitting}
               type={isVisible ? 'text' : 'password'}
               id="password"
               {...register('password', {
@@ -244,8 +252,8 @@ const AddTeacherForm = () => {
         </div>
       </div>
 
-      <Button type="submit" variant="default">
-        {!isSubmitting ? "Qo'shmoq" : "Qo'shilmoqda..."}
+      <Button disabled={isSubmitting} type="submit" variant="default">
+        {!isSubmitting ? "Qo'shish" : "Qo'shilmoqda..."}
       </Button>
     </form>
   );

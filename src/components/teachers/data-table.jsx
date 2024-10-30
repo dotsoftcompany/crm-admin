@@ -31,7 +31,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useMainContext } from '@/context/main-context';
-import { formatDate, formatPhoneNumber } from '@/lib/utils';
+import { formatPhoneNumber } from '@/lib/utils';
 
 export default function TeachersDataTable({
   setId,
@@ -54,28 +54,6 @@ export default function TeachersDataTable({
 
   const columns = [
     {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
       accessorKey: 'fullName',
       header: ({ column }) => (
         <Button
@@ -83,17 +61,23 @@ export default function TeachersDataTable({
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Full Name
+          Ism familiya
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="whitespace-nowrap">{row.getValue('fullName')}</div>
+        <div
+          title={`${row.getValue('fullName')}ni sahifasiga o'tish`}
+          onClick={() => handleRowClick(row.original.id)}
+          className="capitalize whitespace-nowrap cursor-pointer"
+        >
+          {row.getValue('fullName')}
+        </div>
       ),
     },
     {
       accessorKey: 'phone',
-      header: 'Phone',
+      header: 'Telefon raqami',
       cell: ({ row }) => (
         <div className="whitespace-nowrap">
           {formatPhoneNumber(row.getValue('phone'))}
@@ -102,21 +86,21 @@ export default function TeachersDataTable({
     },
     {
       accessorKey: 'address',
-      header: 'Address',
+      header: 'Manzil',
       cell: ({ row }) => (
         <div className="truncate">{row.getValue('address')}</div>
       ),
     },
     {
       accessorKey: 'position',
-      header: 'Position',
+      header: "Yo'nalish",
       cell: ({ row }) => (
         <div className="whitespace-nowrap">{row.getValue('position')}</div>
       ),
     },
     {
       accessorKey: 'view',
-      header: 'View',
+      header: 'Sahifani ochish',
       cell: ({ row }) => (
         <Button
           onClick={() => handleRowClick(row.original.id)}
@@ -196,7 +180,7 @@ export default function TeachersDataTable({
       <div className="flex items-center justify-between">
         <div className="flex items-center py-4 gap-2">
           <Input
-            placeholder="Filter Full Name..."
+            placeholder="Ism bilan qidirish..."
             value={table.getColumn('fullName')?.getFilterValue() ?? ''}
             onChange={(event) =>
               table.getColumn('fullName')?.setFilterValue(event.target.value)
@@ -206,7 +190,7 @@ export default function TeachersDataTable({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                Columns <ChevronDown className="h-4 w-4" />
+                Ustunlar <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -232,7 +216,7 @@ export default function TeachersDataTable({
         </div>
         <>{children}</>
       </div>
-      <div className="rounded-b-md border  max-w-[44rem] min-w-full overflow-x-auto">
+      <div className="rounded-b-md border max-w-[44rem] min-w-full overflow-x-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -283,10 +267,6 @@ export default function TeachersDataTable({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -294,7 +274,7 @@ export default function TeachersDataTable({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Orqaga
           </Button>
           <Button
             variant="outline"
@@ -302,7 +282,7 @@ export default function TeachersDataTable({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Oldinga
           </Button>
         </div>
       </div>

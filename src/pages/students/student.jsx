@@ -140,6 +140,9 @@ const Student = () => {
           <TabsTrigger value="groups">Guruhlar ro'yxati</TabsTrigger>
           <TabsTrigger value="lesson-schedule">Dars jadvali</TabsTrigger>
           <TabsTrigger value="attendance-check">To'lovlar tarixi</TabsTrigger>
+          <TabsTrigger value="personal-details" className="hidden">
+            Shaxsiy ma'lumotlar
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="groups" className="py-2 space-y-4">
           <EditDialog
@@ -164,7 +167,11 @@ const Student = () => {
             filterOption={filterOption}
             setFilterOption={setFilterOption}
           />
-
+          {filteredGroups.length == 0 && (
+            <p className="mt-10 text-muted-foreground text-center">
+              Guruh topilmadi.
+            </p>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredGroups.map((card) => (
               <Link key={card.id} to={`/groups/${card.id}`}>
@@ -210,6 +217,111 @@ const Student = () => {
               ))}
             </TableBody>
           </Table>
+        </TabsContent>
+        <TabsContent value="personal-details" className="hidden py-2 space-y-4">
+          <div className="w-[550px] h-auto p-4 bg-gradient-to-r from-green-200 to-blue-200 border border-gray-300 shadow-lg rounded-lg relative text-[10px]">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-2 border-b border-gray-300">
+              <div className="text-center">
+                <p className="font-bold text-[8px] text-blue-900">
+                  O'ZBEKISTON RESPUBLIKASI
+                </p>
+                <p className="text-[6px] text-green-700 font-semibold">
+                  SHAXS GUVOHNOMASI
+                </p>
+                <p className="text-[6px] text-gray-600">
+                  Republic of Uzbekistan Identity Card
+                </p>
+              </div>
+              <img
+                src="/path-to-uzbekistan-flag.png"
+                alt="Flag"
+                className="w-6 h-4"
+              />
+            </div>
+
+            {/* Photo & Details */}
+            <div className="flex mt-2">
+              {/* Profile Photo */}
+              <div className="w-32 h-44 bg-gray-300 rounded overflow-hidden border border-gray-400">
+                <img
+                  src="https://via.placeholder.com/64" // Replace with actual image URL
+                  alt="Profile"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+
+              {/* Personal Information */}
+              <div className="ml-2 flex flex-col space-y-1">
+                <div>
+                  <p className="font-bold text-gray-700">Familya / Surname</p>
+                  <p>IKRAMOV</p>
+                </div>
+                <div>
+                  <p className="font-bold text-gray-700">
+                    Ismi / Given name(s)
+                  </p>
+                  <p>AKROM</p>
+                </div>
+                <div>
+                  <p className="font-bold text-gray-700">Otasi / Patronymic</p>
+                  <p>MURODOVICH</p>
+                </div>
+                <div>
+                  <p className="font-bold text-gray-700">
+                    Tug'ilgan sanasi / Date of birth
+                  </p>
+                  <p>11.09.1988</p>
+                </div>
+                <div>
+                  <p className="font-bold text-gray-700">Jinsi / Sex</p>
+                  <p>ERKAK / M</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Nationality and ID Number */}
+            <div className="mt-2 text-xs">
+              <p>
+                <span className="font-bold text-gray-700">
+                  Fuqaroligi / Nationality:
+                </span>{' '}
+                O'ZBEKISTON / UZB
+              </p>
+              <p>
+                <span className="font-bold text-gray-700">
+                  Shaxsiy raqami / ID number:
+                </span>{' '}
+                328802792660010
+              </p>
+            </div>
+
+            {/* Issue and Expiry Dates */}
+            <div className="flex justify-between mt-2 text-xs">
+              <div>
+                <p>
+                  <span className="font-bold text-gray-700">
+                    Berilgan sana / Date of issue:
+                  </span>{' '}
+                  05.12.2019
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span className="font-bold text-gray-700">
+                    Amal qilish muddati / Date of expiry:
+                  </span>{' '}
+                  05.12.2029
+                </p>
+              </div>
+            </div>
+
+            {/* Signature Section */}
+            <div className="mt-2 flex justify-between items-center">
+              <div className="text-gray-700 text-[8px]">Imzo / Signature:</div>
+              <div className="w-24 h-4 border-b border-gray-400"></div>
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

@@ -55,49 +55,32 @@ export default function StudentsDataTable({
 
   const columns = [
     {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
       accessorKey: 'fullName',
       header: ({ column }) => {
         return (
           <Button
+            className="pl-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Name
+            Ism familiya
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
       cell: ({ row }) => (
-        <div className="capitalize whitespace-nowrap">
+        <div
+          title={`${row.getValue('fullName')} sahifasiga o'tish`}
+          onClick={() => handleRowClick(row.original.id)}
+          className="capitalize whitespace-nowrap cursor-pointer"
+        >
           {row.getValue('fullName')}
         </div>
       ),
     },
     {
       accessorKey: 'phoneNumber',
-      header: 'Phone',
+      header: 'Telefon raqami',
       cell: ({ row }) => (
         <div className="whitespace-nowrap">
           {formatPhoneNumber(row.getValue('phoneNumber'))}
@@ -106,7 +89,7 @@ export default function StudentsDataTable({
     },
     {
       accessorKey: 'address',
-      header: 'Address',
+      header: 'Manzil',
       cell: ({ row }) => (
         <div className="truncate whitespace-nowrap">
           {row.getValue('address')}
@@ -115,7 +98,7 @@ export default function StudentsDataTable({
     },
     {
       accessorKey: 'isPay',
-      header: 'Payment Status',
+      header: "To'lov qilganligi",
       cell: ({ row }) => (
         <div
           className={
@@ -124,20 +107,21 @@ export default function StudentsDataTable({
               : 'text-red-500 whitespace-nowrap'
           }
         >
-          {row.original.isPaid ? 'Paid' : 'Not paid'}
+          {row.original.isPaid ? 'Tolov qilgan' : 'Tolov qilmagan'}
         </div>
       ),
     },
     {
       accessorKey: 'view',
-      header: 'View',
+      header: 'Sahifani ochish',
       cell: ({ row }) => (
         <Button
+          title={`${row.getValue('fullName')} sahifasiga o'tish`}
           onClick={() => handleRowClick(row.original.id)}
           variant="ghost"
           className="h-8 w-8 p-0"
         >
-          <Eye className="h-4 w-4 cursor-pointer" />
+          <Eye className="h-4 w-4 cursor-pointer mx-auto" />
         </Button>
       ),
     },
@@ -204,7 +188,7 @@ export default function StudentsDataTable({
       <div className="flex items-center justify-between">
         <div className="flex items-center py-2 gap-2">
           <Input
-            placeholder="Filter Name..."
+            placeholder="Ism bilan qidirish..."
             value={table.getColumn('fullName')?.getFilterValue() ?? ''}
             onChange={(event) =>
               table.getColumn('fullName')?.setFilterValue(event.target.value)
@@ -214,7 +198,7 @@ export default function StudentsDataTable({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                Columns <ChevronDown className="h-4 w-4" />
+                Ustunlar <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -291,10 +275,6 @@ export default function StudentsDataTable({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -302,7 +282,7 @@ export default function StudentsDataTable({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Orqaga
           </Button>
           <Button
             variant="outline"
@@ -310,7 +290,7 @@ export default function StudentsDataTable({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Oldinga
           </Button>
         </div>
       </div>

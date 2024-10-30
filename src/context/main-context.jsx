@@ -96,7 +96,7 @@ export const MainContextProvider = ({ children }) => {
       handleDataLoaded();
     });
 
-    const studentsCollection = collection(db, `users/${uid}/students`);
+    const studentsCollection = collection(db, 'students');
     const unsubscribeStudents = onSnapshot(studentsCollection, (snapshot) => {
       setStudents(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       handleDataLoaded();
