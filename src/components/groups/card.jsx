@@ -23,7 +23,7 @@ import { useMainContext } from '@/context/main-context';
 import { formatDate } from '@/lib/utils';
 
 function GroupCard({ card, setOpenDelete, setOpenEdit }) {
-  const { courses, teachers, loading } = useMainContext();
+  const { courses, teachers, currentGroupStudents } = useMainContext();
 
   const teacherFullName = teachers?.filter(
     (item) => item.id === card?.teacherId

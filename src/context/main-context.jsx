@@ -114,17 +114,6 @@ export const MainContextProvider = ({ children }) => {
     signOut(auth);
   };
 
-  function addLeadingzero(d) {
-    return d < 10 ? '0' + d : d;
-  }
-
-  function getUsertime(t) {
-    let Y = t.getUTCFullYear();
-    let M = addLeadingzero(t.getMonth() + 1);
-    let D = addLeadingzero(t.getDate());
-    return `${D}.${M}.${Y}`;
-  }
-
   const contextValue = {
     isOpen,
     setIsOpen,
@@ -136,7 +125,6 @@ export const MainContextProvider = ({ children }) => {
     courses,
     teachers,
     groups,
-    getUsertime,
     students,
     loading,
     userLogin,

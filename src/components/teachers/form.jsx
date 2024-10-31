@@ -94,11 +94,14 @@ const AddTeacherForm = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      const errorMessage = error.response
+        ? error.response.data.error
+        : 'An unexpected error occurred.';
+
       toast({
         variant: 'destructive',
-        title: 'Error adding teacher',
-        description: error.message || 'An unexpected error occurred.',
+        title: "O'qituvchi qo'shishda muammo.",
+        description: errorMessage,
       });
     }
   };

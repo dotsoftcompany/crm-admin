@@ -95,10 +95,7 @@ const AddStudentForm = () => {
   React.useEffect(() => {
     const fetchUsernames = async () => {
       try {
-        const userStudentsRef = collection(
-          db,
-          `users/${auth.currentUser.uid}/students`
-        );
+        const userStudentsRef = collection(db, ':students');
         const querySnapshot = await getDocs(userStudentsRef);
         const usernames = querySnapshot.docs.map((doc) => doc.data().username);
         setExistingUsernames(usernames);
@@ -136,51 +133,15 @@ const AddStudentForm = () => {
         });
       }
     } catch (error) {
-      console.error('Error adding student:', error);
+      const errorMessage = error.response
+        ? error.response.data.error
+        : 'An unexpected error occurred.';
+
       toast({
         variant: 'destructive',
-        title: 'Error adding student',
-        description: error.message || 'An unexpected error occurred.',
+        title: "O'quvchi qo'shishda muammo.",
+        description: errorMessage,
       });
-    }
-  };
-
-  const test = async (data) => {
-    console.log(data);
-
-    try {
-      const userStudentsRef = collection(
-        db,
-        `users/${auth.currentUser.uid}/students`
-      );
-
-      if (existingUsernames.includes(data.username)) {
-        toast({
-          variant: 'destructive',
-          title: `"${data.username}" already taken.`,
-          description: 'Please try another one.',
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        });
-        setError('username', {
-          type: 'manual',
-          message: 'Username is already taken',
-        });
-        return;
-      }
-
-      await addDoc(userStudentsRef, {
-        ...data,
-        bornDate: formatJSONDate(bornDate),
-        timestamp: new Date().getTime(),
-      });
-      reset();
-
-      toast({
-        title: "O'quvchi muvaffaqiyat qo'shildi",
-      });
-      setValue('bornDate', '');
-    } catch (error) {
-      console.log(error);
     }
   };
 

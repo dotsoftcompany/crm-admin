@@ -67,7 +67,7 @@ const Group = () => {
 
         if (studentIds.length > 0) {
           const userId = auth.currentUser.uid;
-          const studentsRef = collection(db, `users/${userId}/students`);
+          const studentsRef = collection(db, 'students');
           const q = query(studentsRef, where('__name__', 'in', studentIds));
 
           const querySnapshot = await getDocs(q);
