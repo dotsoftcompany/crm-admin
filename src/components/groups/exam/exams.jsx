@@ -124,13 +124,13 @@ function Exams({ groupId, setOpen }) {
                   {exam?.title}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
-                  {new Date(exam?.startDate).toLocaleDateString()}
+                  {exam?.start}
                 </TableCell>{' '}
                 <TableCell className="whitespace-nowrap">
-                  {new Date(exam?.endDate).toLocaleDateString()}
+                  {exam?.end}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
-                  {exam?.place}
+                  {exam?.type}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {exam?.status}

@@ -25,7 +25,7 @@ import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
 import StudentEdit from '@/components/students/edit';
 import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
-import Exams from '@/components/groups/exams';
+import Exams from '@/components/groups/exam/exams';
 import SavePDF from '@/components/groups/save-pdf';
 import Absentee from '@/components/groups/absentee';
 

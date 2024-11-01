@@ -54,7 +54,7 @@ function ExamHeader({ exam, loading }) {
               exam?.place === 'online' ? 'bg-green-500' : 'bg-yellow-500'
             }`}
           />
-          <span>{exam?.place}</span>
+          <span>{exam?.type}</span>
         </div>
         <div
           className={`capitalize ${
@@ -76,11 +76,11 @@ function ExamHeader({ exam, loading }) {
 
         <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
           <Calendar className="w-4 h-4" />
-          <span>{exam?.startDate}</span>
+          <span>{exam?.start}</span>
         </div>
         <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
           <Calendar className="w-4 h-4" />
-          <span>{exam?.endDate}</span>
+          <span>{exam?.end}</span>
         </div>
       </div>
     </div>

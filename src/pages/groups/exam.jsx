@@ -1,6 +1,7 @@
 import { auth, db } from '@/api/firebase';
 import BreadcrumbComponent from '@/components/breadcrumb';
-import ExamHeader from '@/components/groups/exam-header';
+import ExamHeader from '@/components/groups/exam/exam-header';
+import Questions from '@/components/groups/exam/questions';
 import GroupHeader from '@/components/groups/header';
 import { useMainContext } from '@/context/main-context';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -55,6 +56,8 @@ const GroupExam = () => {
         } #${group?.groupNumber}`}
       />
       <ExamHeader exam={exam} loading={loading} />
+
+      <Questions groupId={groupId} examId={examId} />
     </div>
   );
 };
