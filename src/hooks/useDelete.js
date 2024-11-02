@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { doc, deleteDoc } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
+import { db } from '@/api/firebase';
 
 const useDelete = (id, collection) => {
   const [loading, setLoading] = useState(false);

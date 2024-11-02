@@ -9,6 +9,7 @@ import DeleteAlert from '@/components/dialogs/delete-alert';
 import StudentEdit from '@/components/students/edit';
 import { useMainContext } from '@/context/main-context';
 import { PlusCircle } from 'lucide-react';
+import DeleteStudentAlert from '@/components/dialogs/delete-student-alert';
 
 function Students() {
   const { students } = useMainContext();
@@ -28,9 +29,8 @@ function Students() {
         <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
       </EditDialog>
 
-      <DeleteAlert
+      <DeleteStudentAlert
         id={id}
-        collection="students"
         open={openStudentDeleteDialog}
         setOpen={setOpenStudentDeleteDialog}
       />
