@@ -207,10 +207,10 @@ export function Menu({ isOpen }) {
               </Tooltip>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  {/* <DropdownMenuItem>
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Sozlamalar</span>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                       <SunMoon className="mr-2 h-4 w-4" />
