@@ -14,7 +14,7 @@ const GroupExam = () => {
   const group = groups.find((g) => g.id === groupId);
 
   const [exam, setExam] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -52,8 +52,10 @@ const GroupExam = () => {
         title="Guruhlar ro'yxati"
         titleLink="/groups"
         subtitle={`${
-          courses.filter((item) => item.id === group.courseId)[0]?.courseTitle
-        } #${group?.groupNumber}`}
+          courses.filter((item) => item.id === group.courseId)[0].courseTitle
+        } #${group.groupNumber}`}
+        subtitleLink={`/groups/${groupId}`}
+        subtitle2={`${loading ? "Loading" : exam?.title} (exam)`}
       />
       <ExamHeader exam={exam} loading={loading} />
 
