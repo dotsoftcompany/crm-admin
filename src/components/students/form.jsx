@@ -241,7 +241,7 @@ const AddStudentForm = () => {
 
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full space-y-1.5 mt-1">
-          <Label className="flex items-center" htmlFor="bornDate">
+          <Label id="bornDate" className="flex items-center" htmlFor="bornDate">
             Tug'ulgan sana
             <span title="Talab etiladi!" className="text-red-500 ml-1">
               *
@@ -275,6 +275,7 @@ const AddStudentForm = () => {
                   label="Date"
                   value={field.value}
                   onChange={field.onChange}
+                  ariaLabelledby="bornDate"
                 />
               </I18nProvider>
             )}

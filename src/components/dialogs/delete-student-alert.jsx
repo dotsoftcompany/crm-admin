@@ -33,9 +33,6 @@ function DeleteStudentAlert({ id, open, setOpen }) {
 
       const studentDocRef = doc(db, `students`, id);
       await deleteDoc(studentDocRef);
-      console.log(
-        `Student ${id} successfully deleted from students collection`
-      );
 
       const groupsSnapshot = await getDocs(
         collection(db, `users/${uid}/groups`)
