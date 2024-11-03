@@ -39,6 +39,7 @@ export default function StudentsDataTable({
   setOpenDelete,
   setOpenEdit,
   setOpenDeleteDialog,
+  studentEdit = true,
   children,
 }) {
   const history = useNavigate();
@@ -139,15 +140,19 @@ export default function StudentsDataTable({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => {
-                  setId(student.id);
-                  setOpenEdit(true);
-                }}
-              >
-                Tahrirlash
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {studentEdit && (
+                <>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setId(student.id);
+                      setOpenEdit(true);
+                    }}
+                  >
+                    Tahrirlash
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
               <DropdownMenuItem
                 onClick={() => {
                   setId(student.id);
@@ -155,7 +160,7 @@ export default function StudentsDataTable({
                   setOpenDeleteDialog(true);
                 }}
               >
-                O'chirish
+                {studentEdit ? "O'chirish" : 'Olib tashlash'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

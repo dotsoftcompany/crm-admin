@@ -241,6 +241,7 @@ const Group = () => {
               setOpenEdit={setOpenStudentEditDialog}
               setOpenDelete={setOpenStudentDeleteDialog}
               setOpenDeleteDialog={setOpenStudentDeleteDialog}
+              studentEdit={false}
             >
               <AddStudentDialog
                 groupId={groupId}
