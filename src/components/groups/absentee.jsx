@@ -4,6 +4,14 @@ import { Eye, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   Table,
   TableBody,
   TableCaption,
@@ -61,7 +69,7 @@ function Absentee({ groupId, allStudents }) {
     a.date.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const fetchAbsentees = async () => {
+  const fetchAbsentees = useCallback(async () => {
     setLoading(true);
     try {
       const absenteeRef = collection(
@@ -81,15 +89,16 @@ function Absentee({ groupId, allStudents }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId]);
 
   useEffect(() => {
     fetchAbsentees();
-  }, [uid, groupId]);
+  }, [groupId]);
 
   return (
     <Fragment>
       <AddAbsenteeDialog
+        students={allStudents}
         groupId={groupId}
         open={openAddAbsenteeDialog}
         setOpen={setOpenAddAbsenteeDialog}
@@ -143,7 +152,12 @@ function Absentee({ groupId, allStudents }) {
                 </TableHead>
                 <TableHead className="whitespace-nowrap">Nechtadan</TableHead>
                 <TableHead className="whitespace-nowrap">Foizda (%)</TableHead>
-                <TableHead className="text-right rounded-tr-md"></TableHead>
+                <TableHead className="text-center">
+                  Yo'qlamani ko'rish
+                </TableHead>
+                <TableHead className="text-center rounded-tr-md">
+                  Yo'qlamani ko'rish
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="max-w-[44rem] min-w-full">
@@ -164,7 +178,7 @@ function Absentee({ groupId, allStudents }) {
                       {allStudents.length}
                     </TableCell>
                     <TableCell>{attendancePercentage}%</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-center">
                       <Button
                         onClick={() => {
                           setShowAbsenteeStudentsDialog(true);
@@ -184,13 +198,63 @@ function Absentee({ groupId, allStudents }) {
                         </TooltipProvider>
                       </Button>
                     </TableCell>
+                    <TableCell className="flex items-center justify-center">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="h-5 w-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                              />
+                            </svg>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-[160px]">
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              // setOpenEdit();
+                              document.body.style.pointerEvents = '';
+                            }}
+                          >
+                            Tahrirlash
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              // setOpenDelete();
+                              document.body.style.pointerEvents = '';
+                            }}
+                          >
+                            O'chirish
+                            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
 
-          <Pagination className={!absentees.length && 'hidden'}>
+          <Pagination className={absentees.length <= 5 && 'hidden'}>
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious

@@ -39,9 +39,11 @@ function Teachers() {
 
       <div>
         <h2 className="text-2xl font-bold tracking-tight">
-          O'qituvchilar ro'yxati
+          Barcha o'qituvchilar.
         </h2>
-        <p className="text-muted-foreground">Barcha o'qituvchilar ro'yxati!</p>
+        <p className="text-muted-foreground">
+          O'qituvchilar ro'yxatini osongina boshqaring va ko'ring.
+        </p>
       </div>
 
       <TeachersDataTable

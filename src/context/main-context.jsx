@@ -47,7 +47,7 @@ export const MainContextProvider = ({ children }) => {
     rose: 'bg-rose-500 hover:!bg-rose-600 focus:!bg-rose-500 border !border-rose-500 focus:!text-white text-white hover:!text-white',
   };
 
-  console.log(courses);
+  console.log(students);
 
   useEffect(() => {
     setUserLoading(true);

@@ -6,11 +6,11 @@ import Login from '@/pages/login';
 import Loading from '@/components/loading';
 
 function App() {
-  const { user, userLoading } = useMainContext();
+  const { user, loading } = useMainContext();
 
-  if (userLoading) {
-    return <Loading />;
-  }
+  // if (loading) {
+  //   return <Loading />;
+  // }
 
   if (!user) {
     return <Login />;

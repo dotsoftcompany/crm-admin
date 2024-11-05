@@ -22,6 +22,7 @@ function Dashboard() {
     <Router>
       <DashboardLayout>
         <Routes>
+          <Route path="/:username/:password"  />
           <Route path="/" element={<MainPage />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/add-course" element={<AddCourses />} />

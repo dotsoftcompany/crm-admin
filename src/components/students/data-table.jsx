@@ -36,6 +36,7 @@ import { useMainContext } from '@/context/main-context';
 export default function StudentsDataTable({
   setId,
   data,
+  loadingStudents,
   setOpenDelete,
   setOpenEdit,
   setOpenDeleteDialog,
@@ -43,7 +44,6 @@ export default function StudentsDataTable({
   children,
 }) {
   const history = useNavigate();
-  const { loading } = useMainContext();
 
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -190,7 +190,7 @@ export default function StudentsDataTable({
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-2 lg:mb-0">
         <div className="flex items-center py-2 gap-2">
           <Input
             placeholder="Ism bilan qidirish..."
@@ -272,7 +272,7 @@ export default function StudentsDataTable({
                   colSpan={columns.length}
                   className="h-16 text-center"
                 >
-                  {loading ? 'Loading...' : 'No results.'}
+                  {loadingStudents ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}

@@ -54,7 +54,7 @@ function ListAbsenteeDialog({ id, absentees, open, setOpen }) {
                   : 'py-4'
               }
             >
-              {!didNotComeStudents.length && 'No result.'}
+              {!didNotComeStudents.length && 'Darsga hamma kelgan.'}
             </TableCaption>
             <TableHeader className="sticky top-0">
               <TableRow>

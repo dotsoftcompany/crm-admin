@@ -126,9 +126,7 @@ function Exams({ groupId, setOpen }) {
                 <TableCell className="whitespace-nowrap">
                   {exam?.start}
                 </TableCell>{' '}
-                <TableCell className="whitespace-nowrap">
-                  {exam?.end}
-                </TableCell>
+                <TableCell className="whitespace-nowrap">{exam?.end}</TableCell>
                 <TableCell className="whitespace-nowrap">
                   {exam?.type}
                 </TableCell>

@@ -1,21 +1,47 @@
 import React, { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import StudentsDataTable from '@/components/students/data-table';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import EditDialog from '@/components/dialogs/edit-dialog';
-import DeleteAlert from '@/components/dialogs/delete-alert';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 import StudentEdit from '@/components/students/edit';
 import { useMainContext } from '@/context/main-context';
-import { PlusCircle } from 'lucide-react';
 import DeleteStudentAlert from '@/components/dialogs/delete-student-alert';
+import { MonthPicker } from '@/components/ui/month-picker';
 
 function Students() {
   const { students } = useMainContext();
   const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
   const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
+  const [month, setMonth] = useState(null);
   const [id, setId] = useState('');
+  const [filter, setFilter] = useState('all');
+
+  const handleChange = (value) => {
+    setFilter(value);
+  };
+
+  const filteredStudents = () => {
+    switch (filter) {
+      case 'paid':
+        const paidStudents = students.filter((student) => student.isPaid);
+        return paidStudents;
+      case 'notPaid':
+        const notPaidStudents = students.filter((student) => !student.isPaid);
+        return notPaidStudents;
+      default:
+        return students;
+    }
+  };
+
+  console.log(filteredStudents);
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-2">
@@ -37,27 +63,44 @@ function Students() {
 
       <div>
         <h2 className="text-2xl font-bold tracking-tight">
-          O'quvchilar ro'yxati
+          Barcha o'quvchilar.
         </h2>
-        <p className="text-muted-foreground">Barcha o'quvchilar ro'yxarti!</p>
+        <p className="text-muted-foreground">
+          O'quvchilar ro'yxatini osongina boshqaring va ko'ring.
+        </p>
       </div>
 
       <StudentsDataTable
         id={id}
         setId={setId}
-        data={students}
+        data={filteredStudents()}
         setOpenEdit={setOpenStudentEditDialog}
         setOpenDelete={setOpenStudentDeleteDialog}
       >
-        <Link to="/add-student">
-          <Button
-            variant="secondary"
-            className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
-          >
-            <PlusCircle className="w-4 h-4 -ml-1" />
-            <span>O'quvchi qo'shish</span>
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Select value={filter} onValueChange={handleChange}>
+            <SelectTrigger className="md:w-44">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Barchasi</SelectItem>
+              <SelectItem value="paid">To'lov qilganlar</SelectItem>
+              <SelectItem value="notPaid">To'lov qilmaganlar</SelectItem>
+            </SelectContent>
+          </Select>
+          <div className="items-center space-x-2">
+            <MonthPicker className="w-44" month={month} setMonth={setMonth} />
+          </div>
+          {/* <Link to="/add-student">
+            <Button
+              variant="secondary"
+              className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
+            >
+              <PlusCircle className="w-4 h-4 -ml-1" />
+              <span>O'quvchi qo'shish</span>
+            </Button>
+          </Link> */}
+        </div>
       </StudentsDataTable>
     </div>
   );

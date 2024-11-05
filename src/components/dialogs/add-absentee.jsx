@@ -30,9 +30,16 @@ import { Search } from 'lucide-react';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { useToast } from '../ui/use-toast';
 import { db } from '@/api/firebase';
+import { I18nProvider } from 'react-aria';
 
-function AddAbsenteeDialog({ groupId, open, setOpen, fetchAbsentees }) {
-  const { students, uid } = useMainContext();
+function AddAbsenteeDialog({
+  students,
+  groupId,
+  open,
+  setOpen,
+  fetchAbsentees,
+}) {
+  const { uid } = useMainContext();
 
   const { toast } = useToast();
 
@@ -94,10 +101,12 @@ function AddAbsenteeDialog({ groupId, open, setOpen, fetchAbsentees }) {
               <Search size={16} strokeWidth={2} />
             </div>
           </div>
-          <InputDatePicker
-            formattedDate={formattedDate}
-            setFormattedDate={setFormattedDate}
-          />
+          <I18nProvider locale="ru-RU">
+            <InputDatePicker
+              formattedDate={formattedDate}
+              setFormattedDate={setFormattedDate}
+            />
+          </I18nProvider>
         </div>
         <ScrollArea className="h-[300px] overflow-auto rounded-md">
           <Table>

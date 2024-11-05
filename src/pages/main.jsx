@@ -9,8 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { BookOpen, GraduationCapIcon, Star, Users } from 'lucide-react';
-import { DatePicker } from '@/components/ui/date-picker';
-import { Button } from '@/components/ui/button';
 import { BarGraph } from '@/components/charts/bar-graph';
 import { RecentlyAdded } from '@/components/recently-added';
 import { AreaGraph } from '@/components/charts/area-graph';
@@ -18,6 +16,7 @@ import { PieGraph } from '@/components/charts/pie-graph';
 import { useMainContext } from '@/context/main-context';
 import { SheetMenu } from '@/components/layout/sheet-menu';
 import { MonthPicker } from '@/components/ui/month-picker';
+import MakeStudentsUnpaid from '@/components/dialogs/make-students-unpaid';
 
 function MainPage() {
   const { courses, teachers, students, groups } = useMainContext();
@@ -40,6 +39,8 @@ function MainPage() {
 
   return (
     <div className="px-8 mx-auto my-4 space-y-4">
+      <MakeStudentsUnpaid />
+
       <div className="space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <div className="flex items-center gap-2">

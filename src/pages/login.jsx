@@ -4,13 +4,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
 
-export const containerClassName = 'w-full h-full p-4 lg:p-0';
+export const containerClassName = 'w-full h-full p-4 xl:p-0';
 
 function Login() {
+  const { username, password } = useParams();
+  console.log(username, password);
+
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -34,8 +38,8 @@ function Login() {
   };
 
   return (
-    <div className="w-full lg:grid lg:grid-cols-3 h-screen">
-      <div className="flex items-center justify-center py-12">
+    <div className="w-full xl:grid xl:grid-cols-3 h-screen overflow-hidden">
+      <div className="flex items-center justify-center h-screen xl:h-auto xl:py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Login</h1>
@@ -91,7 +95,7 @@ function Login() {
           </div> */}
         </div>
       </div>
-      <div className="hidden bg-muted lg:block col-span-2">
+      <div className="hidden bg-muted xl:block col-span-2">
         <img
           src="https://firebasestorage.googleapis.com/v0/b/crm-system-4fefe.appspot.com/o/cover%2Fcrm-cover.png?alt=media&token=611e8787-6118-454e-aa02-1372d844fe7e"
           alt="Image"

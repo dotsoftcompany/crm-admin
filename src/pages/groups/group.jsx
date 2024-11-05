@@ -48,10 +48,12 @@ const Group = () => {
   const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
     useState(false);
   const [groupStudents, setGroupStudents] = useState([]);
+  const [loadingStudents, setLoadingStudents] = useState(false);
   const [currentGroupStudents, setCurrentGroupStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
 
   const fetchGroupStudents = useCallback(async () => {
+    setLoadingStudents(true);
     try {
       if (!auth.currentUser) {
         return;
@@ -83,6 +85,8 @@ const Group = () => {
       }
     } catch (error) {
       console.error('Error fetching group data:', error);
+    } finally {
+      setLoadingStudents(false);
     }
   }, [groupId]);
 
@@ -238,6 +242,7 @@ const Group = () => {
               deleteGroupStudent={handleRemoveStudent}
               setId={setId}
               data={groupStudents}
+              loadingStudents={loadingStudents}
               setOpenEdit={setOpenStudentEditDialog}
               setOpenDelete={setOpenStudentDeleteDialog}
               setOpenDeleteDialog={setOpenStudentDeleteDialog}

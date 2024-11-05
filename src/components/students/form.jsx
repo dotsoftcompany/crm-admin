@@ -109,7 +109,7 @@ const AddStudentForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const url = 'https://osiyo-akt-server.vercel.app/add-student';
+      const url = 'http://localhost:8080/add-student';
 
       const response = await axios.post(url, {
         email: `${data.username}@student.uz`,

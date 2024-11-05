@@ -25,6 +25,9 @@ import DeleteAlert from '@/components/dialogs/delete-alert';
 import { GroupCarLoading } from '../groups/groups';
 import { Skeleton } from '@/components/ui/skeleton';
 import LessonsSchedule from '@/components/students/lesson-schedule';
+import { DollarSign } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import StudentPayment from '@/components/dialogs/student-payment';
 
 const Student = () => {
   const { studentId } = useParams();
@@ -38,6 +41,7 @@ const Student = () => {
 
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
+  const [openPayment, setOpenPayment] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
   const [filteredGroups, setFilteredGroups] = useState(groups);
@@ -128,12 +132,30 @@ const Student = () => {
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
-      <BreadcrumbComponent
-        title="O'quvchilar ro'yxati"
-        titleLink="/students"
-        subtitle={student?.fullName}
-      />
+      <div className="flex items-center justify-between w-full">
+        <BreadcrumbComponent
+          title="O'quvchilar ro'yxati"
+          titleLink="/students"
+          subtitle={student?.fullName}
+        />
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => setOpenPayment(true)}
+          className="flex items-center gap-1 !text-xs py-1"
+        >
+          <DollarSign className="w-3 h-3" />
+          <span>To'lov qilish</span>
+        </Button>
+      </div>
       <StudentHeader student={student} />
+
+      <StudentPayment
+        student={student}
+        groups={filteredGroups}
+        open={openPayment}
+        setOpen={setOpenPayment}
+      />
 
       <Tabs defaultValue="groups" className="">
         <TabsList>
