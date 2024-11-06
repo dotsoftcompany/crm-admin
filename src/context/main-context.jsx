@@ -19,6 +19,9 @@ export const MainContextProvider = ({ children }) => {
   const [teachers, setTeachers] = useState([]);
   const [groups, setGroups] = useState([]);
   const [students, setStudents] = useState([]);
+  const [paymentHistory, setPaymentHistory] = useState([]);
+
+  console.log(groups);
 
   const colorVariants = {
     green: 'bg-green-100 hover:!bg-green-200/50 text-green-500',
@@ -46,8 +49,6 @@ export const MainContextProvider = ({ children }) => {
     pink: 'bg-pink-500 hover:!bg-pink-600 focus:!bg-pink-500 border !border-pink-500 focus:!text-white text-white hover:!text-white',
     rose: 'bg-rose-500 hover:!bg-rose-600 focus:!bg-rose-500 border !border-rose-500 focus:!text-white text-white hover:!text-white',
   };
-
-  console.log(students);
 
   useEffect(() => {
     setUserLoading(true);
@@ -104,11 +105,26 @@ export const MainContextProvider = ({ children }) => {
       handleDataLoaded();
     });
 
+    const paymentHistoryCollection = collection(
+      db,
+      `users/${uid}/paymentHistory`
+    );
+    const unsubscribePaymentHistory = onSnapshot(
+      paymentHistoryCollection,
+      (snapshot) => {
+        setPaymentHistory(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        );
+        handleDataLoaded();
+      }
+    );
+
     return () => {
       unsubscribeCourses();
       unsubscribeTeachers();
       unsubscribeGroups();
       unsubscribeStudents();
+      unsubscribePaymentHistory();
     };
   }, [uid, db]);
 
@@ -128,6 +144,7 @@ export const MainContextProvider = ({ children }) => {
     teachers,
     groups,
     students,
+    paymentHistory,
     loading,
     userLogin,
   };

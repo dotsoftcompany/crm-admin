@@ -28,11 +28,16 @@ import LessonsSchedule from '@/components/students/lesson-schedule';
 import { DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import StudentPayment from '@/components/dialogs/student-payment';
+import StudentPaymentHistory from '@/components/payment/data-table';
 
 const Student = () => {
   const { studentId } = useParams();
-  const { groups, courses, teachers, students, loading, uid } =
+  const { groups, courses, teachers, students, loading, uid, paymentHistory } =
     useMainContext();
+
+  const filteredPaymentHistory = paymentHistory.filter(
+    (item) => item.studentId === studentId
+  );
 
   const student = students.find((s) => s.id === studentId);
   const studentGroups = groups.filter((group) =>
@@ -106,29 +111,6 @@ const Student = () => {
       </div>
     );
   }
-
-  const paymentHistory = [
-    {
-      invoice: 'INV001',
-      status: 'Paid',
-      method: 'Credit Card',
-      amount: '$250.00',
-    },
-    {
-      invoice: 'INV002',
-      status: 'Pending',
-      method: 'Bank Transfer',
-      amount: '$150.00',
-    },
-    { invoice: 'INV003', status: 'Paid', method: 'PayPal', amount: '$320.00' },
-    {
-      invoice: 'INV004',
-      status: 'Failed',
-      method: 'Credit Card',
-      amount: '$200.00',
-    },
-    { invoice: 'INV005', status: 'Paid', method: 'Cash', amount: '$180.00' },
-  ];
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
@@ -216,29 +198,7 @@ const Student = () => {
           <LessonsSchedule studentId={studentId} />
         </TabsContent>
         <TabsContent value="attendance-check" className="py-2 space-y-4">
-          <Table className="rounded-md">
-            <TableCaption>A list of recent student payments.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Invoice</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paymentHistory.map((payment, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">
-                    {payment.invoice}
-                  </TableCell>
-                  <TableCell>{payment.status}</TableCell>
-                  <TableCell>{payment.method}</TableCell>
-                  <TableCell className="text-right">{payment.amount}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <StudentPaymentHistory data={filteredPaymentHistory} />
         </TabsContent>
         <TabsContent value="personal-details" className="hidden py-2 space-y-4">
           <div className="w-[550px] h-auto p-4 bg-gradient-to-r from-green-200 to-blue-200 border border-gray-300 shadow-lg rounded-lg relative text-[10px]">

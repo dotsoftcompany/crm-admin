@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { formatNumber } from '@/lib/utils';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/api/firebase';
 import {
   Dialog,
   DialogContent,
@@ -15,41 +18,29 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import InputDatePicker from '../ui/input-date-picker';
-import { Button } from '../ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import InputDatePicker from '@/components/ui/input-date-picker';
+import { Button } from '@/components/ui/button';
 import { I18nProvider } from 'react-aria';
 import { useMainContext } from '@/context/main-context';
-import { formatNumber } from '@/lib/utils';
-import { addDoc, collection } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
-import { useToast } from '../ui/use-toast';
+import { useToast } from '@/components/ui/use-toast';
+import { Loader } from 'lucide-react';
 
 function StudentPayment({ student, groups, open, setOpen }) {
-  const { courses } = useMainContext();
+  const { courses, uid } = useMainContext();
   const { toast } = useToast();
-  const course = courses.find((c) => c.id === groups[0]?.courseId);
-  const [date, setDate] = useState();
-  const [defaultValues, setDefaultValues] = useState({
-    name: student?.fullName,
-    amount: course?.coursePrice,
-    course: '',
-    method: 'cash',
-  });
 
-  useEffect(() => {
-    if (student) {
-      setDefaultValues({
-        name: student?.fullName,
-        amount: course?.coursePrice || '',
-        course:
-          courses.filter((item) => item.id === groups[0]?.courseId)[0]?.id ||
-          '',
-        method: 'cash',
-      });
-    }
-  }, [student, groups, courses]);
+  const getDefaultValues = () => {
+    const course = courses.find((c) => c.id === groups[0]?.courseId);
+    return {
+      name: student?.fullName || '',
+      amount: course?.coursePrice || '',
+      course: groups.length > 0 ? groups[0].id : '',
+      method: 'cash',
+      studentId: '',
+    };
+  };
 
   const {
     handleSubmit,
@@ -57,28 +48,38 @@ function StudentPayment({ student, groups, open, setOpen }) {
     control,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm({ defaultValues });
+  } = useForm({ defaultValues: getDefaultValues() });
+
+  useEffect(() => {
+    reset(getDefaultValues());
+  }, [student, groups, courses, reset]);
 
   const onSubmit = async (data) => {
     try {
-      const userGroupsRef = collection(
+      const userHistoryPaymentCollection = collection(
         db,
-        `users/${auth.currentUser.uid}/payments`
+        `users/${uid}/paymentHistory`
       );
 
-      await addDoc(userGroupsRef, data).then(() => {
-        reset();
-        setOpen(false);
-        toast({
-          title: "Payment muvaffaqiyat qo'shildi",
-        });
+      await addDoc(userHistoryPaymentCollection, {
+        ...data,
+        studentId: student?.id,
+      });
+
+      const studentRef = doc(db, `students`, student?.id);
+      await updateDoc(studentRef, {
+        isPaid: true,
+      });
+
+      reset();
+      setOpen(false);
+      toast({
+        title: "To'lov muvaffaqiyat qo'shildi",
       });
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(groups);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -89,14 +90,12 @@ function StudentPayment({ student, groups, open, setOpen }) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-2 w-full">
-            <div className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-2 w-full">
+            <div>
               <Label>Ism familiya</Label>
               <Input
-                className="w-full"
-                disabled={isSubmitting}
                 type="text"
-                id="name"
+                disabled={isSubmitting}
                 {...register('name', {
                   required: "Bu yerni to'ldirish talab qilinadi",
                 })}
@@ -107,18 +106,19 @@ function StudentPayment({ student, groups, open, setOpen }) {
               )}
             </div>
 
-            {/* Timestamp Field */}
             <Controller
+              disabled={isSubmitting}
               name="timestamp"
               control={control}
               defaultValue={new Date()}
               render={({ field }) => (
                 <div>
-                  <Label>Sana</Label>
+                  <Label id="timestamp">Sana</Label>
                   <I18nProvider locale="ru-RU">
                     <InputDatePicker
-                      formattedDate={date}
-                      setFormattedDate={setDate}
+                      formattedDate={field.value}
+                      setFormattedDate={field.onChange}
+                      ariaLabelledby="timestamp"
                     />
                   </I18nProvider>
                 </div>
@@ -126,90 +126,89 @@ function StudentPayment({ student, groups, open, setOpen }) {
             />
           </div>
 
-          <div className="w-full">
-            <Label>Narx</Label>
-            <Controller
-              name="amount"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: "Bu yerni to'ldirish talab qilinadi",
-                min: 0,
-              }}
-              render={({ field: { onChange, value, ref } }) => (
-                <Input
-                  type="text"
-                  id="amount"
-                  className="pe-12"
-                  value={formatNumber(value)}
-                  onChange={(e) => {
-                    const rawValue = e.target.value.replace(/\D/g, '');
-                    onChange(rawValue);
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-2 w-full">
+            <div className="w-full">
+              <Label>Narx</Label>
+              <div className="relative">
+                <Controller
+                  disabled={isSubmitting}
+                  name="amount"
+                  control={control}
+                  rules={{
+                    required: "Bu yerni to'ldirish talab qilinadi",
+                    min: 0,
                   }}
-                  placeholder="500 000"
-                  ref={ref}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      type="text"
+                      value={formatNumber(value)}
+                      onChange={(e) => {
+                        const rawValue = e.target.value.replace(/\D/g, '');
+                        onChange(rawValue);
+                      }}
+                      placeholder="500 000"
+                      ref={ref}
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.amount && (
-              <p className="text-red-500">{errors.amount.message}</p>
-            )}
-          </div>
-
-          {/* Payment Method Field */}
-          <Controller
-            name="method"
-            control={control}
-            render={({ field }) => (
-              <div>
-                <Label>To'lov usuli</Label>
-                <Select
-                  onValueChange={(value) => field.onChange(value)}
-                  value={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Payment Method" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="cash">Naqd</SelectItem>
-                    <SelectItem value="credit_card">Kredit karta</SelectItem>
-                    <SelectItem value="bank_transfer">
-                      Bank o'tkazmasi
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.method && (
-                  <p className="text-red-500">{errors.method.message}</p>
+                <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+                  so'm
+                </span>
+                {errors.amount && (
+                  <p className="text-red-500">{errors.amount.message}</p>
                 )}
               </div>
-            )}
-          />
+            </div>
+
+            <Controller
+              disabled={isSubmitting}
+              name="method"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <Label>To'lov usuli</Label>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="To'lov usuli" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cash">Naqd</SelectItem>
+                      <SelectItem value="credit_card">Kredit karta</SelectItem>
+                      <SelectItem value="bank_transfer">
+                        Bank o'tkazmasi
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.method && (
+                    <p className="text-red-500">{errors.method.message}</p>
+                  )}
+                </div>
+              )}
+            />
+          </div>
 
           <Controller
+            disabled={isSubmitting}
             name="course"
             control={control}
-            defaultValue={
-              courses.filter((item) => item.id === groups[0]?.courseId)[0]?.id
-            }
             render={({ field }) => (
               <div>
-                <Label>Course</Label>
-                <Select
-                  onValueChange={(value) => field.onChange(value)}
-                  value={field.value}
-                >
+                <Label>Guruhni tanlang</Label>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Payment course" />
+                    <SelectValue placeholder="Guruhni tanlang" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={course.id}>
-                      {
-                        courses.filter(
-                          (item) => item.id === groups[0]?.courseId
-                        )[0]?.courseTitle
-                      }
-                      #{groups[0].groupNumber}
-                    </SelectItem>
+                    {groups.map((group) => {
+                      const courseTitle = courses.find(
+                        (item) => item.id === group?.courseId
+                      )?.courseTitle;
+                      return (
+                        <SelectItem value={group.id} key={group.id}>
+                          {courseTitle} #{group.groupNumber}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
                 {errors.course && (
@@ -220,7 +219,14 @@ function StudentPayment({ student, groups, open, setOpen }) {
           />
 
           {/* Submit Button */}
-          <Button type="submit">Submit Payment</Button>
+          <Button
+            disabled={isSubmitting}
+            className="flex items-center gap-1.5"
+            type="submit"
+          >
+            {isSubmitting && <Loader className="w-3 h-3 animate-spin" />}
+            <span>To'lov qilish</span>
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

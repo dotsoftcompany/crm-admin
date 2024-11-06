@@ -7,7 +7,11 @@ import {
   Group,
 } from 'react-aria-components';
 
-export default function InputDatePicker({ formattedDate, setFormattedDate }) {
+export default function InputDatePicker({
+  formattedDate,
+  setFormattedDate,
+  ariaLabelledby,
+}) {
   const [selectedDate, setSelectedDate] = useState(today(getLocalTimeZone()));
 
   const formatDate = (date) => {
@@ -24,6 +28,7 @@ export default function InputDatePicker({ formattedDate, setFormattedDate }) {
       className="space-y-2"
       value={selectedDate}
       onChange={setSelectedDate}
+      aria-labelledby={ariaLabelledby}
     >
       <Group className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm shadow-black/[.04] ring-offset-background transition-shadow data-[focus-within]:border-ring data-[disabled]:opacity-50 data-[focus-within]:outline-none data-[focus-within]:ring-2 data-[focus-within]:ring-ring/30 data-[focus-within]:ring-offset-2">
         <DateInput className="w-full mx-auto">

@@ -138,7 +138,6 @@ function AddCourses() {
                   render={({ field }) => (
                     <Textarea
                       {...field}
-                      value={value}
                       maxLength={limit}
                       onChange={(e) => {
                         handleChange(e);
@@ -149,6 +148,7 @@ function AddCourses() {
                     />
                   )}
                 />
+
                 <div
                   id="character-count"
                   className={`pointer-events-none absolute bottom-2 right-2 end-0 flex items-center justify-center pe-3 text-xs text-muted-foreground peer-disabled:opacity-50 ${
