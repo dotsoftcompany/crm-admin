@@ -44,7 +44,7 @@ function PaymentHistory() {
         </p>
       </div> */}
 
-      <div className="hidden grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <div class="rounded-xl border bg-card text-card-foreground shadow p-6">
           <div class="flex flex-row items-center justify-between space-y-0 pb-2">
             <div class="tracking-tight text-sm font-normal">Total Revenue</div>

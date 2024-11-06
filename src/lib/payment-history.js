@@ -10,11 +10,14 @@ export const getOutstandingPayments = (students) => {
 export const getPaymentMethodBreakdown = (paymentHistory) => {
   return paymentHistory.reduce((acc, payment) => {
     const method = payment.method;
+    const amount = Number(payment.amount); // Ensure amount is treated as a number
+
     if (acc[method]) {
-      acc[method] += payment.amount;
+      acc[method] += amount;
     } else {
-      acc[method] = payment.amount;
+      acc[method] = amount;
     }
+
     return acc;
   }, {});
 };
@@ -22,18 +25,21 @@ export const getPaymentMethodBreakdown = (paymentHistory) => {
 export const getCoursePayments = (paymentHistory) => {
   return paymentHistory.reduce((acc, payment) => {
     const course = payment.course;
+    const amount = Number(payment.amount);
+
     if (acc[course]) {
-      acc[course] += payment.amount;
+      acc[course] += amount;
     } else {
-      acc[course] = payment.amount;
+      acc[course] = amount;
     }
+
     return acc;
   }, {});
 };
 
 export const getTotalAmountPaid = (paymentHistory) => {
   return formatNumber(
-    paymentHistory.reduce((total, payment) => total + payment.amount, 0)
+    paymentHistory.reduce((total, payment) => total + Number(payment.amount), 0)
   );
 };
 
@@ -62,7 +68,7 @@ export const getMostPaidCourse = (paymentHistory) => {
   // Aggregate payments by course
   const coursePayments = paymentHistory.reduce((acc, payment) => {
     const course = payment.course;
-    const amount = payment.amount;
+    const amount = Number(payment.amount); // Ensure amount is treated as a number
 
     if (acc[course]) {
       acc[course] += amount; // Sum the payments for the same course
@@ -84,8 +90,8 @@ export const getMostPaidCourse = (paymentHistory) => {
   // Sort by total amount in descending order
   coursesWithTotalAmount.sort((a, b) => b.totalAmount - a.totalAmount);
 
-  // Return the course with the highest total payment
-  return coursesWithTotalAmount[0];
+  // Return the course with the highest total payment, or null if empty
+  return coursesWithTotalAmount.length > 0 ? coursesWithTotalAmount[0] : null;
 };
 
 // Calculate student monthly Debt
