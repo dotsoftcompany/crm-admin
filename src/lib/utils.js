@@ -24,7 +24,6 @@ export const hasPaidThisMonth = (paymentHistory) => {
   });
 };
 
-
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }

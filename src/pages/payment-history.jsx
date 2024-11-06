@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import StudentPaymentHistory from '@/components/payment/data-table';
 import { useMainContext } from '@/context/main-context';
-
 import { MonthPicker } from '@/components/ui/month-picker';
+
 import {
-  getCoursePayments,
   getMostPaidCourse,
   getPaymentMethodBreakdown,
   getPaymentsForSelectedMonth,
   getSelectedMonthAndYear,
   getTotalAmountPaid,
 } from '@/lib/payment-history';
-import { LineChart1 } from '@/components/ui/chart/line-chart';
+import { formatNumber } from '@/lib/utils';
 
 function PaymentHistory() {
   const { paymentHistory, courses, groups } = useMainContext();
@@ -29,7 +28,9 @@ function PaymentHistory() {
   const mostPaidCourse = getMostPaidCourse(filteredPayments);
   const paymentMethodBreakdown = getPaymentMethodBreakdown(filteredPayments);
 
-  const courseId = groups.find((c) => c.id === mostPaidCourse?.course)?.courseId;
+  const courseId = groups.find(
+    (c) => c.id === mostPaidCourse?.course
+  )?.courseId;
   const courseTitle = courses.find((c) => c.id === courseId)?.courseTitle;
 
   return (
@@ -43,13 +44,13 @@ function PaymentHistory() {
         </p>
       </div> */}
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="hidden grid grid-cols-3 gap-2">
         <div class="rounded-xl border bg-card text-card-foreground shadow p-6">
           <div class="flex flex-row items-center justify-between space-y-0 pb-2">
             <div class="tracking-tight text-sm font-normal">Total Revenue</div>
           </div>
           <div class="pt-0 pb-0">
-            <div class="text-2xl font-bold">{totalAmount} so'm</div>
+            <div class="text-2xl font-bold">{totalAmount} uzs</div>
             <p class="text-xs text-muted-foreground">+20.1% from last month</p>
           </div>
           {/* <LineChart1 /> */}
@@ -64,7 +65,7 @@ function PaymentHistory() {
             {mostPaidCourse ? (
               <div>
                 <p>{courseTitle}</p>
-                <p>{mostPaidCourse.totalAmount} UZS</p>
+                <p>{formatNumber(mostPaidCourse.totalAmount)} UZS</p>
               </div>
             ) : (
               <p>No payments recorded</p>
@@ -86,7 +87,7 @@ function PaymentHistory() {
                 {Object.entries(paymentMethodBreakdown).map(
                   ([method, totalAmount]) => (
                     <li key={method}>
-                      <strong>{method}:</strong> {totalAmount} UZS
+                      <strong>{method}:</strong> {formatNumber(totalAmount)} UZS
                     </li>
                   )
                 )}

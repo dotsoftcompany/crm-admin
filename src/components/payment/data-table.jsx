@@ -98,22 +98,9 @@ export default function StudentPaymentHistory({
       accessorKey: 'amount',
       header: 'Amount',
       cell: ({ row }) => {
-        const courseId = groups.find(
-          (c) => c.id === row.getValue('course')
-        ).courseId;
-
-        const course = courses.find((c) => c.id === courseId);
-        const coursePrice = () => {
-          if (course.coursePrice > row.getValue('amount')) {
-            return -`${course.coursePrice - row.getValue('amount')}`;
-          } else {
-            return row.getValue('amount');
-          }
-        };
-
         return (
           <div className="whitespace-nowrap">
-            {formatNumber(coursePrice())} so'm
+            {formatNumber(row.getValue('amount'))} so'm
           </div>
         );
       },

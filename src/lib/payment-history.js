@@ -1,3 +1,4 @@
+import { endOfMonth, startOfMonth } from 'date-fns';
 import { formatNumber } from './utils';
 
 export const getOutstandingPayments = (students) => {
@@ -85,4 +86,51 @@ export const getMostPaidCourse = (paymentHistory) => {
 
   // Return the course with the highest total payment
   return coursesWithTotalAmount[0];
+};
+
+// Calculate student monthly Debt
+export const calculateCurrentMonthDebt = (student, courses, groups) => {
+  if (!student.paymentHistory || student.paymentHistory.length === 0) {
+    return {
+      coursePrice: 0,
+      totalPaidThisMonth: 0,
+      debt: 0,
+    };
+  }
+
+  const currentMonthStart = startOfMonth(new Date());
+  const currentMonthEnd = endOfMonth(new Date());
+
+  // Safely get the course ID
+  const firstPayment = student.paymentHistory[0];
+  const courseId = groups.find((c) => c.id === firstPayment.course)?.courseId;
+  const coursePrice = courses.find((c) => c.id === courseId)?.coursePrice || 0;
+
+  // Filter payments made in the current month
+  const currentMonthPayments = student.paymentHistory.filter((payment) => {
+    const paymentDate = payment.timestamp?.seconds
+      ? new Date(payment.timestamp.seconds * 1000)
+      : null;
+    return (
+      paymentDate &&
+      paymentDate >= currentMonthStart &&
+      paymentDate <= currentMonthEnd
+    );
+  });
+
+  // Calculate total amount paid in the current month, ensuring amounts are converted to numbers
+  const totalPaidThisMonth = currentMonthPayments.reduce(
+    (sum, payment) => sum + Number(payment.amount),
+    0
+  );
+
+  // Calculate debt if total paid is less than course price
+  const debt =
+    coursePrice > totalPaidThisMonth ? coursePrice - totalPaidThisMonth : 0;
+
+  return {
+    coursePrice,
+    totalPaidThisMonth,
+    debt,
+  };
 };

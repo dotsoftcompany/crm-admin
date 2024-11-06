@@ -11,6 +11,7 @@ export default function InputDatePicker({
   formattedDate,
   setFormattedDate,
   ariaLabelledby,
+  notFormat = false,
 }) {
   const [selectedDate, setSelectedDate] = useState(today(getLocalTimeZone()));
 
@@ -20,8 +21,12 @@ export default function InputDatePicker({
   };
 
   useEffect(() => {
-    setFormattedDate(formatDate(selectedDate));
-  }, [selectedDate]);
+    if (!notFormat) {
+      setFormattedDate(selectedDate.toString());
+    } else {
+      setFormattedDate(formatDate(selectedDate));
+    }
+  }, [selectedDate, notFormat]);
 
   return (
     <DatePicker

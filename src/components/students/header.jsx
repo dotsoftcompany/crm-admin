@@ -18,12 +18,25 @@ import {
   User,
   Users,
 } from 'lucide-react';
-import { formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
+import { formatNumber, formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
+import { useMainContext } from '@/context/main-context';
+import { calculateCurrentMonthDebt } from '@/lib/payment-history';
 
 function StudentHeader({ student }) {
+  const { courses, groups } = useMainContext();
+
   const [showPassword, setShowPassword] = React.useState(false);
   const username = student?.email?.replace(/@student\.uz$/, '');
   const paidThisMonth = hasPaidThisMonth(student.paymentHistory);
+
+  const { coursePrice, totalPaidThisMonth, debt } = calculateCurrentMonthDebt(
+    student,
+    courses,
+    groups
+  );
+
+  console.log(debt);
+
   return (
     <div className="space-y-2 pb-4 w-full border-b border-border">
       <div className="flex items-center gap-2">
@@ -33,6 +46,9 @@ function StudentHeader({ student }) {
         <Badge variant={paidThisMonth ? 'active' : 'inactive'}>
           {paidThisMonth ? "To'lov qilgan" : "To'lov qilmagan"}
         </Badge>
+        {debt > 0 && (
+          <Badge variant={debt && 'inactive'}>-{formatNumber(debt)} uzs</Badge>
+        )}
       </div>
       <div className="flex flex-wrap items-center gap-3 md:gap-5">
         <div className="flex items-center gap-2">

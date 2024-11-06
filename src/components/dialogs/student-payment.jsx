@@ -86,7 +86,6 @@ function StudentPayment({ student, groups, open, setOpen }) {
       const studentRef = doc(db, 'students', student?.id);
       await updateDoc(studentRef, {
         paymentHistory: arrayUnion(paymentEntry),
-        lastPaymentDate: new Date()
       });
 
       // Reset form and close modal
@@ -138,6 +137,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
                       formattedDate={field.value}
                       setFormattedDate={field.onChange}
                       ariaLabelledby="timestamp"
+                      notFormat={true}
                     />
                   </I18nProvider>
                 </div>
@@ -171,7 +171,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
                   )}
                 />
                 <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
-                  so'm
+                  uzs
                 </span>
                 {errors.amount && (
                   <p className="text-red-500">{errors.amount.message}</p>

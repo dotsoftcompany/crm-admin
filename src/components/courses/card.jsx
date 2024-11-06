@@ -125,7 +125,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
           <span className="text-sm font-medium truncate">John Doe</span>
         </div>
         <span className="text-lg font-semibold">
-          {formatNumber(item.coursePrice)} so'm
+          {formatNumber(item.coursePrice)} uzs
         </span>
       </div>
     </Card>
