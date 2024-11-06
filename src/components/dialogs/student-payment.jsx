@@ -1,7 +1,13 @@
 import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { formatNumber } from '@/lib/utils';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '@/api/firebase';
 import {
   Dialog,
@@ -56,28 +62,41 @@ function StudentPayment({ student, groups, open, setOpen }) {
 
   const onSubmit = async (data) => {
     try {
+      // 1. Add the payment record to paymentHistory collection for general record
       const userHistoryPaymentCollection = collection(
         db,
         `users/${uid}/paymentHistory`
       );
-
-      await addDoc(userHistoryPaymentCollection, {
+      const paymentDocRef = await addDoc(userHistoryPaymentCollection, {
         ...data,
         studentId: student?.id,
       });
 
-      const studentRef = doc(db, `students`, student?.id);
+      // 2. Create the payment entry for the student's payment history
+      const paymentEntry = {
+        name: data.name,
+        amount: data.amount,
+        paymentId: paymentDocRef.id,
+        course: data.course,
+        method: data.method,
+        timestamp: data.timestamp,
+      };
+
+      // 3. Update the student's payment history array
+      const studentRef = doc(db, 'students', student?.id);
       await updateDoc(studentRef, {
-        isPaid: true,
+        paymentHistory: arrayUnion(paymentEntry),
+        lastPaymentDate: new Date()
       });
 
+      // Reset form and close modal
       reset();
       setOpen(false);
       toast({
         title: "To'lov muvaffaqiyat qo'shildi",
       });
     } catch (error) {
-      console.log(error);
+      console.error('Error adding payment:', error);
     }
   };
 

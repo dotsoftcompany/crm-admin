@@ -15,6 +15,7 @@ import StudentEdit from '@/components/students/edit';
 import { useMainContext } from '@/context/main-context';
 import DeleteStudentAlert from '@/components/dialogs/delete-student-alert';
 import { MonthPicker } from '@/components/ui/month-picker';
+import { hasPaidThisMonth } from '@/lib/utils';
 
 function Students() {
   const { students } = useMainContext();
@@ -31,17 +32,21 @@ function Students() {
   const filteredStudents = () => {
     switch (filter) {
       case 'paid':
-        const paidStudents = students.filter((student) => student.isPaid);
+        const paidStudents = students.filter((student) =>
+          hasPaidThisMonth(student.paymentHistory)
+        );
         return paidStudents;
+
       case 'notPaid':
-        const notPaidStudents = students.filter((student) => !student.isPaid);
+        const notPaidStudents = students.filter(
+          (student) => !hasPaidThisMonth(student.paymentHistory)
+        );
         return notPaidStudents;
+
       default:
         return students;
     }
   };
-
-  console.log(filteredStudents);
 
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-2">
@@ -91,15 +96,6 @@ function Students() {
           <div className="items-center space-x-2">
             <MonthPicker className="w-44" month={month} setMonth={setMonth} />
           </div>
-          {/* <Link to="/add-student">
-            <Button
-              variant="secondary"
-              className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
-            >
-              <PlusCircle className="w-4 h-4 -ml-1" />
-              <span>O'quvchi qo'shish</span>
-            </Button>
-          </Link> */}
         </div>
       </StudentsDataTable>
     </div>

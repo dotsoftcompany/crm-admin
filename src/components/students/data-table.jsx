@@ -30,8 +30,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatPhoneNumber } from '@/lib/utils';
-import { useMainContext } from '@/context/main-context';
+import { formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
 
 export default function StudentsDataTable({
   setId,
@@ -100,17 +99,20 @@ export default function StudentsDataTable({
     {
       accessorKey: 'isPay',
       header: "To'lov qilganligi",
-      cell: ({ row }) => (
-        <div
-          className={
-            row.original.isPaid
-              ? 'text-green-500 whitespace-nowrap'
-              : 'text-red-500 whitespace-nowrap'
-          }
-        >
-          {row.original.isPaid ? 'Tolov qilgan' : 'Tolov qilmagan'}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const paidThisMonth = hasPaidThisMonth(row.original.paymentHistory);
+        return (
+          <div
+            className={
+              paidThisMonth
+                ? 'text-green-500 whitespace-nowrap'
+                : 'text-red-500 whitespace-nowrap'
+            }
+          >
+            {paidThisMonth ? "To'lov qilgan" : "To'lov qilmagan"}
+          </div>
+        );
+      },
     },
     {
       accessorKey: 'view',
@@ -250,7 +252,7 @@ export default function StudentsDataTable({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table?.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -269,7 +271,7 @@ export default function StudentsDataTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns?.length}
                   className="h-16 text-center"
                 >
                   {loadingStudents ? 'Loading...' : 'No results.'}

@@ -22,7 +22,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useMainContext } from '@/context/main-context';
 import { formatDate } from '@/lib/utils';
 
-function GroupCard({ card, setOpenDelete, setOpenEdit }) {
+function GroupCard({ card, paidThisMonth, setOpenDelete, setOpenEdit }) {
   const { courses, teachers } = useMainContext();
 
   const teacherFullName = teachers?.filter(

@@ -39,7 +39,7 @@ function MainPage() {
 
   return (
     <div className="px-8 mx-auto my-4 space-y-4">
-      <MakeStudentsUnpaid />
+      {/* <MakeStudentsUnpaid /> */}
 
       <div className="space-y-2">
         <div className="flex items-center justify-between space-y-2">

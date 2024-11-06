@@ -1,6 +1,30 @@
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+import { startOfMonth, endOfMonth } from 'date-fns';
+
+export const hasPaidThisMonth = (paymentHistory) => {
+  if (!paymentHistory || paymentHistory.length === 0) {
+    return false;
+  }
+
+  const currentMonthStart = startOfMonth(new Date());
+  const currentMonthEnd = endOfMonth(new Date());
+
+  return paymentHistory.some((payment) => {
+    const paymentDate = payment.timestamp?.seconds
+      ? new Date(payment.timestamp.seconds * 1000)
+      : null;
+
+    if (!paymentDate) {
+      return false;
+    }
+
+    return paymentDate >= currentMonthStart && paymentDate <= currentMonthEnd;
+  });
+};
+
+
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }

@@ -18,19 +18,20 @@ import {
   User,
   Users,
 } from 'lucide-react';
-import { formatPhoneNumber } from '@/lib/utils';
+import { formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
 
 function StudentHeader({ student }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const username = student?.email?.replace(/@student\.uz$/, '');
+  const paidThisMonth = hasPaidThisMonth(student.paymentHistory);
   return (
     <div className="space-y-2 pb-4 w-full border-b border-border">
       <div className="flex items-center gap-2">
         <h1 className="text-xl md:text-2xl font-semibold">
           {student.fullName}
         </h1>
-        <Badge variant={student.isPaid ? 'active' : 'inactive'}>
-          {student.isPaid ? "To'lov qilgan" : "To'lov qilmagan"}
+        <Badge variant={paidThisMonth ? 'active' : 'inactive'}>
+          {paidThisMonth ? "To'lov qilgan" : "To'lov qilmagan"}
         </Badge>
       </div>
       <div className="flex flex-wrap items-center gap-3 md:gap-5">
