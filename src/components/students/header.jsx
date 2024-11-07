@@ -35,7 +35,6 @@ function StudentHeader({ student }) {
     groups
   );
 
-  console.log(debt);
 
   return (
     <div className="space-y-2 pb-4 w-full border-b border-border">
@@ -43,11 +42,29 @@ function StudentHeader({ student }) {
         <h1 className="text-xl md:text-2xl font-semibold">
           {student.fullName}
         </h1>
-        <Badge variant={paidThisMonth ? 'active' : 'inactive'}>
+        <Badge
+          variant={paidThisMonth ? 'active' : 'inactive'}
+          className={debt && '!bg-orange-500'}
+        >
           {paidThisMonth ? "To'lov qilgan" : "To'lov qilmagan"}
         </Badge>
         {debt > 0 && (
-          <Badge variant={debt && 'inactive'}>-{formatNumber(debt)} uzs</Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge variant={debt && 'inactive'} className="cursor-pointer">
+                  - {formatNumber(debt)} uzs
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <small>
+                  {`${formatNumber(coursePrice)} - ${formatNumber(
+                    totalPaidThisMonth
+                  )} = ${formatNumber(debt)}`}
+                </small>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </div>
       <div className="flex flex-wrap items-center gap-3 md:gap-5">

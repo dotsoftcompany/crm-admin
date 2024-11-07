@@ -10,5 +10,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <MainContextProvider>
       <App />
     </MainContextProvider>
-  </ThemeProvider>
-);
+  </ThemeProvider>);

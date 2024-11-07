@@ -10,7 +10,7 @@ export const getOutstandingPayments = (students) => {
 export const getPaymentMethodBreakdown = (paymentHistory) => {
   return paymentHistory.reduce((acc, payment) => {
     const method = payment.method;
-    const amount = Number(payment.amount); // Ensure amount is treated as a number
+    const amount = Number(payment.amount);
 
     if (acc[method]) {
       acc[method] += amount;

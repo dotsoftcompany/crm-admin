@@ -95,4 +95,7 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: 0; /* Firefox */
   }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
 }

@@ -12,6 +12,7 @@ import {
   getTotalAmountPaid,
 } from '@/lib/payment-history';
 import { formatNumber } from '@/lib/utils';
+import { LineChart1 } from '@/components/ui/chart/line-chart';
 
 function PaymentHistory() {
   const { paymentHistory, courses, groups } = useMainContext();
@@ -96,7 +97,6 @@ function PaymentHistory() {
             {/* <div class="text-2xl font-bold">{mostPaidCourse.course}</div> */}
             <p class="text-xs text-muted-foreground">+20.1% from last month</p>
           </div>
-          {/* <LineChart1 /> */}
         </div>
       </div>
 

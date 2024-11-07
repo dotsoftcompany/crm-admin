@@ -20,6 +20,8 @@ export default function InputDatePicker({
     return new Intl.DateTimeFormat('en-GB').format(jsDate).replace(/\//g, '.');
   };
 
+  console.log(formattedDate);
+
   useEffect(() => {
     if (!notFormat) {
       setFormattedDate(selectedDate.toString());

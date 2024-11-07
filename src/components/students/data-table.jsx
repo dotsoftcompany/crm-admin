@@ -30,7 +30,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
+import { formatNumber, formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
+import { calculateCurrentMonthDebt } from '@/lib/payment-history';
+import { useMainContext } from '@/context/main-context';
 
 export default function StudentsDataTable({
   setId,
@@ -43,11 +45,14 @@ export default function StudentsDataTable({
   children,
 }) {
   const history = useNavigate();
+  const { courses, groups } = useMainContext();
 
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  console.log(data);
 
   const handleRowClick = (teacherId) => {
     history(`/students/${teacherId}`);
@@ -101,13 +106,15 @@ export default function StudentsDataTable({
       header: "To'lov qilganligi",
       cell: ({ row }) => {
         const paidThisMonth = hasPaidThisMonth(row.original.paymentHistory);
+
+        const { coursePrice, totalPaidThisMonth, debt } =
+          calculateCurrentMonthDebt(row.original, courses, groups);
+
         return (
           <div
-            className={
-              paidThisMonth
-                ? 'text-green-500 whitespace-nowrap'
-                : 'text-red-500 whitespace-nowrap'
-            }
+            className={`${paidThisMonth ? 'text-green-500' : 'text-red-500'} ${
+              debt && 'text-orange-500'
+            } whitespace-nowrap`}
           >
             {paidThisMonth ? "To'lov qilgan" : "To'lov qilmagan"}
           </div>
@@ -281,7 +288,23 @@ export default function StudentsDataTable({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-start justify-between space-x-2 py-4">
+        <div className="flex items-center gap-2 lg:gap-3">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500" />
+            <small className="text-muted-foreground">To'lov qilgan</small>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-red-500" />
+            <small className="text-muted-foreground">To'lov qilmagan</small>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-orange-500" />
+            <small className="text-muted-foreground">
+              To'lov qilgan, lekin qarzi bor
+            </small>
+          </div>
+        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

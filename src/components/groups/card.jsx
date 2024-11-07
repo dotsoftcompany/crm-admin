@@ -1,13 +1,17 @@
 import React from 'react';
+import { useMainContext } from '@/context/main-context';
+import { formatDate } from '@/lib/utils';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,13 +20,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
 
-import { useMainContext } from '@/context/main-context';
-import { formatDate } from '@/lib/utils';
-
-function GroupCard({ card, paidThisMonth, setOpenDelete, setOpenEdit }) {
+function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
   const { courses, teachers } = useMainContext();
 
   const teacherFullName = teachers?.filter(
@@ -69,7 +68,11 @@ function GroupCard({ card, paidThisMonth, setOpenDelete, setOpenEdit }) {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                className={`${
+                  studentCard
+                    ? 'flex h-8 w-8 p-0 data-[state=open]:bg-muted'
+                    : 'hidden'
+                }`}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}

@@ -79,14 +79,9 @@ export default function StudentPaymentHistory({
       cell: ({ row }) => {
         function formatDate(timestamp) {
           const { seconds, nanoseconds } = timestamp;
-
           const date = new Date(seconds * 1000 + nanoseconds / 1000000);
-
           return format(date, 'dd.MM.yyyy');
         }
-
-        const timestamp = row.getValue('timestamp');
-        const date = new Date();
         return (
           <div className="whitespace-nowrap">
             {formatDate(row.getValue('timestamp'))}
