@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { formatNumber } from '@/lib/utils';
 import {
-  addDoc,
-  arrayUnion,
-  collection,
   doc,
+  getDoc,
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/api/firebase';
@@ -28,83 +26,64 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import InputDatePicker from '@/components/ui/input-date-picker';
 import { Button } from '@/components/ui/button';
-import { I18nProvider } from 'react-aria';
-import { useMainContext } from '@/context/main-context';
-import { useToast } from '@/components/ui/use-toast';
 import { Loader } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+import { useMainContext } from '@/context/main-context';
 
-function StudentPayment({ student, groups, open, setOpen }) {
-  const { courses, uid } = useMainContext();
+function EditPayment({ paymentId, setOpen}) {
+    const { uid, paymentHistory, groups, courses, students } = useMainContext()
   const { toast } = useToast();
+  const payment = paymentHistory.find(p => p.id === paymentId);
+  const student = students.find(s => s.id === payment?.studentId); 
 
   const getDefaultValues = () => {
-    const course = courses.find((c) => c.id === groups[0]?.courseId);
+    if (!payment) return {};
     return {
-      name: student?.fullName || '',
-      amount: course?.coursePrice || '',
-      course: groups.length > 0 ? groups[0].id : '',
-      method: 'cash',
-      studentId: '',
+      name: payment.name || "",
+      amount: payment.amount || '',
+      course: payment.course || "",
+      method: payment.method || 'cash',
+      timestamp: payment.timestamp || new Date(),
     };
   };
 
-  const {
-    handleSubmit,
-    register,
-    control,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm({ defaultValues: getDefaultValues() });
+  const { handleSubmit, register, control, reset, formState: { errors, isSubmitting } } = useForm({
+    defaultValues: getDefaultValues(),
+  });
 
   useEffect(() => {
-    reset(getDefaultValues());
-  }, [student, groups, courses, reset]);
+    if (payment) {
+      reset(getDefaultValues());
+    }
+  }, [payment, reset]);
 
   const onSubmit = async (data) => {
     try {
-      const userHistoryPaymentCollection = collection(
-        db,
-        `users/${uid}/paymentHistory`
-      );
-      const paymentDocRef = await addDoc(userHistoryPaymentCollection, {
+      const paymentDocRef = doc(db, `users/${uid}/paymentHistory`, paymentId);
+      await updateDoc(paymentDocRef, {
         ...data,
-        studentId: student?.id,
+        timestamp: data.timestamp,
       });
 
-      const paymentEntry = {
-        paymentId: paymentDocRef.id,
-        name: data.name,
-        amount: data.amount,
-        paymentId: paymentDocRef.id,
-        course: data.course,
-        method: data.method,
-        timestamp: data.timestamp,
-      };
-
-      const studentRef = doc(db, 'students', student?.id);
+      const studentRef = doc(db, 'students', payment?.studentId);
       await updateDoc(studentRef, {
-        paymentHistory: arrayUnion(paymentEntry),
+        paymentHistory: student.paymentHistory.map(entry =>
+          entry.paymentId === paymentId ? { ...entry, ...data } : entry
+        ),
       });
 
       reset();
       setOpen(false);
       toast({
-        title: "To'lov muvaffaqiyat qo'shildi",
+        title: "To'lov muvaffaqiyatli yangilandi",
       });
     } catch (error) {
-      console.error('Error adding payment:', error);
+      console.error('Error updating payment:', error);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="w-full max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>To'lov qo'shish</DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-2 w-full">
             <div>
               <Label>Ism familiya</Label>
@@ -125,18 +104,15 @@ function StudentPayment({ student, groups, open, setOpen }) {
               disabled={isSubmitting}
               name="timestamp"
               control={control}
-              defaultValue={new Date()}
               render={({ field }) => (
                 <div>
                   <Label id="timestamp">Sana</Label>
-                  <I18nProvider locale="ru-RU">
-                    <InputDatePicker
-                      formattedDate={field.value}
-                      setFormattedDate={field.onChange}
-                      ariaLabelledby="timestamp"
-                      notFormat={true}
-                    />
-                  </I18nProvider>
+                  <InputDatePicker
+                    formattedDate={field.value}
+                    setFormattedDate={field.onChange}
+                    ariaLabelledby="timestamp"
+                    notFormat={true}
+                  />
                 </div>
               )}
             />
@@ -209,7 +185,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
             control={control}
             render={({ field }) => (
               <div>
-                <Label>Guruhni tanlang</Label>
+                <Label>Kursni tanlang</Label>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Guruhni tanlang" />
@@ -221,7 +197,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
                       )?.courseTitle;
                       return (
                         <SelectItem value={group.id} key={group.id}>
-                          {courseTitle} #{group.groupNumber}
+                          {courseTitle}
                         </SelectItem>
                       );
                     })}
@@ -241,12 +217,10 @@ function StudentPayment({ student, groups, open, setOpen }) {
             type="submit"
           >
             {isSubmitting && <Loader className="w-3 h-3 animate-spin" />}
-            <span>To'lov qilish</span>
+            <span>Yangilash</span>
           </Button>
         </form>
-      </DialogContent>
-    </Dialog>
   );
 }
 
-export default StudentPayment;
+export default EditPayment;

@@ -35,7 +35,10 @@ import { format } from 'date-fns';
 
 export default function StudentPaymentHistory({
   data,
-  loadingStudents,
+  setId,
+  loading,
+  setOpenDelete,
+  setOpenEdit,
   children,
 }) {
   const { courses, groups } = useMainContext();
@@ -120,6 +123,42 @@ export default function StudentPaymentHistory({
           <div className="whitespace-nowrap">
             {formatPaymentMethod(row.getValue('method'))}
           </div>
+        );
+      },
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        const payment = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setId(payment.id);
+                      setOpenEdit(true);
+                    }}
+                  >
+                    Tahrirlash
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setId(payment.id);
+                  setOpenDelete(true);
+                }}
+              >
+              O'chirish
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         );
       },
     },
@@ -228,7 +267,7 @@ export default function StudentPaymentHistory({
                   colSpan={columns?.length}
                   className="h-16 text-center"
                 >
-                  {loadingStudents ? 'Loading...' : 'No results.'}
+                  {loading ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}

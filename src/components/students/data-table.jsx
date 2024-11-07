@@ -11,7 +11,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -30,7 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatNumber, formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
+import { formatPhoneNumber, hasPaidThisMonth } from '@/lib/utils';
 import { calculateCurrentMonthDebt } from '@/lib/payment-history';
 import { useMainContext } from '@/context/main-context';
 
