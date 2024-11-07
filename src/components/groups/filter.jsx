@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { PlusCircle, Settings2 } from 'lucide-react';
+import { PlusCircle, Settings2, LayoutGrid, List } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -19,7 +19,11 @@ function FilterGroups({
   setSearchTerm,
   filterOption,
   setFilterOption,
+  card,
 }) {
+  const { isCard, setIsCard } = card;
+  console.log(isCard);
+
   const getPlaceholder = () => {
     switch (filterOption) {
       case 'title':
@@ -54,15 +58,28 @@ function FilterGroups({
           </SelectContent>
         </Select>
       </div>
-      <Link to={url}>
+      <div className="flex items-center gap-2">
+        <Link to={url}>
+          <Button
+            variant="secondary"
+            className="hidden md:flex items-center gap-1.5 h-9"
+          >
+            <PlusCircle className="w-4 h-4 -ml-1" />
+            <span>{title}</span>
+          </Button>
+        </Link>
         <Button
+          onClick={() => setIsCard((prev) => !prev)}
           variant="secondary"
-          className="hidden md:flex items-center gap-1.5 h-9 dark:bg-primary dark:text-black"
+          className="p-3 h-9"
         >
-          <PlusCircle className="w-4 h-4 -ml-1" />
-          <span>{title}</span>
+          {isCard ? (
+            <LayoutGrid className="w-4 h-4" />
+          ) : (
+            <List className="w-4 h-4" />
+          )}
         </Button>
-      </Link>
+      </div>
     </div>
   );
 }

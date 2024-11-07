@@ -35,15 +35,12 @@ const Student = () => {
   const { groups, courses, teachers, students, loading, uid, paymentHistory } =
     useMainContext();
 
-  const filteredPaymentHistory = paymentHistory.filter(
-    (item) => item.studentId === studentId
-  );
-
   const student = students.find((s) => s.id === studentId);
   const studentGroups = groups.filter((group) =>
     group?.students?.includes(studentId)
   );
 
+  const [isCard, setIsCard] = useState(true);
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   const [openPayment, setOpenPayment] = useState(false);
@@ -122,9 +119,8 @@ const Student = () => {
         />
         <Button
           size="sm"
-          variant="secondary"
           onClick={() => setOpenPayment(true)}
-          className="flex items-center gap-1 !text-xs py-1"
+          className="flex items-center gap-1 !text-xs py-1 bg-blue-100 text-blue-500 dark:bg-blue-500 dark:text-white"
         >
           <DollarSign className="w-3 h-3" />
           <span>To'lov qilish</span>
@@ -170,13 +166,20 @@ const Student = () => {
             setSearchTerm={setSearchTerm}
             filterOption={filterOption}
             setFilterOption={setFilterOption}
+            card={{ isCard, setIsCard }}
           />
           {filteredGroups.length == 0 && (
             <p className="mt-10 text-muted-foreground text-center">
               Guruh topilmadi.
             </p>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div
+            className={`grid gap-4 ${
+              isCard
+                ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
+                : 'grid-cols-1'
+            }`}
+          >
             {filteredGroups.map((card) => (
               <Link key={card.id} to={`/groups/${card.id}`}>
                 <GroupCard

@@ -14,6 +14,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function Groups() {
   const { groups, courses, teachers, loading, uid } = useMainContext();
+
+  const [isCard, setIsCard] = useState(true);
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -82,6 +84,7 @@ function Groups() {
         setSearchTerm={setSearchTerm}
         filterOption={filterOption}
         setFilterOption={setFilterOption}
+        card={{ isCard, setIsCard }}
       />
 
       {loading && <GroupCarLoading />}
@@ -92,7 +95,11 @@ function Groups() {
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div
+        className={`grid gap-4 ${
+          isCard ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'
+        }`}
+      >
         {filteredGroups.map((card) => (
           <Link key={card.id} to={`/groups/${card.id}`}>
             <GroupCard

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMainContext } from '@/context/main-context';
 import { formatDate } from '@/lib/utils';
+import { Users } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
@@ -22,17 +23,32 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
-  const { courses, teachers } = useMainContext();
+  const { courses, teachers, students } = useMainContext();
+  const groupStudents = students.filter((student) =>
+    card?.students?.includes(student.id)
+  );
+
+  console.log(groupStudents);
 
   const teacherFullName = teachers?.filter(
     (item) => item.id === card?.teacherId
   )[0]?.fullName;
 
+  const getInitials = (fullName) => {
+    const nameParts = fullName.split(' ');
+
+    if (nameParts.length === 1) {
+      return nameParts[0].slice(0, 2).toUpperCase();
+    } else {
+      return nameParts[0][0].toUpperCase() + nameParts[1][0].toUpperCase();
+    }
+  };
+
   return (
     <Card key={card.id} className="group-card group-dark-card">
       <div className="p-4 pb-0 space-y-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -61,6 +77,17 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
             </TooltipProvider>
             <Badge variant={card.status ? 'active' : 'inactive'}>
               {card.status ? 'Aktiv' : 'Tugatildi'}
+            </Badge>
+            <Badge
+              className="flex items-center gap-1.5 w-fit text-sm text-xs"
+              variant="secondary"
+            >
+              <Users className="w-3 h-3" />
+              <span>
+                {card?.students?.length
+                  ? ` ${card?.students?.length} ta`
+                  : ' 0'}
+              </span>
             </Badge>
           </div>
 
@@ -126,19 +153,28 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
                   ?.courseTitle
               }
             </h2>
-            <span className="text-base text-muted-foreground">
+            <span className="text-base text-muted-foreground mt-0.5">
               #{card.groupNumber}
             </span>
           </div>
-
-          <div className="flex gap-0 mt-2">
-            <div className="flex items-center -space-x-3">
-              {/* Optionally display avatars here */}
-            </div>
-            <Badge className="text-sm px-2 font-medium" variant="secondary">
-              Talabalar soni:
-              {card?.students?.length ? ` ${card?.students?.length} ta` : ' 0'}
-            </Badge>
+          {groupStudents?.length === 0 && (
+            <p className="text-muted-foreground text-sm mt-1 md:mt-2">
+              O'quvchi qo'shilmagan
+            </p>
+          )}
+          <div className="flex items-center -space-x-2.5 mt-2 md:mt-3">
+            {groupStudents.slice(0, 5).map((student) => (
+              <Avatar
+                title={student?.fullName}
+                key={student.id}
+                className="w-7 h-7 shadow border border-border"
+              >
+                <AvatarImage src="" />
+                <AvatarFallback className="text-xs">
+                  {getInitials(student?.fullName)}
+                </AvatarFallback>
+              </Avatar>
+            ))}
           </div>
         </div>
       </div>

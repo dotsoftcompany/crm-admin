@@ -51,8 +51,6 @@ export default function StudentsDataTable({
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  console.log(data);
-
   const handleRowClick = (teacherId) => {
     history(`/students/${teacherId}`);
   };
@@ -300,7 +298,7 @@ export default function StudentsDataTable({
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-orange-500" />
             <small className="text-muted-foreground">
-              To'lov qilgan, lekin qarzi bor
+              To'lov qilgan, lekin to'liq emas
             </small>
           </div>
         </div>
