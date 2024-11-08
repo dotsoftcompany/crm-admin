@@ -129,6 +129,7 @@ function PaymentHistory() {
         setId={setId}
         setOpenDelete={setOpenDelete}
         setOpenEdit={setOpenEdit}
+        totalAmount={totalAmount}
       >
         <div className="flex items-center gap-2">
           <div className="items-center space-x-2">

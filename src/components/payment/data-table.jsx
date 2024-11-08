@@ -30,7 +30,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useMainContext } from '@/context/main-context';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber, formatPaymentMethod } from '@/lib/utils';
 import { format } from 'date-fns';
 
 export default function StudentPaymentHistory({
@@ -39,6 +39,7 @@ export default function StudentPaymentHistory({
   loading,
   setOpenDelete,
   setOpenEdit,
+  totalAmount,
   children,
 }) {
   const { courses, groups } = useMainContext();
@@ -107,18 +108,6 @@ export default function StudentPaymentHistory({
       accessorKey: 'method',
       header: 'Payment Method',
       cell: ({ row }) => {
-        function formatPaymentMethod(method) {
-          switch (method) {
-            case 'cash':
-              return 'Naqd pul';
-            case 'credit_card':
-              return 'Kredit karta';
-            case 'bank_transfer':
-              return 'Bank oʻtkazmasi';
-            default:
-              return 'Nomaʼlum usul';
-          }
-        }
         return (
           <div className="whitespace-nowrap">
             {formatPaymentMethod(row.getValue('method'))}
@@ -140,22 +129,22 @@ export default function StudentPaymentHistory({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setId(payment.id);
-                      setOpenEdit(true);
-                    }}
-                  >
-                    Tahrirlash
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setId(payment.id);
+                  setOpenEdit(true);
+                }}
+              >
+                Tahrirlash
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
                   setId(payment.id);
                   setOpenDelete(true);
                 }}
               >
-              O'chirish
+                O'chirish
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -274,7 +263,10 @@ export default function StudentPaymentHistory({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-start justify-between space-x-2 py-4">
+        <small className="text-muted-foreground">
+          Umumiy summa: {totalAmount} uzs
+        </small>
         <div className="space-x-2">
           <Button
             variant="outline"

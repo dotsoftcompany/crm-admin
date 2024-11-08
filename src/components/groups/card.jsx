@@ -79,7 +79,7 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
               {card.status ? 'Aktiv' : 'Tugatildi'}
             </Badge>
             <Badge
-              className="flex items-center gap-1.5 w-fit text-sm text-xs"
+              className="flex items-center gap-1.5 w-fit text-xs"
               variant="secondary"
             >
               <Users className="w-3 h-3" />

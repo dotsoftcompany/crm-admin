@@ -29,7 +29,7 @@ export function cn(...inputs) {
 }
 
 export const formatNumber = (value) => {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return value?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
 export function formatPhoneNumber(phoneNumber) {
@@ -57,4 +57,17 @@ export function formatJSONDate(obj) {
 
   // Format to "dd.mm.yyyy"
   return `${day}.${month}.${year}`;
+}
+
+export function formatPaymentMethod(method) {
+  switch (method) {
+    case 'cash':
+      return 'Naqd pul';
+    case 'credit_card':
+      return 'Kredit karta';
+    case 'bank_transfer':
+      return 'Bank oʻtkazmasi';
+    default:
+      return 'Nomaʼlum usul';
+  }
 }
