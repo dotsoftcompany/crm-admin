@@ -71,3 +71,34 @@ export function formatPaymentMethod(method) {
       return 'Nomaʼlum usul';
   }
 }
+
+export function translateMonthToUzbek(monthName) {
+  switch (monthName.toLowerCase()) {
+    case 'january':
+      return 'Yanvar';
+    case 'february':
+      return 'Fevral';
+    case 'march':
+      return 'Mart';
+    case 'april':
+      return 'Aprel';
+    case 'may':
+      return 'May';
+    case 'june':
+      return 'Iyun';
+    case 'july':
+      return 'Iyul';
+    case 'august':
+      return 'Avgust';
+    case 'september':
+      return 'Sentabr';
+    case 'october':
+      return 'Oktabr';
+    case 'november':
+      return 'Noyabr';
+    case 'december':
+      return 'Dekabr';
+    default:
+      return 'Invalid month';
+  }
+}

@@ -205,7 +205,7 @@ const Group = () => {
             } #${group.groupNumber}`}
           />
           <button
-            className="flex items-center gap-1.5 text-sm"
+            className="hidden lg:flex items-center gap-1.5 text-sm"
             onClick={() => toPDF()}
           >
             <Download className="w-4 h-4 text-muted-foreground" />

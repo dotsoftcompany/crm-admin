@@ -197,7 +197,7 @@ export default function StudentsDataTable({
   return (
     <div className="w-full">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-2 lg:mb-0">
-        <div className="flex items-center py-2 gap-2">
+        <div className="flex items-center py-2 gap-2 w-full">
           <Input
             placeholder="Ism bilan qidirish..."
             value={table.getColumn('fullName')?.getFilterValue() ?? ''}
@@ -286,7 +286,7 @@ export default function StudentsDataTable({
         </Table>
       </div>
       <div className="flex items-start justify-between space-x-2 py-4">
-        <div className="flex items-center gap-2 lg:gap-3">
+        <div className="hidden lg:flex items-center gap-2 lg:gap-3">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500" />
             <small className="text-muted-foreground">To'lov qilgan</small>

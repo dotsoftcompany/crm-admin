@@ -202,7 +202,7 @@ const Student = () => {
           <LessonsSchedule studentId={studentId} />
         </TabsContent>
         <TabsContent value="attendance-check" className="py-2 space-y-4">
-          <StudentPaymentHistory data={student?.paymentHistory || ''} />
+          <StudentPaymentHistory data={student?.paymentHistory || ''}/>
         </TabsContent>
         <TabsContent value="personal-details" className="hidden py-2 space-y-4">
           <div className="w-[550px] h-auto p-4 bg-gradient-to-r from-green-200 to-blue-200 border border-gray-300 shadow-lg rounded-lg relative text-[10px]">

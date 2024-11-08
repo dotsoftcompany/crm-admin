@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import {
   BadgeDollarSign,
+  Banknote,
   BookOpen,
   Gem,
   GraduationCapIcon,
@@ -43,7 +44,6 @@ function MainPage() {
     month,
     year
   );
-  console.log(paymentHistory);
 
   const filterByMonthAndYear = (data, month, year) => {
     return data.filter((item) => {
@@ -67,20 +67,20 @@ function MainPage() {
   const courseTitle = courses.find((c) => c.id === courseId)?.courseTitle;
 
   return (
-    <div className="px-8 mx-auto my-4 space-y-4">
+    <div className="px-4 md:px-8 mx-auto my-4 space-y-4">
       {/* <MakeStudentsUnpaid /> */}
 
       <div className="space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <div className="flex items-center gap-2">
             <SheetMenu />
-            <h2 className="text-2xl font-bold tracking-tight">
+            <h2 className="hidden md:block text-2xl font-bold tracking-tight">
               Hi, Welcome back 👋
             </h2>
           </div>
-          <div className="hidden items-center space-x-2 md:flex">
+          <div className="items-center space-x-2 flex">
             <MonthPicker
-              className="w-44"
+              className="md:w-44"
               month={selectedMonth}
               setMonth={setSelectedMonth}
             />
@@ -89,25 +89,13 @@ function MainPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <MainCard
-          title="Kurslar"
-          Icon={BookOpen}
-          count={filteredCourses?.length}
-        />
-        <MainCard
-          title="O'qituvchilar"
-          Icon={Star}
-          count={filteredTeachers?.length}
-        />
-        <MainCard
-          title="Guruhlar"
-          Icon={Users}
-          count={filteredGroups?.length}
-        />
+        <MainCard title="Kurslar" Icon={BookOpen} count={courses?.length} />
+        <MainCard title="O'qituvchilar" Icon={Star} count={teachers?.length} />
+        <MainCard title="Guruhlar" Icon={Users} count={groups?.length} />
         <MainCard
           title="O'quvchilar"
           Icon={GraduationCapIcon}
-          count={filteredStudents?.length}
+          count={students?.length}
         />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -158,7 +146,7 @@ function MainPage() {
             <CardTitle className="text-sm font-medium">
               Ommabop to'lov usuli
             </CardTitle>
-            <Gem className="h-4 w-4 text-muted-foreground" />
+            <Banknote className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           {Object.entries(paymentMethodBreakdown).length === 0 ? (
             <CardContent className="mt-1">
@@ -171,7 +159,7 @@ function MainPage() {
               {Object.entries(paymentMethodBreakdown)
                 .slice(0, 1)
                 .map(([method, totalAmount]) => (
-                  <CardContent>
+                  <CardContent key={method}>
                     <small className="text-muted-foreground">
                       {formatPaymentMethod(method)}
                     </small>

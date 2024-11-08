@@ -28,8 +28,6 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
     card?.students?.includes(student.id)
   );
 
-  console.log(groupStudents);
-
   const teacherFullName = teachers?.filter(
     (item) => item.id === card?.teacherId
   )[0]?.fullName;

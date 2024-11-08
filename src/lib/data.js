@@ -31,7 +31,7 @@ export const cardData = [
     ],
     teacher: {
       name: 'John Doe',
-      avatar: 'https://github.com/shadcn.png',
+      avatar: '',
       fallback: 'CN',
     },
     date: '10.05.2023',
@@ -90,7 +90,7 @@ export const cardData = [
     ],
     teacher: {
       name: 'Emily Watson',
-      avatar: 'https://github.com/shadcn.png',
+      avatar: '',
       fallback: 'EW',
     },
     date: '15.05.2023',
@@ -117,7 +117,7 @@ export const cardData = [
     ],
     teacher: {
       name: 'Alex Turner',
-      avatar: 'https://github.com/shadcn.png',
+      avatar: '',
       fallback: 'AT',
     },
     date: '18.05.2023',

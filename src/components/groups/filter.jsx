@@ -21,9 +21,6 @@ function FilterGroups({
   setFilterOption,
   card,
 }) {
-  const { isCard, setIsCard } = card;
-  console.log(isCard);
-
   const getPlaceholder = () => {
     switch (filterOption) {
       case 'title':
@@ -44,10 +41,7 @@ function FilterGroups({
           className="w-full max-w-sm"
           placeholder={getPlaceholder()}
         />
-        <Select
-          // defaultValue="title"
-          onValueChange={(val) => setFilterOption(val)}
-        >
+        <Select onValueChange={(val) => setFilterOption(val)}>
           <SelectTrigger isChevron={false} className="w-fit">
             <Settings2 className="mr-2 h-4 w-4" />
             <SelectValue placeholder="Filter" />
@@ -68,7 +62,7 @@ function FilterGroups({
             <span>{title}</span>
           </Button>
         </Link>
-        <Button
+        {/* <Button
           onClick={() => setIsCard((prev) => !prev)}
           variant="secondary"
           className="p-3 h-9"
@@ -78,7 +72,7 @@ function FilterGroups({
           ) : (
             <List className="w-4 h-4" />
           )}
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

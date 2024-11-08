@@ -119,7 +119,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
       <div className="flex items-center justify-between py-3 px-4 border-t border-border">
         <div className="hidden items-center gap-2 w-52">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <span className="text-sm font-medium truncate">John Doe</span>

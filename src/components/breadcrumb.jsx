@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
   Breadcrumb,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { SheetMenu } from './layout/sheet-menu';
 
 function BreadcrumbComponent({
@@ -27,9 +35,24 @@ function BreadcrumbComponent({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1">
+                <BreadcrumbEllipsis className="h-4 w-4" />
+                <span className="sr-only">Toggle menu</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem>{title}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </BreadcrumbItem>
+          <BreadcrumbItem className="hidden lg:block">
             <Link
               to={subtitle ? titleLink : null}
-              className={subtitle ? 'cursor-pointer' : 'cursor-text text-black dark:text-white'}
+              className={
+                subtitle
+                  ? 'cursor-pointer'
+                  : 'cursor-text text-black dark:text-white'
+              }
             >
               <BreadcrumbLink>{title}</BreadcrumbLink>
             </Link>
@@ -40,7 +63,11 @@ function BreadcrumbComponent({
               <BreadcrumbItem>
                 <Link
                   to={subtitle2 ? subtitleLink : null}
-                  className={subtitle ? 'cursor-text text-black dark:text-white' : 'cursor-pointer'}
+                  className={
+                    subtitle
+                      ? 'cursor-text text-black dark:text-white'
+                      : 'cursor-pointer'
+                  }
                 >
                   <BreadcrumbLink>{subtitle}</BreadcrumbLink>
                 </Link>

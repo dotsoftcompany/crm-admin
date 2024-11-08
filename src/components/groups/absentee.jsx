@@ -152,10 +152,10 @@ function Absentee({ groupId, allStudents }) {
                 </TableHead>
                 <TableHead className="whitespace-nowrap">Nechtadan</TableHead>
                 <TableHead className="whitespace-nowrap">Foizda (%)</TableHead>
-                <TableHead className="text-center">
+                <TableHead className="text-center whitespace-nowrap">
                   Yo'qlamani ko'rish
                 </TableHead>
-                <TableHead className="text-center rounded-tr-md">
+                <TableHead className="text-center rounded-tr-md whitespace-nowrap">
                   Yo'qlamani ko'rish
                 </TableHead>
               </TableRow>

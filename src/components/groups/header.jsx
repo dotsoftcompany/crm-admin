@@ -17,19 +17,17 @@ function GroupHeader({ group }) {
   const teacher = teachers.filter((item) => item.id === group.teacherId)[0]
     ?.fullName;
 
-
-
   return (
     <div className="space-y-2 py-4 w-full border-b border-border">
       <div className="flex items-center gap-2">
-        <h1 className="text-xl md:text-2xl font-semibold">
+        <h1 className="text-xl md:text-2xl font-semibold whitespace-nowrap truncate">
           {courses.filter((item) => item.id === group.courseId)[0].courseTitle}
         </h1>
         <span className="text-base text-muted-foreground mt-1">
           #{group.groupNumber}
         </span>
       </div>
-      <div className="flex items-center gap-3 md:gap-5">
+      <div className="flex items-center gap-3 md:gap-5 overflow-x-auto">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
@@ -43,7 +41,9 @@ function GroupHeader({ group }) {
                 }`}
               >
                 <Clock className="h-4 w-4" />
-                <p className="text-sm md:text-base">{group.timeInDay}</p>
+                <p className="text-sm md:text-base whitespace-nowrap">
+                  {group.timeInDay}
+                </p>
               </div>
             </TooltipTrigger>
             <TooltipContent side="top">
@@ -72,7 +72,13 @@ function GroupHeader({ group }) {
             to={teacher ? `/teachers/${group?.teacherId}` : null}
             className="inline-flex"
           >
-            <span className={teacher ? 'hover:underline' : 'cursor-text'}>
+            <span
+              className={
+                teacher
+                  ? 'hover:underline whitespace-nowrap'
+                  : 'cursor-text whitespace-nowrap'
+              }
+            >
               {teacher ? teacher : 'Ustoz tanlanmagan'}
             </span>
           </Link>

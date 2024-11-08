@@ -59,7 +59,7 @@ function LessonsSchedule({ teacherId }) {
 
           {times.map((time, timeIndex) => (
             <React.Fragment key={time}>
-              <div className="sticky left-0 z-10 flex items-center justify-center gap-1 md:gap-2 font-semibold text-center dark:bg-background p-2 bg-background">
+              <div className="sticky left-0 z-20 flex items-center justify-center gap-1 md:gap-2 font-semibold text-center dark:bg-background p-2 bg-background">
                 <Clock className="w-4 h-4" />
                 <span>{time}</span>
               </div>

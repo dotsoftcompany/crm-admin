@@ -30,7 +30,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useMainContext } from '@/context/main-context';
-import { formatNumber, formatPaymentMethod } from '@/lib/utils';
+import {
+  formatNumber,
+  formatPaymentMethod,
+  translateMonthToUzbek,
+} from '@/lib/utils';
 import { format } from 'date-fns';
 
 export default function StudentPaymentHistory({
@@ -40,10 +44,14 @@ export default function StudentPaymentHistory({
   setOpenDelete,
   setOpenEdit,
   totalAmount,
+  selectedMonth,
   children,
 }) {
   const { courses, groups } = useMainContext();
   const history = useNavigate();
+
+  const date = new Date(selectedMonth);
+  const monthName = date.toLocaleString('en-US', { month: 'long' });
 
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -264,9 +272,12 @@ export default function StudentPaymentHistory({
         </Table>
       </div>
       <div className="flex items-start justify-between space-x-2 py-4">
-        <small className="text-muted-foreground">
-          Umumiy summa: {totalAmount} uzs
-        </small>
+        {selectedMonth && (
+          <small className="text-muted-foreground hidden lg:block">
+            {translateMonthToUzbek(monthName)} oyi uchun umumiy summa:{' '}
+            {totalAmount} uzs
+          </small>
+        )}
         <div className="space-x-2">
           <Button
             variant="outline"

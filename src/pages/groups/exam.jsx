@@ -52,10 +52,10 @@ const GroupExam = () => {
         title="Guruhlar ro'yxati"
         titleLink="/groups"
         subtitle={`${
-          courses.filter((item) => item.id === group.courseId)[0].courseTitle
-        } #${group.groupNumber}`}
+          courses.filter((item) => item.id === group.courseId)[0]?.courseTitle
+        } #${group?.groupNumber}`}
         subtitleLink={`/groups/${groupId}`}
-        subtitle2={`${loading ? "Loading" : exam?.title} (exam)`}
+        subtitle2={`${loading ? 'Loading' : exam?.title} (exam)`}
       />
       <ExamHeader exam={exam} loading={loading} />
 
