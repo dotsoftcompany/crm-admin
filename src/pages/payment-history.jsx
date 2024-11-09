@@ -46,12 +46,14 @@ function PaymentHistory() {
         setOpen={setOpenDelete}
       />
 
-      {/* <div>
-        <h2 className="text-2xl font-bold tracking-tight">Keine Ahnung!</h2>
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight">
+          O'quvchilar to'lov tarixi
+        </h2>
         <p className="text-muted-foreground">
-          I don't know what should I add here!
+          oquvchilarni toʻlov tarixini samarali kuzatib boring va boshqaring.
         </p>
-      </div> */}
+      </div>
 
       <StudentPaymentHistory
         data={filteredPayments}
