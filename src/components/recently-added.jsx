@@ -52,7 +52,7 @@ export function RecentlyAdded() {
     );
   }
   return (
-    <ul>
+    <ul className='relative'>
       <ScrollArea className="h-72">
         {displayedItems.map((item, index) => {
           switch (item.type) {
@@ -136,6 +136,7 @@ export function RecentlyAdded() {
           }
         })}
       </ScrollArea>
+      <p className='text-sm text-muted-foreground absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2'>{displayedItems.length == 0 && "Hali hech narsa qo'shilmagan"}</p>
       <Button
         onClick={() => setViewAll((prev) => !prev)}
         variant="link"

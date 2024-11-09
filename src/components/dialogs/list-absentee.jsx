@@ -19,13 +19,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
 import { Button } from '@/components/ui/button';
-import { useMainContext } from '@/context/main-context';
 
-function ListAbsenteeDialog({ id, absentees, open, setOpen }) {
-  const { students } = useMainContext();
-
+function ListAbsenteeDialog({ id, absentees, students, open, setOpen }) {
   const filteredAbsentee = absentees.filter((absentee) => absentee.id === id);
 
   const absentStudentIds = filteredAbsentee.flatMap(
@@ -67,16 +63,23 @@ function ListAbsenteeDialog({ id, absentees, open, setOpen }) {
               </TableRow>
             </TableHeader>
             <TableBody className="w-full overflow-y-auto">
-              {didNotComeStudents.map((student) => (
-                <TableRow key={student.id} className="text-red-500">
-                  <TableCell className="truncate font-medium">
-                    {student.fullName}
-                  </TableCell>
-                  <TableCell>{student.address}</TableCell>
-                  <TableCell>{student.phoneNumber}</TableCell>
-                  <TableCell>{student.parentPhoneNumber}</TableCell>
-                </TableRow>
-              ))}
+              {students.map((student) => {
+                const isAbsent = absentStudentIds.includes(student.id);
+
+                return (
+                  <TableRow
+                    key={student.id}
+                    className={isAbsent ? 'text-red-500' : 'text-primary'}
+                  >
+                    <TableCell className="truncate">
+                      {student.fullName}
+                    </TableCell>
+                    <TableCell>{student.address}</TableCell>
+                    <TableCell>{student.phoneNumber}</TableCell>
+                    <TableCell>{student.parentPhoneNumber}</TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </ScrollArea>

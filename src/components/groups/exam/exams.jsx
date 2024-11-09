@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
+import { Link } from 'react-router-dom';
 
 import { Eye } from 'lucide-react';
 
@@ -19,12 +20,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { auth, db } from '@/api/firebase';
-import { Link } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
 
-function Exams({ groupId, setOpen }) {
+function Exams({ groupId }) {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredExams, setFilteredExams] = useState([]);
@@ -135,7 +134,7 @@ function Exams({ groupId, setOpen }) {
                 </TableCell>
                 <TableCell className="text-center">
                   <Link to={`/groups/${groupId}/exam/${exam.id}`}>
-                    <Button onClick={() => setOpen(true)} variant="link">
+                    <Button variant="link">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>

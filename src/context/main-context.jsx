@@ -98,7 +98,11 @@ export const MainContextProvider = ({ children }) => {
     });
 
     const studentsCollection = collection(db, 'students');
-    const unsubscribeStudents = onSnapshot(studentsCollection, (snapshot) => {
+    const queryStudents = query(
+      studentsCollection,
+      where('adminId', '==', uid)
+    );
+    const unsubscribeStudents = onSnapshot(queryStudents, (snapshot) => {
       setStudents(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       handleDataLoaded();
     });

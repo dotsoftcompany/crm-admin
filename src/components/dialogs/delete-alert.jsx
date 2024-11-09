@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import useDelete from '@/hooks/useDelete';
 
-function DeleteAlert({ id, collection, open, setOpen }) {
-  const { deleteItem, loading } = useDelete(id, collection);
+function DeleteAlert({ id, collection, fetch, open, setOpen }) {
+  const { deleteItem, loading } = useDelete(id, collection, fetch);
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>

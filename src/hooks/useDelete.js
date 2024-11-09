@@ -3,7 +3,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/api/firebase';
 
-const useDelete = (id, collection) => {
+const useDelete = (id, collection, fetch) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,6 +21,9 @@ const useDelete = (id, collection) => {
       console.log(`Error deleting ${collection}:`, err);
       setError(err);
     } finally {
+      if (fetch) {
+        fetch();
+      }
       setLoading(false);
     }
   };

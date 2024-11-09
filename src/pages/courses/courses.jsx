@@ -79,6 +79,12 @@ function Courses() {
 
       {loading && <CardLoading />}
 
+      {filteredCourses.length == 0 && (
+        <p className="!mt-10 text-muted-foreground text-center">
+          Kurs topilmadi.
+        </p>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredCourses.map((item) => (
           <CourseCard

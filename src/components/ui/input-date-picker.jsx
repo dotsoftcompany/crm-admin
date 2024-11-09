@@ -17,14 +17,17 @@ export default function InputDatePicker({
 
   const formatDate = (date) => {
     const jsDate = new Date(date.year, date.month - 1, date.day);
-    return new Intl.DateTimeFormat('en-GB').format(jsDate).replace(/\//g, '.');
+    const day = String(jsDate.getDate()).padStart(2, '0');
+    const month = String(jsDate.getMonth() + 1).padStart(2, '0');
+    const year = jsDate.getFullYear();
+    return `${day}.${month}.${year}`;
   };
 
   useEffect(() => {
     if (!notFormat) {
-      setFormattedDate(selectedDate.toString());
-    } else {
       setFormattedDate(formatDate(selectedDate));
+    } else {
+      setFormattedDate(selectedDate.toString());
     }
   }, [selectedDate, notFormat]);
 

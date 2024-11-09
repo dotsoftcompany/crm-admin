@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { I18nProvider } from 'react-aria';
+import { addDoc, collection, doc } from 'firebase/firestore';
+import { useMainContext } from '@/context/main-context';
+import { db } from '@/api/firebase';
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Table,
@@ -19,18 +21,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useMainContext } from '@/context/main-context';
-import { DatePicker } from '../ui/date-picker';
-import InputDatePicker from '../ui/input-date-picker';
-import { Search } from 'lucide-react';
-import { addDoc, collection, doc } from 'firebase/firestore';
-import { useToast } from '../ui/use-toast';
-import { db } from '@/api/firebase';
-import { I18nProvider } from 'react-aria';
+import InputDatePicker from '@/components/ui/input-date-picker';
+import { Check, Loader, Search, X } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 function AddAbsenteeDialog({
   students,
@@ -40,10 +36,10 @@ function AddAbsenteeDialog({
   fetchAbsentees,
 }) {
   const { uid } = useMainContext();
-
   const { toast } = useToast();
 
-  const [selectedStudents, setSelectedStudents] = useState('');
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [formattedDate, setFormattedDate] = useState();
 
@@ -51,7 +47,7 @@ function AddAbsenteeDialog({
     s.fullName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCheckboxChange = (studentId) => {
+  const handleRowClick = (studentId) => {
     setSelectedStudents((prevSelected) =>
       prevSelected.includes(studentId)
         ? prevSelected.filter((id) => id !== studentId)
@@ -60,6 +56,7 @@ function AddAbsenteeDialog({
   };
 
   const addAbsenteeData = async () => {
+    setIsSubmitting(true);
     try {
       const absenteesRef = collection(
         doc(db, `users/${uid}/groups`, groupId),
@@ -70,18 +67,19 @@ function AddAbsenteeDialog({
         date: formattedDate,
         students: selectedStudents,
       });
-
-      setSelectedStudents('');
-      setOpen(false);
-      fetchAbsentees();
-
-      toast({
-        title: "Muvvafaqiyatli qo'shildi",
-      });
     } catch (error) {
       console.error('Error adding absentee data: ', error);
+    } finally {
+      setSelectedStudents([]);
+      setOpen(false);
+      fetchAbsentees();
+      setIsSubmitting(false);
+      toast({
+        title: "Muvaffaqiyatli qo'shildi",
+      });
     }
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-2xl">
@@ -115,31 +113,40 @@ function AddAbsenteeDialog({
             </TableCaption>
             <TableHeader className="sticky top-0">
               <TableRow>
-                <TableHead></TableHead>
-                <TableHead className="whitespace-nowrap">Ism familya</TableHead>
-                <TableHead className="whitespace-nowrap">Manzil</TableHead>
-                <TableHead className="whitespace-nowrap">
-                  Telefon raqam
-                </TableHead>
+                <TableHead className="w-10"></TableHead>
+                <TableHead>Ism familya</TableHead>
+                <TableHead>Manzil</TableHead>
+                <TableHead>Telefon raqam</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="w-full">
-              {studentsFilter.map((student) => (
-                <TableRow key={student.id}>
-                  <TableCell>
-                    <Checkbox
-                      type="checkbox"
-                      checked={!selectedStudents.includes(student.id)}
-                      onCheckedChange={() => handleCheckboxChange(student.id)}
-                    />
-                  </TableCell>
-                  <TableCell className="truncate font-medium">
-                    {student.fullName}
-                  </TableCell>
-                  <TableCell>{student.address}</TableCell>
-                  <TableCell>{student.phoneNumber}</TableCell>
-                </TableRow>
-              ))}
+              {studentsFilter.map((student) => {
+                const isSelected = selectedStudents.includes(student.id);
+                return (
+                  <TableRow
+                    key={student.id}
+                    onClick={() => handleRowClick(student.id)}
+                    className={`cursor-pointer ${
+                      isSelected
+                        ? 'bg-red-100 text-red-500 dark:bg-red-500 hover:opacity-90 duration-200 transition-opacity dark:text-white'
+                        : 'hover:bg-gray-100 dark:hover:bg-muted/60'
+                    }`}
+                  >
+                    <TableCell className="w-10">
+                      {isSelected ? (
+                        <X className="w-4 h-4 text-red-500 dark:text-white mx-auto" />
+                      ) : (
+                        <Check className="w-4 h-4 text-green-500 mx-auto" />
+                      )}
+                    </TableCell>
+                    <TableCell className="truncate">
+                      {student.fullName}
+                    </TableCell>
+                    <TableCell>{student.address}</TableCell>
+                    <TableCell>{student.phoneNumber}</TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </ScrollArea>
@@ -149,8 +156,14 @@ function AddAbsenteeDialog({
               Yopish
             </Button>
           </DialogClose>
-          <Button onClick={addAbsenteeData} type="submit">
-            Tasdiqlash
+          <Button
+            onClick={addAbsenteeData}
+            disabled={isSubmitting}
+            className="flex items-center gap-1.5"
+            type="submit"
+          >
+            {isSubmitting && <Loader className="w-3 h-3 animate-spin" />}
+            Yo'qlama qilish
           </Button>
         </DialogFooter>
       </DialogContent>

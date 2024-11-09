@@ -1,13 +1,13 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { useMainContext } from '@/context/main-context';
 import { Eye, Search } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/api/firebase';
 
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -35,24 +35,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 import AddAbsenteeDialog from '@/components/dialogs/add-absentee';
 import ListAbsenteeDialog from '@/components/dialogs/list-absentee';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/api/firebase';
-import { useMainContext } from '@/context/main-context';
+import DeleteAlert from '@/components/dialogs/delete-alert';
 
 function Absentee({ groupId, allStudents }) {
   const { uid } = useMainContext();
 
   const [id, setId] = useState('');
   const [openAddAbsenteeDialog, setOpenAddAbsenteeDialog] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
     useState(false);
   const [absentees, setAbsentees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Pagination
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -108,9 +110,19 @@ function Absentee({ groupId, allStudents }) {
       <ListAbsenteeDialog
         id={id}
         absentees={absentees}
+        students={allStudents}
         open={showAbsenteeStudentsDialog}
         setOpen={setShowAbsenteeStudentsDialog}
       />
+
+      <DeleteAlert
+        id={id}
+        collection={`users/${uid}/groups/${groupId}/absentees`}
+        fetch={fetchAbsentees}
+        open={openDelete}
+        setOpen={setOpenDelete}
+      />
+
       <div className="space-y-2 py-2">
         <div className="flex justify-between items-center gap-2">
           <div className="relative w-full">
@@ -225,7 +237,7 @@ function Absentee({ groupId, allStudents }) {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[160px]">
-                          <DropdownMenuItem
+                          {/* <DropdownMenuItem
                             onClick={(e) => {
                               e.stopPropagation();
                               // setOpenEdit();
@@ -234,11 +246,12 @@ function Absentee({ groupId, allStudents }) {
                           >
                             Tahrirlash
                           </DropdownMenuItem>
-                          <DropdownMenuSeparator />
+                          <DropdownMenuSeparator /> */}
                           <DropdownMenuItem
                             onClick={(e) => {
                               e.stopPropagation();
-                              // setOpenDelete();
+                              setOpenDelete(true);
+                              setId(absentee.id);
                               document.body.style.pointerEvents = '';
                             }}
                           >

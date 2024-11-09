@@ -45,8 +45,6 @@ const Group = () => {
   const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
   const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
   const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
-  const [showAbsenteeStudentsDialog, setShowAbsenteeStudentsDialog] =
-    useState(false);
   const [groupStudents, setGroupStudents] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [currentGroupStudents, setCurrentGroupStudents] = useState([]);
@@ -264,7 +262,7 @@ const Group = () => {
             <Absentee groupId={groupId} allStudents={groupStudents} />
           </TabsContent>
           <TabsContent value="exams">
-            <Exams groupId={groupId} setOpen={setShowAbsenteeStudentsDialog} />
+            <Exams groupId={groupId} />
           </TabsContent>
         </Tabs>
       </div>

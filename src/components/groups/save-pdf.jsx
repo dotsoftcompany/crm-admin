@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useMainContext } from '@/context/main-context';
+import { formatDate, formatPhoneNumber } from '@/lib/utils';
+import { collection, getDocs } from 'firebase/firestore';
+import { auth, db } from '@/api/firebase';
 
 import {
   Table,
@@ -10,13 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatDate, formatPhoneNumber } from '@/lib/utils';
-import { collection, getDocs } from 'firebase/firestore';
-import { auth, db } from '@/api/firebase';
 
 function SavePDF({ targetRef, group, groupId, students }) {
-  const { teachers, courses, uid } = useMainContext();
   const [exams, setExams] = useState([]);
+  const [absentees, setAbsentees] = useState([]);
+  const { teachers, courses, uid } = useMainContext();
 
   useEffect(() => {
     const fetchExams = async () => {
@@ -40,8 +41,6 @@ function SavePDF({ targetRef, group, groupId, students }) {
       fetchExams();
     }
   }, [db, groupId, auth.currentUser]);
-
-  const [absentees, setAbsentees] = useState([]);
 
   const fetchAbsentees = async () => {
     try {
