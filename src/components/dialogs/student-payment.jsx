@@ -26,12 +26,13 @@ import {
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputDatePicker from '@/components/ui/input-date-picker';
 import { Button } from '@/components/ui/button';
-import { I18nProvider } from 'react-aria';
 import { useMainContext } from '@/context/main-context';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader } from 'lucide-react';
+
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function StudentPayment({ student, groups, open, setOpen }) {
   const { courses, uid } = useMainContext();
@@ -45,6 +46,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
       course: groups.length > 0 ? groups[0].id : '',
       method: 'cash',
       studentId: '',
+      timestamp: new Date(),
     };
   };
 
@@ -121,7 +123,24 @@ function StudentPayment({ student, groups, open, setOpen }) {
               )}
             </div>
 
-            <Controller
+            <div className="flex flex-col space-y-1 mt-1">
+              <Label id="timestamp">Sana</Label>
+              <Controller
+                disabled={isSubmitting}
+                name="timestamp"
+                control={control}
+                render={({ field }) => (
+                  <ReactDatePicker
+                    selected={field.value}
+                    onChange={(date) => field.onChange(date)}
+                    dateFormat="dd.MM.yyyy"
+                    className="w-full py-2 px-3 border rounded-md bg-background"
+                  />
+                )}
+              />
+            </div>
+
+            {/* <Controller
               disabled={isSubmitting}
               name="timestamp"
               control={control}
@@ -139,7 +158,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
                   </I18nProvider>
                 </div>
               )}
-            />
+            /> */}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-2 w-full">

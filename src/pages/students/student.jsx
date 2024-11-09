@@ -29,6 +29,8 @@ import { DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import StudentPayment from '@/components/dialogs/student-payment';
 import StudentPaymentHistory from '@/components/payment/data-table';
+import EditPayment from '@/components/payment/edit-payment';
+import DeletePaymentAlert from '@/components/dialogs/delete-payment';
 
 const Student = () => {
   const { studentId } = useParams();
@@ -47,6 +49,8 @@ const Student = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
   const [filteredGroups, setFilteredGroups] = useState(groups);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [id, setId] = useState('');
 
   useEffect(() => {
@@ -128,6 +132,16 @@ const Student = () => {
       </div>
       <StudentHeader student={student} />
 
+      <EditDialog id={id} open={openEdit} setOpen={setOpenEdit}>
+        <EditPayment paymentId={id} setOpen={setOpenEdit} />
+      </EditDialog>
+
+      <DeletePaymentAlert
+        paymentId={id}
+        open={openDelete}
+        setOpen={setOpenDelete}
+      />
+
       <StudentPayment
         student={student}
         groups={filteredGroups}
@@ -202,7 +216,12 @@ const Student = () => {
           <LessonsSchedule studentId={studentId} />
         </TabsContent>
         <TabsContent value="attendance-check" className="py-2 space-y-4">
-          <StudentPaymentHistory data={student?.paymentHistory || ''}/>
+          <StudentPaymentHistory
+            data={student?.paymentHistory || ''}
+            setId={setId}
+            setOpenDelete={setOpenDelete}
+            setOpenEdit={setOpenEdit}
+          />
         </TabsContent>
         <TabsContent value="personal-details" className="hidden py-2 space-y-4">
           <div className="w-[550px] h-auto p-4 bg-gradient-to-r from-green-200 to-blue-200 border border-gray-300 shadow-lg rounded-lg relative text-[10px]">

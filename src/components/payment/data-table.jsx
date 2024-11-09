@@ -275,7 +275,7 @@ export default function StudentPaymentHistory({
         {selectedMonth && (
           <small className="text-muted-foreground hidden lg:block">
             {translateMonthToUzbek(monthName)} oyi uchun umumiy summa:{' '}
-            {totalAmount} uzs
+            <b>{totalAmount}</b> uzs
           </small>
         )}
         <div className="space-x-2">

@@ -36,7 +36,11 @@ function BreadcrumbComponent({
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1">
+              <DropdownMenuTrigger
+                className={
+                  subtitle ? 'flex lg:hidden items-center gap-1' : 'hidden'
+                }
+              >
                 <BreadcrumbEllipsis className="h-4 w-4" />
                 <span className="sr-only">Toggle menu</span>
               </DropdownMenuTrigger>
@@ -45,7 +49,9 @@ function BreadcrumbComponent({
               </DropdownMenuContent>
             </DropdownMenu>
           </BreadcrumbItem>
-          <BreadcrumbItem className="hidden lg:block">
+          <BreadcrumbItem
+            className={!subtitle ? 'block lg:-ml-2' : 'hidden lg:block'}
+          >
             <Link
               to={subtitle ? titleLink : null}
               className={
