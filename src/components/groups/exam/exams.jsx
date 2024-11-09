@@ -85,7 +85,7 @@ function Exams({ groupId }) {
         <Input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by title"
+          placeholder="Sarlovha bilan qidirish..."
           className="max-w-md"
         />
       </div>
@@ -134,17 +134,12 @@ function Exams({ groupId }) {
                 </TableCell>
                 <TableCell className="text-center">
                   <Link to={`/groups/${groupId}/exam/${exam.id}`}>
-                    <Button variant="link">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Eye className="w-5 h-5" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <small>Batafsil</small>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                      title={exam?.title}
+                    >
+                      <Eye className="h-4 w-4 cursor-pointer mx-auto" />
                     </Button>
                   </Link>
                 </TableCell>
