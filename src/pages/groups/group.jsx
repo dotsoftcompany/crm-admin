@@ -28,6 +28,7 @@ import DeleteItemAlert from '@/components/dialogs/delete-item-alert';
 import Exams from '@/components/groups/exam/exams';
 import SavePDF from '@/components/groups/save-pdf';
 import Absentee from '@/components/groups/absentee';
+import Evaluation from '@/components/groups/evaluation/evaluation';
 
 const Group = () => {
   const { toast } = useToast();
@@ -232,6 +233,7 @@ const Group = () => {
         <Tabs defaultValue="students" className="mt-4">
           <TabsList>
             <TabsTrigger value="students">O'quvchilar ro'yxati</TabsTrigger>
+            <TabsTrigger value="evaluations">Baholar</TabsTrigger>
             <TabsTrigger value="absentee">Yo'qlamalar</TabsTrigger>
             <TabsTrigger value="exams">Imtihonlar</TabsTrigger>
           </TabsList>
@@ -258,6 +260,9 @@ const Group = () => {
                 setOpenDialog={setOpenAddStudentDialog}
               />
             </StudentsDataTable>
+          </TabsContent>
+          <TabsContent value="evaluations">
+            <Evaluation groupId={groupId} students={groupStudents} />
           </TabsContent>
           <TabsContent value="absentee">
             <Absentee groupId={groupId} allStudents={groupStudents} />
