@@ -32,7 +32,7 @@ import Absentee from '@/components/groups/absentee';
 const Group = () => {
   const { toast } = useToast();
   const { groupId } = useParams();
-  const { groups, courses, loading } = useMainContext();
+  const { uid, groups, courses, loading } = useMainContext();
   const group = groups.find((g) => g.id === groupId);
 
   const { toPDF, targetRef } = usePDF({
@@ -57,7 +57,7 @@ const Group = () => {
         return;
       }
 
-      const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
+      const groupRef = doc(db, `users/${uid}/groups`, groupId);
       const groupSnap = await getDoc(groupRef);
 
       if (groupSnap.exists()) {
@@ -66,7 +66,6 @@ const Group = () => {
         setCurrentGroupStudents(studentIds);
 
         if (studentIds.length > 0) {
-          const userId = auth.currentUser.uid;
           const studentsRef = collection(db, 'students');
           const q = query(studentsRef, where('__name__', 'in', studentIds));
 
@@ -86,10 +85,16 @@ const Group = () => {
     } finally {
       setLoadingStudents(false);
     }
-  }, [groupId]);
+  }, [uid, groupId]);
+
+  useEffect(() => {
+    if (groupId) {
+      fetchGroupStudents();
+    }
+  }, [groupId, fetchGroupStudents]);
 
   const handleAddStudent = async () => {
-    const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
+    const groupRef = doc(db, `users/${uid}/groups`, groupId);
 
     try {
       const groupSnap = await getDoc(groupRef);
@@ -121,15 +126,11 @@ const Group = () => {
     }
   };
 
-  useEffect(() => {
-    fetchGroupStudents();
-  }, [groupId]);
-
   const handleRemoveStudent = async (studentId) => {
     const updatedStudents = currentGroupStudents.filter(
       (id) => id !== studentId
     );
-    const groupRef = doc(db, `users/${auth.currentUser.uid}/groups`, groupId);
+    const groupRef = doc(db, `users/${uid}/groups`, groupId);
 
     try {
       await updateDoc(groupRef, {
