@@ -96,7 +96,7 @@ const Group = () => {
 
   const handleAddStudent = async () => {
     const groupRef = doc(db, `users/${uid}/groups`, groupId);
-
+    setLoadingStudents(true);
     try {
       const groupSnap = await getDoc(groupRef);
       const groupData = groupSnap.data();
@@ -120,7 +120,7 @@ const Group = () => {
       toast({
         title: "Muvvafaqiyatli qo'shildi",
       });
-
+      setLoadingStudents(false);
       await fetchGroupStudents();
     } catch (error) {
       console.error('Error updating group:', error);
@@ -258,6 +258,7 @@ const Group = () => {
                 setCurrentGroupStudents={setCurrentGroupStudents}
                 openDialog={openAddStudentDialog}
                 setOpenDialog={setOpenAddStudentDialog}
+                loadingStudents={loadingStudents}
               />
             </StudentsDataTable>
           </TabsContent>

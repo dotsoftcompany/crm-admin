@@ -22,7 +22,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useMainContext } from '@/context/main-context';
-import { Checkbox } from '../ui/checkbox';
+import { Check, Circle, Loader, X } from 'lucide-react';
 
 function AddStudentDialog({
   handleAddStudent,
@@ -31,16 +31,21 @@ function AddStudentDialog({
   currentGroupStudents,
   openDialog,
   setOpenDialog,
+  loadingStudents,
 }) {
   const { students } = useMainContext();
 
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Filter students based on the search term
   const studentsFilter = students.filter((s) =>
     s.fullName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCheckboxChange = (studentId) => {
+  // Handle adding/removing student by clicking on the table row
+  const handleRowClick = (studentId) => {
+    if (currentGroupStudents.includes(studentId)) return;
+
     setSelectedStudents((prevSelected) =>
       prevSelected.includes(studentId)
         ? prevSelected.filter((id) => id !== studentId)
@@ -66,7 +71,7 @@ function AddStudentDialog({
         </div>
         <ScrollArea className="h-[300px] overflow-auto rounded-md">
           <Table className="h-full">
-            {!studentsFilter.length > 0 && (
+            {!studentsFilter.length && (
               <TableCaption>Student is not defined</TableCaption>
             )}
             <TableHeader className="sticky top-0">
@@ -81,24 +86,33 @@ function AddStudentDialog({
               {studentsFilter.map((student) => (
                 <TableRow
                   title={
-                    currentGroupStudents.includes(student.id)
-                      ? 'This student already added this group'
-                      : null
+                    currentGroupStudents.includes(student.id) &&
+                    "O'quvchi allaqachon qo'shilgan"
                   }
                   key={student.id}
-                  className={
+                  onClick={() => handleRowClick(student.id)}
+                  className={`cursor-pointer ${
                     currentGroupStudents.includes(student.id)
-                      ? 'opacity-40'
-                      : 'opacity-100'
-                  }
+                      ? 'opacity-40 pointer-events-none cursor-not-allowed'
+                      : selectedStudents.includes(student.id)
+                      ? 'bg-secondary hover:bg-muted/80 dark:bg-muted'
+                      : ''
+                  }`}
                 >
-                  <TableCell>
-                    <Checkbox
-                      disabled={currentGroupStudents.includes(student.id)}
-                      type="checkbox"
-                      checked={selectedStudents.includes(student.id)}
-                      onCheckedChange={() => handleCheckboxChange(student.id)}
-                    />
+                  <TableCell className="w-fit">
+                    {selectedStudents.includes(student.id) && (
+                      <Check className="w-4 h-4 text-green-500 mx-auto" />
+                    )}
+
+                    {!selectedStudents.includes(student.id) &&
+                      currentGroupStudents.includes(student.id) && (
+                        <X className="w-4 h-4 text-primary dark:text-white mx-auto" />
+                      )}
+
+                    {!selectedStudents.includes(student.id) &&
+                      !currentGroupStudents.includes(student.id) && (
+                        <Circle className="w-4 h-4 text-primary dark:text-white mx-auto" />
+                      )}
                   </TableCell>
                   <TableCell className="truncate font-medium">
                     {student.fullName}
@@ -116,7 +130,14 @@ function AddStudentDialog({
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleAddStudent}>Confirm</Button>
+          <Button
+            disabled={loadingStudents}
+            className="flex items-center gap-1.5"
+            onClick={handleAddStudent}
+          >
+            {loadingStudents && <Loader className="w-3 h-3 animate-spin" />}
+            <span>Qo'shish</span>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
