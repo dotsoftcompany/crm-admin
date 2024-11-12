@@ -58,6 +58,7 @@ function PaymentHistory() {
       <StudentPaymentHistory
         data={filteredPayments}
         setId={setId}
+        idKey="id"
         setOpenDelete={setOpenDelete}
         setOpenEdit={setOpenEdit}
         totalAmount={totalAmount}

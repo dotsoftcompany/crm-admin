@@ -40,6 +40,7 @@ import { format } from 'date-fns';
 export default function StudentPaymentHistory({
   data,
   setId,
+  idKey,
   loading,
   setOpenDelete,
   setOpenEdit,
@@ -134,7 +135,7 @@ export default function StudentPaymentHistory({
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => {
-                  setId(payment.paymentId);
+                  setId(payment[idKey]);
                   setOpenEdit(true);
                 }}
               >
@@ -143,7 +144,7 @@ export default function StudentPaymentHistory({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  setId(payment.paymentId);
+                  setId(payment[idKey]);
                   setOpenDelete(true);
                 }}
               >

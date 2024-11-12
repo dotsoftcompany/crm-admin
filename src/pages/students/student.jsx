@@ -314,6 +314,7 @@ const Student = () => {
           <StudentPaymentHistory
             data={student?.paymentHistory || ''}
             setId={setId}
+            idKey="paymentId"
             setOpenDelete={setOpenDelete}
             setOpenEdit={setOpenEdit}
           />

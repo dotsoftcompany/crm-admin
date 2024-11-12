@@ -1,12 +1,12 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useMainContext } from '@/context/main-context';
+import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/api/firebase';
+
 import BreadcrumbComponent from '@/components/breadcrumb';
 import ExamHeader from '@/components/groups/exam/exam-header';
 import Questions from '@/components/groups/exam/questions';
-import GroupHeader from '@/components/groups/header';
-import { useMainContext } from '@/context/main-context';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 const GroupExam = () => {
   const { groupId, examId } = useParams();
