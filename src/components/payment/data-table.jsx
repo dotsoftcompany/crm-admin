@@ -134,7 +134,7 @@ export default function StudentPaymentHistory({
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => {
-                  setId(payment.id);
+                  setId(payment.paymentId);
                   setOpenEdit(true);
                 }}
               >
@@ -143,7 +143,7 @@ export default function StudentPaymentHistory({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  setId(payment.id);
+                  setId(payment.paymentId);
                   setOpenDelete(true);
                 }}
               >

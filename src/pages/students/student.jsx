@@ -51,9 +51,6 @@ const Student = () => {
   } = useMainContext();
 
   const student = students.find((s) => s.id === studentId);
-  const studentGroups = groups.filter((group) =>
-    group?.students?.includes(studentId)
-  );
 
   const [isCard, setIsCard] = useState(true);
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
@@ -64,6 +61,10 @@ const Student = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [id, setId] = useState('');
+
+  const studentGroups = groups?.length
+    ? groups.filter((group) => group?.students?.includes(studentId))
+    : [];
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -144,6 +145,8 @@ const Student = () => {
     );
   }
 
+  console.log(id);
+
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <div className="flex items-center justify-between w-full">
@@ -215,15 +218,15 @@ const Student = () => {
       </EditDialog>
 
       <EditDialog
-        id={student.id}
+        id={studentId}
         open={openStudentEdit}
         setOpen={setOpenStudentEdit}
       >
-        <StudentEdit id={student.id} setCloseDialog={setOpenStudentEdit} />
+        <StudentEdit id={studentId} setCloseDialog={setOpenStudentEdit} />
       </EditDialog>
 
       <DeleteStudentAlert
-        id={student.id}
+        id={studentId}
         open={openStudentDelete}
         setOpen={setOpenStudentDelete}
       />
