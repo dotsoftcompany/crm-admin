@@ -43,7 +43,7 @@ function StudentPayment({ student, groups, open, setOpen }) {
     return {
       name: student?.fullName || '',
       amount: course?.coursePrice || '',
-      course: groups.length > 0 ? groups[0].id : '',
+      course: groups?.length > 0 ? groups[0]?.id : '',
       method: 'cash',
       studentId: '',
       timestamp: new Date(),

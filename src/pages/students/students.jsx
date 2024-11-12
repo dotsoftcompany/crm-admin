@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import StudentsDataTable from '@/components/students/data-table';
 import BreadcrumbComponent from '@/components/breadcrumb';
@@ -16,14 +16,25 @@ import { useMainContext } from '@/context/main-context';
 import DeleteStudentAlert from '@/components/dialogs/delete-student-alert';
 import { MonthPicker } from '@/components/ui/month-picker';
 import { hasPaidThisMonth } from '@/lib/utils';
+import StudentPayment from '@/components/dialogs/student-payment';
+import { calculateCurrentMonthDebt } from '@/lib/payment-history';
 
 function Students() {
-  const { students } = useMainContext();
-  const [openStudentEditDialog, setOpenStudentEditDialog] = useState(false);
-  const [openStudentDeleteDialog, setOpenStudentDeleteDialog] = useState(false);
-  const [month, setMonth] = useState(null);
+  const {
+    students,
+    groups,
+    openStudentPayment,
+    setOpenStudentPayment,
+    openStudentDelete,
+    setOpenStudentDelete,
+    openStudentEdit,
+    setOpenStudentEdit,
+  } = useMainContext();
   const [id, setId] = useState('');
   const [filter, setFilter] = useState('all');
+
+  const student = students.find((s) => s.id === id);
+  const studentGroups = groups.filter((group) => group?.students?.includes(id));
 
   const handleChange = (value) => {
     setFilter(value);
@@ -52,18 +63,21 @@ function Students() {
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-2">
       <BreadcrumbComponent title="O'quvchilar ro'yxati" />
 
-      <EditDialog
-        id={id}
-        open={openStudentEditDialog}
-        setOpen={setOpenStudentEditDialog}
-      >
-        <StudentEdit id={id} setCloseDialog={setOpenStudentEditDialog} />
+      <EditDialog id={id} open={openStudentEdit} setOpen={setOpenStudentEdit}>
+        <StudentEdit id={id} setCloseDialog={setOpenStudentEdit} />
       </EditDialog>
 
       <DeleteStudentAlert
         id={id}
-        open={openStudentDeleteDialog}
-        setOpen={setOpenStudentDeleteDialog}
+        open={openStudentDelete}
+        setOpen={setOpenStudentDelete}
+      />
+
+      <StudentPayment
+        student={student}
+        groups={studentGroups}
+        open={openStudentPayment}
+        setOpen={setOpenStudentPayment}
       />
 
       <div>
@@ -79,8 +93,9 @@ function Students() {
         id={id}
         setId={setId}
         data={filteredStudents()}
-        setOpenEdit={setOpenStudentEditDialog}
-        setOpenDelete={setOpenStudentDeleteDialog}
+        setOpenEdit={setOpenStudentEdit}
+        setOpenDelete={setOpenStudentDelete}
+        setOpenPayment={setOpenStudentPayment}
       >
         <div className="flex items-center gap-2">
           <Select value={filter} onValueChange={handleChange}>
@@ -93,9 +108,6 @@ function Students() {
               <SelectItem value="notPaid">To'lov qilmaganlar</SelectItem>
             </SelectContent>
           </Select>
-          <div className="items-center space-x-2">
-            <MonthPicker className="w-44" month={month} setMonth={setMonth} />
-          </div>
         </div>
       </StudentsDataTable>
     </div>

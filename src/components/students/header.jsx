@@ -35,7 +35,6 @@ function StudentHeader({ student }) {
     groups
   );
 
-
   return (
     <div className="space-y-2 pb-4 w-full border-b border-border">
       <div className="flex items-center gap-2">
@@ -44,7 +43,10 @@ function StudentHeader({ student }) {
         </h1>
         <Badge
           variant={paidThisMonth ? 'active' : 'inactive'}
-          className={debt && 'bg-orange-200 text-orange-500 hover:bg-orange-300/80 border-orange-300 dark:!bg-orange-500 dark:text-white'}
+          className={
+            debt &&
+            'bg-orange-200 text-orange-500 hover:bg-orange-300/80 border-orange-300 dark:!bg-orange-500 dark:text-white'
+          }
         >
           {paidThisMonth ? "To'lov qilgan" : "To'lov qilmagan"}
         </Badge>
@@ -81,7 +83,7 @@ function StudentHeader({ student }) {
                   href={`tel:${formatPhoneNumber(student.phoneNumber)}`}
                   className="text-xs md:text-sm hover:underline"
                 >
-                  {student.phoneNumber}
+                  {formatPhoneNumber(student.phoneNumber)}
                 </a>
               </div>
             </TooltipTrigger>
@@ -99,7 +101,7 @@ function StudentHeader({ student }) {
                   href={`tel:${student.parentPhoneNumber}`}
                   className="text-xs md:text-sm hover:underline"
                 >
-                  {student.parentPhoneNumber}
+                  {formatPhoneNumber(student.parentPhoneNumber)}
                 </a>
               </div>
             </TooltipTrigger>

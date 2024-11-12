@@ -48,7 +48,6 @@ export default function StudentPaymentHistory({
   children,
 }) {
   const { courses, groups } = useMainContext();
-  const history = useNavigate();
 
   const date = new Date(selectedMonth);
   const monthName = date.toLocaleString('en-US', { month: 'long' });
@@ -57,10 +56,6 @@ export default function StudentPaymentHistory({
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-
-  const handleRowClick = (teacherId) => {
-    history(`/students/${teacherId}`);
-  };
 
   const columns = [
     {

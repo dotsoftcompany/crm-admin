@@ -6,14 +6,13 @@ import { useMainContext } from '@/context/main-context';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 import BreadcrumbComponent from '@/components/breadcrumb';
 import StudentHeader from '@/components/students/header';
@@ -31,11 +30,25 @@ import StudentPayment from '@/components/dialogs/student-payment';
 import StudentPaymentHistory from '@/components/payment/data-table';
 import EditPayment from '@/components/payment/edit-payment';
 import DeletePaymentAlert from '@/components/dialogs/delete-payment';
+import StudentEdit from '@/components/students/edit';
+import DeleteStudentAlert from '@/components/dialogs/delete-student-alert';
 
 const Student = () => {
   const { studentId } = useParams();
-  const { groups, courses, teachers, students, loading, uid, paymentHistory } =
-    useMainContext();
+  const {
+    groups,
+    courses,
+    teachers,
+    students,
+    loading,
+    uid,
+    openStudentPayment,
+    setOpenStudentPayment,
+    openStudentDelete,
+    setOpenStudentDelete,
+    openStudentEdit,
+    setOpenStudentEdit,
+  } = useMainContext();
 
   const student = students.find((s) => s.id === studentId);
   const studentGroups = groups.filter((group) =>
@@ -45,7 +58,6 @@ const Student = () => {
   const [isCard, setIsCard] = useState(true);
   const [openGroupEditDialog, setOpenGroupEditDialog] = useState(false);
   const [openGroupDeleteDialog, setOpenGroupDeleteDialog] = useState(false);
-  const [openPayment, setOpenPayment] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('title');
   const [filteredGroups, setFilteredGroups] = useState(groups);
@@ -83,7 +95,7 @@ const Student = () => {
     };
   }, [searchTerm, filterOption, groups, courses, teachers]);
 
-  if (loading || !student) {
+  if (loading) {
     return (
       <div className="px-4 lg:px-8 mx-auto py-4 space-y-3 md:space-y-5">
         <Skeleton className="h-4 w-72" />
@@ -113,6 +125,25 @@ const Student = () => {
     );
   }
 
+  if (!student) {
+    return (
+      <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
+        <BreadcrumbComponent
+          title="O'quvchilar ro'yxati"
+          subtitle="Noma'lum o'quvchi"
+        />
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            O'quvchi topilmadi.
+          </h2>
+          <p className="text-muted-foreground">
+            Siz qidirayotgan o'quvchi o'chirilgan yoki umuman mavjud emas.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-4 lg:px-8 mx-auto my-4 space-y-4">
       <div className="flex items-center justify-between w-full">
@@ -121,20 +152,81 @@ const Student = () => {
           titleLink="/students"
           subtitle={student?.fullName}
         />
-        <Button
-          size="sm"
-          onClick={() => setOpenPayment(true)}
-          className="flex items-center gap-1 !text-xs py-1 bg-blue-100 text-blue-500 dark:bg-blue-500 dark:text-white"
-        >
-          <DollarSign className="w-3 h-3" />
-          <span>To'lov qilish</span>
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                />
+              </svg>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenStudentEdit(true);
+                document.body.style.pointerEvents = '';
+              }}
+            >
+              Tahrirlash
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenStudentPayment(true);
+                document.body.style.pointerEvents = '';
+              }}
+            >
+              To'lov qilish
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenStudentDelete(true);
+                document.body.style.pointerEvents = '';
+              }}
+            >
+              O'chirish
+              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <StudentHeader student={student} />
 
       <EditDialog id={id} open={openEdit} setOpen={setOpenEdit}>
         <EditPayment paymentId={id} setOpen={setOpenEdit} />
       </EditDialog>
+
+      <EditDialog
+        id={student.id}
+        open={openStudentEdit}
+        setOpen={setOpenStudentEdit}
+      >
+        <StudentEdit id={student.id} setCloseDialog={setOpenStudentEdit} />
+      </EditDialog>
+
+      <DeleteStudentAlert
+        id={student.id}
+        open={openStudentDelete}
+        setOpen={setOpenStudentDelete}
+      />
 
       <DeletePaymentAlert
         paymentId={id}
@@ -144,9 +236,9 @@ const Student = () => {
 
       <StudentPayment
         student={student}
-        groups={filteredGroups}
-        open={openPayment}
-        setOpen={setOpenPayment}
+        groups={studentGroups}
+        open={openStudentPayment}
+        setOpen={setOpenStudentPayment}
       />
 
       <Tabs defaultValue="groups" className="">

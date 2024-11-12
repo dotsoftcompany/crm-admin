@@ -39,7 +39,7 @@ export default function StudentsDataTable({
   loadingStudents,
   setOpenDelete,
   setOpenEdit,
-  setOpenDeleteDialog,
+  setOpenPayment,
   studentEdit = true,
   children,
 }) {
@@ -104,7 +104,7 @@ export default function StudentsDataTable({
       cell: ({ row }) => {
         const paidThisMonth = hasPaidThisMonth(row.original.paymentHistory);
 
-        const { coursePrice, totalPaidThisMonth, debt } =
+        const { debt } =
           calculateCurrentMonthDebt(row.original, courses, groups);
 
         return (
@@ -156,6 +156,14 @@ export default function StudentsDataTable({
                   >
                     Tahrirlash
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setId(student.id);
+                      setOpenPayment(true);
+                    }}
+                  >
+                    To'lov qilish
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
               )}
@@ -163,7 +171,6 @@ export default function StudentsDataTable({
                 onClick={() => {
                   setId(student.id);
                   setOpenDelete(true);
-                  setOpenDeleteDialog(true);
                 }}
               >
                 {studentEdit ? "O'chirish" : 'Olib tashlash'}
