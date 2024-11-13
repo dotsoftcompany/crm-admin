@@ -77,7 +77,7 @@ function CourseCard({ item, setOpenDelete, setOpenEdit }) {
         </div>
 
         <div className="flex gap-2">
-          <Badge className="text-sm px-2 font-medium" variant="secondary">
+          <Badge className="text-sm pl-0 font-medium" variant="secondary">
             Davomiyligi: {item.courseDuration} oy
           </Badge>
           <Badge

@@ -72,7 +72,7 @@ const AddTeacherForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const url = 'http://localhost:8080/add-teacher';
+      const url = 'https://crm-server-omega.vercel.app/add-teacher';
 
       const response = await axios.post(url, {
         email: `${data.email}@teacher.uz`,
