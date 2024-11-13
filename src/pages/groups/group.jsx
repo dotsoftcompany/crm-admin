@@ -29,6 +29,7 @@ import Exams from '@/components/groups/exam/exams';
 import SavePDF from '@/components/groups/save-pdf';
 import Absentee from '@/components/groups/absentee';
 import Evaluation from '@/components/groups/evaluation/evaluation';
+import Tasks from '@/components/groups/tasks/tasks';
 
 const Group = () => {
   const { toast } = useToast();
@@ -233,6 +234,7 @@ const Group = () => {
         <Tabs defaultValue="students" className="mt-4">
           <TabsList>
             <TabsTrigger value="students">O'quvchilar ro'yxati</TabsTrigger>
+            <TabsTrigger value="tasks">Vazifalar</TabsTrigger>
             <TabsTrigger value="evaluations">Baholar</TabsTrigger>
             <TabsTrigger value="absentee">Yo'qlamalar</TabsTrigger>
             <TabsTrigger value="exams">Imtihonlar</TabsTrigger>
@@ -261,6 +263,9 @@ const Group = () => {
                 loadingStudents={loadingStudents}
               />
             </StudentsDataTable>
+          </TabsContent>
+          <TabsContent value="tasks">
+            <Tasks groupId={groupId} />
           </TabsContent>
           <TabsContent value="evaluations">
             <Evaluation groupId={groupId} students={groupStudents} />

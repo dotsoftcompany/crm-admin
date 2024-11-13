@@ -16,6 +16,7 @@ import Students from '@/pages/students/students';
 import PaymentHistory from '@/pages/payment-history';
 import Student from './students/student';
 import GroupExam from './groups/exam';
+import GroupTask from './groups/tasks/task';
 
 function Dashboard() {
   return (
@@ -34,6 +35,7 @@ function Dashboard() {
           <Route path="/students/:studentId" element={<Student />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/groups/:groupId" element={<Group />} />
+          <Route path="/groups/:groupId/task/:taskId" element={<GroupTask />} />
           <Route path="/groups/:groupId/exam/:examId" element={<GroupExam />} />
           <Route path="/add-group" element={<AddGroup />} />
           <Route path="/payment-history" element={<PaymentHistory />} />
