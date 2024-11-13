@@ -48,8 +48,8 @@ export function CollapseMenuButton({
         <Button
           className={`w-full justify-start h-10 mb-1 ${
             active
-              ? 'bg-white text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
-              : 'bg-white hover:bg-accent text-primary dark:bg-transparent dark:hover:bg-accent'
+              ? 'bg-muted text-primary hover:opacity-90 hover:bg-white dark:bg-accent dark:hover:bg-accent'
+              : 'bg-muted hover:bg-blue-600 hover:text-white text-primary dark:bg-transparent dark:hover:bg-accent'
           }`}
         >
           <div className="w-full items-center flex justify-between">
@@ -91,12 +91,12 @@ export function CollapseMenuButton({
             className={`w-full justify-start h-8 mb-1 ${
               active
                 ? 'bg-blue-600 text-white hover:opacity-90 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue0600'
-                : 'bg-white hover:bg-accent text-primary dark:bg-transparent dark:hover:bg-accent'
+                : 'bg-muted hover:bg-blue-600 hover:text-white text-primary dark:bg-transparent dark:hover:bg-accent'
             }`}
             asChild
           >
             <Link to={href}>
-              <span className="mr-2 ml-2">
+              <span className="mr-2">
                 <Dot size={18} />
               </span>
               <p

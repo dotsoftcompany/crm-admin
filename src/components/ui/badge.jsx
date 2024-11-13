@@ -18,7 +18,7 @@ const badgeVariants = cva(
         odd: 'bg-orange-100 text-orange-500 hover:bg-orange-200/80 dark:bg-orange-500 hover:dark:bg-orange-600 dark:text-white',
         even: 'bg-purple-100 text-purple-500 hover:bg-purple-200/80 dark:bg-purple-500 hover:dark:bg-purple-600 dark:text-white',
         every:
-          'bg-gray-100 dark:bg-primary hover:opacity-90 text-primary dark:text-black',
+          'bg-white hover:opacity-90 text-primary dark:text-black',
         odd_outline:
           'bg-orange-50 dark:bg-transparent border-orange-500 text-orange-500 hover:border-orange-600/80 dark:border-orange-500 hover:dark:border-orange-600 dark:text-orange-500',
         even_outline:

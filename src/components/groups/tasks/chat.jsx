@@ -19,8 +19,11 @@ import { useForm } from 'react-hook-form';
 import { useToast } from '@/components/ui/use-toast';
 
 function TaskChat({ task, groupStudents, groupId, taskId, messages }) {
-  const { uid, courses, groups, teacherData } = useMainContext();
+  const { uid, courses, groups, teachers } = useMainContext();
   const group = groups.find((g) => g.id === groupId);
+
+  const teacher = teachers.filter((item) => item.id === group.teacherId)[0]
+    ?.fullName;
 
   const {
     reset,
@@ -44,20 +47,6 @@ function TaskChat({ task, groupStudents, groupId, taskId, messages }) {
     } catch (error) {
       console.error('Error saving chat message:', error);
     }
-  };
-
-  const onSubmit = async (data) => {
-    if (data.message.trim() === '') return;
-
-    const messageData = {
-      message: data.message,
-      senderId: teacherData.id,
-      senderName: teacherData.fullName,
-    };
-
-    await saveChatMessage(messageData);
-
-    reset();
   };
 
   const getInitials = (fullName) => {
@@ -110,8 +99,8 @@ function TaskChat({ task, groupStudents, groupId, taskId, messages }) {
         </p>
       </div>
 
-      <div className="overflow-y-auto">
-        <div className="p-4">
+      <div className="overflow-y-auto max-h-[calc(100vh-80px)]">
+        <div className="p-2 md:p-4">
           {task?.images && task?.images?.length > 0 && (
             <div className="w-full flex items-center justify-center my-3">
               <Badge variant="secondary">
@@ -126,15 +115,15 @@ function TaskChat({ task, groupStudents, groupId, taskId, messages }) {
                 {task?.images?.map(({ url, type, id, name, timestamp }) => (
                   <div
                     key={id}
-                    className="flex items-start gap-2 my-2 max-w-md"
+                    className="flex items-start gap-2 my-1 md:my-2 max-w-md"
                   >
                     <Avatar
-                      title={teacherData?.fullName}
-                      className="cursor-pointer"
+                      title={teacher}
+                      className="cursor-pointer w-8 h-8 md:w-10 md:h-10"
                     >
                       <AvatarImage src="" />
-                      <AvatarFallback className="text-sm font-medium">
-                        {getInitials(teacherData?.fullName)}
+                      <AvatarFallback className="text-xs md:text-sm font-medium">
+                        {getInitials(teacher)}
                       </AvatarFallback>
                     </Avatar>
                     <a
@@ -144,9 +133,12 @@ function TaskChat({ task, groupStudents, groupId, taskId, messages }) {
                       className="relative"
                     >
                       <div className="pl-2.5 pr-4 pt-1 pb-3 rounded-lg border border-border hover:border-ring duration-200 cursor-pointer bg-muted">
-                        <p className="text-xs font-medium pb-1.5 text-blue-500">
-                          {teacherData?.fullName}
-                        </p>
+                        <div className='flex items-center justify-between'>
+                          <p className="text-xs font-medium pb-1.5 text-blue-500">
+                            {teacher}
+                          </p>
+                          <small className='text-muted-foreground text-xs'>O'qituvchi</small>
+                        </div>
                         <div className="flex items-start gap-3">
                           {type === 'application/pdf' ? (
                             <img
@@ -185,9 +177,12 @@ function TaskChat({ task, groupStudents, groupId, taskId, messages }) {
           <div className="flex-1 overflow-y-auto py-4 pt-0">
             {messages.map((msg) => (
               <div className="relative flex items-start gap-2 my-2 max-w-md">
-                <Avatar title={msg?.senderName} className="cursor-pointer">
+                <Avatar
+                  title={msg?.senderName}
+                  className="cursor-pointer w-8 h-8 md:w-10 md:h-10"
+                >
                   <AvatarImage src="" />
-                  <AvatarFallback className="text-sm font-medium">
+                  <AvatarFallback className="text-xs md:text-sm font-medium">
                     {getInitials(msg?.senderName)}
                   </AvatarFallback>
                 </Avatar>

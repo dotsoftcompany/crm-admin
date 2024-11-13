@@ -1,21 +1,14 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { SheetMenu } from './layout/sheet-menu';
 
 function BreadcrumbComponent({
@@ -35,30 +28,9 @@ function BreadcrumbComponent({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                className={
-                  subtitle ? 'flex lg:hidden items-center gap-1' : 'hidden'
-                }
-              >
-                <BreadcrumbEllipsis className="h-4 w-4" />
-                <span className="sr-only">Toggle menu</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem>{title}</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </BreadcrumbItem>
-          <BreadcrumbItem
-            className={!subtitle ? 'block lg:-ml-2' : 'hidden lg:block'}
-          >
             <Link
               to={subtitle ? titleLink : null}
-              className={
-                subtitle
-                  ? 'cursor-pointer'
-                  : 'cursor-text text-black dark:text-white'
-              }
+              className={subtitle ? 'cursor-pointer' : 'cursor-text text-black dark:text-white'}
             >
               <BreadcrumbLink>{title}</BreadcrumbLink>
             </Link>
@@ -70,9 +42,7 @@ function BreadcrumbComponent({
                 <Link
                   to={subtitle2 ? subtitleLink : null}
                   className={
-                    subtitle
-                      ? 'cursor-text text-black dark:text-white'
-                      : 'cursor-pointer'
+                    subtitle && !subtitle2 ? 'cursor-text text-black dark:text-white' : 'cursor-pointer'
                   }
                 >
                   <BreadcrumbLink>{subtitle}</BreadcrumbLink>
@@ -84,7 +54,9 @@ function BreadcrumbComponent({
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink>{subtitle2}</BreadcrumbLink>
+                <BreadcrumbLink className="text-black dark:text-white">
+                  {subtitle2}
+                </BreadcrumbLink>
               </BreadcrumbItem>
             </>
           )}

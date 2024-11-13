@@ -99,7 +99,7 @@ function MainPage() {
         />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="dark:bg-background/95">
+        <Card className="bg-muted dark:bg-background/95">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
             <CardTitle className="text-sm font-medium">Umumiy summa</CardTitle>
             <BadgeDollarSign className="h-4 w-4 text-muted-foreground" />
@@ -121,7 +121,7 @@ function MainPage() {
             </CardContent>
           )}
         </Card>
-        <Card className="dark:bg-background/95">
+        <Card className="bg-muted dark:bg-background/95">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
             <CardTitle className="text-sm font-medium">Ommabop kurs</CardTitle>
             <Gem className="h-4 w-4 text-muted-foreground" />
@@ -141,7 +141,7 @@ function MainPage() {
             </CardContent>
           )}
         </Card>
-        <Card className="dark:bg-background/95">
+        <Card className="bg-muted dark:bg-background/95">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
             <CardTitle className="text-sm font-medium">
               Ommabop to'lov usuli
@@ -201,7 +201,7 @@ export default MainPage;
 
 function MainCard({ title, Icon, count, uzs = false }) {
   return (
-    <Card className="dark:bg-background/95">
+    <Card className="bg-muted dark:bg-background/95">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <Icon className="h-4 w-4 text-muted-foreground" />

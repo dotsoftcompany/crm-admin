@@ -16,7 +16,7 @@ export function MonthPicker({ className, month, setMonth }) {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={'outline'}
+          variant="secondary"
           className={cn(
             'w-60 justify-start text-left font-normal',
             !month && 'text-muted-foreground',

@@ -43,7 +43,7 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
   };
 
   return (
-    <Card key={card.id} className="group-card group-dark-card">
+    <Card key={card.id} className="bg-muted dark:bg-background group-card group-dark-card">
       <div className="p-4 pb-0 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
@@ -77,7 +77,7 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
               {card.status ? 'Aktiv' : 'Tugatildi'}
             </Badge>
             <Badge
-              className="flex items-center gap-1.5 w-fit text-xs"
+              className="bg-white dark:bg-muted flex items-center gap-1.5 w-fit text-xs"
               variant="secondary"
             >
               <Users className="w-3 h-3" />
@@ -168,7 +168,7 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
                 className="w-7 h-7 shadow border border-border"
               >
                 <AvatarImage src="" />
-                <AvatarFallback className="text-xs">
+                <AvatarFallback className="text-xs bg-white dark:bg-muted">
                   {getInitials(student?.fullName)}
                 </AvatarFallback>
               </Avatar>
@@ -188,7 +188,7 @@ function GroupCard({ card, studentCard = true, setOpenDelete, setOpenEdit }) {
                   : 'Ustoz topilmadi - yangi ustoz tanlang'
               }
             />
-            <AvatarFallback className="text-xs">
+            <AvatarFallback className="text-xs bg-white dark:bg-muted">
               {teacherFullName
                 ?.split(' ')
                 .map((word) => word[0])

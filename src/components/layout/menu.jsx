@@ -130,7 +130,7 @@ export function Menu({ isOpen }) {
                               className={`w-full justify-start h-10 mb-1 ${
                                 active
                                   ? 'bg-blue-600 text-white hover:opacity-90 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue0600'
-                                  : 'bg-white hover:bg-accent text-primary dark:bg-transparent dark:hover:bg-accent'
+                                  : 'bg-muted hover:bg-blue-600 hover:text-white text-primary dark:bg-transparent dark:hover:bg-accent'
                               }`}
                               asChild
                             >
@@ -185,7 +185,7 @@ export function Menu({ isOpen }) {
                     <Button
                       onClick={() => {}}
                       variant="outline"
-                      className="w-full h-10 mt-5 mx-2 justify-start pl-4"
+                      className="w-full h-10 mt-5 mx-2 justify-start hover:bg-white hover:border-blue-400 hover:dark:border-border hover:dark:bg-muted pl-4"
                     >
                       <span className={cn(isOpen === false ? '' : 'mr-2')}>
                         <ShieldCheck size={18} />
