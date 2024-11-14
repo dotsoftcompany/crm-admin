@@ -15,6 +15,14 @@ import { auth, db } from '@/api/firebase';
 import { useMainContext } from '@/context/main-context';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -30,6 +38,7 @@ import SavePDF from '@/components/groups/save-pdf';
 import Absentee from '@/components/groups/absentee';
 import Evaluation from '@/components/groups/evaluation/evaluation';
 import Tasks from '@/components/groups/tasks/tasks';
+import { Button } from '@/components/ui/button';
 
 const Group = () => {
   const { toast } = useToast();
@@ -205,13 +214,40 @@ const Group = () => {
                 .courseTitle
             } #${group.groupNumber}`}
           />
-          <button
-            className="hidden lg:flex items-center gap-1.5 text-sm"
-            onClick={() => toPDF()}
-          >
-            <Download className="w-4 h-4 text-muted-foreground" />
-            <span>Pdf saqlash</span>
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                  />
+                </svg>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[160px]">
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toPDF();
+                  document.body.style.pointerEvents = '';
+                }}
+              >
+                Pdf saqlash
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <GroupHeader group={group} />
