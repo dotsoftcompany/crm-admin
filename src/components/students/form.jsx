@@ -109,7 +109,7 @@ const AddStudentForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const url = 'http://localhost:8080/add-student';
+      const url = 'https://crm-server-omega.vercel.app/add-student';
 
       const response = await axios.post(url, {
         email: `${data.username}@student.uz`,
