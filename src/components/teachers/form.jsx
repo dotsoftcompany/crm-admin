@@ -90,7 +90,7 @@ const AddTeacherForm = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          withCredentials: true, // Add this line
+          withCredentials: true, // Ensure this line is present
         }
       );
 
