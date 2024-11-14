@@ -74,25 +74,16 @@ const AddTeacherForm = () => {
     try {
       const url = 'https://crm-server-omega.vercel.app/add-teacher';
 
-      const response = await axios.post(
-        url,
-        {
-          email: `${data.email}@teacher.uz`,
-          password: data.password,
-          fullName: data.fullName,
-          phone: data.phone,
-          address: data.address,
-          position: data.position,
-          role: auth.currentUser?.uid,
-          isTeacherUpdate: false,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true, // Ensure this line is present
-        }
-      );
+      const response = await axios.post(url, {
+        email: `${data.email}@teacher.uz`,
+        password: data.password,
+        fullName: data.fullName,
+        phone: data.phone,
+        address: data.address,
+        position: data.position,
+        role: auth.currentUser?.uid,
+        isTeacherUpdate: false,
+      });
 
       if (response.status === 201) {
         reset();
